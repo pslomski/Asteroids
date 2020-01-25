@@ -1,7 +1,7 @@
 # Asteroids
 Remake of classic Atari's Asteroids game
 
-1. Introduction
+## 1. Introduction
 
   This is a classic Atari's Asteroids arcade game remake.
 Originally it was released in 1979 by Atari Inc. To this day
@@ -14,7 +14,7 @@ The ship can catch point bonuses and two weapon powerups.
 There is also music added. So I hope You will enjoy this
 little game as I do.
 
-2. Controls
+## 2. Controls
 
 Left arrow - turn left
 Right arrow - turn right
