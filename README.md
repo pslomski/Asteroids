@@ -18,5 +18,5 @@ little game as I do.
 
 Left arrow - turn left
 Right arrow - turn right
-Up arrorw - move forward
+Up arrow - move forward
 Space - fire weapon
