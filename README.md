@@ -16,7 +16,7 @@ little game as I do.
 
 ## 2. Controls
 
-Left arrow - turn left
-Right arrow - turn right
-Up arrow - move forward
-Space - fire weapon
+Left arrow - turn left  
+Right arrow - turn right  
+Up arrow - move forward  
+Space - fire weapon  
