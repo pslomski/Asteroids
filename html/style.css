@@ -1,17 +1,18 @@
 @font-face {
-    font-family: vectorb;
-    src: url(vectorb.ttf);
-  }
-  
+  font-family: vectorb;
+  src: url(vectorb.ttf);
+}
+
 body {
-  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
   background: black;
   color: white;
 }
 
 .title {
   font-family: vectorb;
-  font-size: 400%;
+  font-size: 200%;
   text-align: center;
 }
 
@@ -22,7 +23,7 @@ body {
 
 .download {
   font-family: vectorb;
-  width: 200px  ;
+  width: 100%;
   border: 5px solid white;
   padding: 5px;
   text-align: center;
