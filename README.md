@@ -20,3 +20,17 @@ Left arrow - turn left
 Right arrow - turn right  
 Up arrow - move forward  
 Space - fire weapon  
+
+## 3. Dependencies
+
+#3.1
+SDL2
+
+#3.2
+SDL TTF
+
+#3.3
+Bass
+
+#3.4
+vectorb.ttf font
