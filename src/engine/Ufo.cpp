@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Ufo.h"
 #include "Sound.h"
 #include "Consts.h"
@@ -117,7 +116,7 @@ void TUfo::Action(TvecBullet& vecBullet)
 	}
 }
 
-TBullet* TUfo::FireBullet(PointF &pt)
+TBullet* TUfo::FireBullet(const PointF &pt)
 {
 	Float Speed=22.0;
 	TBullet *bullet=new TBullet;

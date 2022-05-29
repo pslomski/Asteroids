@@ -1,8 +1,7 @@
-#include "stdafx.h"
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include "SDLTools.h"
+#include "../SDLTools.h"
 #include "HighScoreState.h"
 #include "MenuState.h"
 #include "../engine/World.h"

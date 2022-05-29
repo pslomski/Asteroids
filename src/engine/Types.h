@@ -19,7 +19,7 @@ public:
 	T x, y;
 };
 
-typedef Point<double> PointF;
+typedef Point<Float> PointF;
 
 template<class T>
 class Box {
@@ -31,7 +31,7 @@ public:
 		x1 = b.x1;
 		y1 = b.y1;
 	}
-	Box(T in_x0, T in_y0, T in_x1, T in_y1) {
+	Box(const T in_x0, const T in_y0, const T in_x1, const T in_y1) {
 		x0 = in_x0;
 		y0 = in_y0;
 		x1 = in_x1;
@@ -40,7 +40,7 @@ public:
 	T x0, y0, x1, y1;
 };
 
-typedef Box<double> BoxF;
+typedef Box<Float> BoxF;
 
 struct Bounds {
 	Float x0, x1, y0, y1;

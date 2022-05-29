@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <assert.h>
 #include <time.h>
 #include <process.h>
 #include "AsterGame.h"
@@ -174,7 +174,7 @@ namespace ge {
 			//if(i<4) pAster->HasBonus=true;
 			int iSide = i % 4;
 			int iPart = rand() % 4;
-			int iAngle = min(170, 110 + 10 * iGameLevel);
+			int iAngle = std::min(170, 110 + 10 * iGameLevel);
 			iAngle = rand() % iAngle - iAngle / 2;
 			if (0 == iSide) {
 				pAster->SetXY(geWorld.clipLeft, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
@@ -299,7 +299,7 @@ namespace ge {
 			if (tiChangeBroomSoundFreq.Inc(Object::dt)) {
 				tiChangeBroomSoundFreq.Reset();
 				tiBroomSound.interval -= 1;
-				tiBroomSound.interval = max(tiBroomSound.interval, 0.7);
+				tiBroomSound.interval = std::max(tiBroomSound.interval, 0.7);
 			}
 
 			if (tiBroomSound.Inc(Object::dt)) {
@@ -336,7 +336,7 @@ namespace ge {
 				if (!pUfo) {
 					// Handle Ufo
 					if (tiUfoRespawn.Inc(Object::dt)) {
-						tiUfoRespawn.Reset(max(15.0, tiUfoRespawn.interval - 1));
+						tiUfoRespawn.Reset(std::max(15.0, tiUfoRespawn.interval - 1));
 						pUfo = new TUfo;
 						pUfo->SetXY(geWorld.GetRandomPosAtEdge());
 					}
@@ -350,7 +350,7 @@ namespace ge {
 				m_GameState = gsRun;
 				if (vecAsters.empty()) {
 					++m_AstersCount;
-					m_AstersCount = min(m_AstersCount, GE_MAX_ASTER_COUNT);
+					m_AstersCount = std::min(m_AstersCount, GE_MAX_ASTER_COUNT);
 					GenerateAsters(m_AstersCount, GameLevel++);
 					tiBroomSound.Reset();
 					tiBroomSound.interval = 5.0;

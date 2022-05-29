@@ -26,7 +26,7 @@ public:
 	int ScoreValue;
 
 	void Move();
-	BoxF Transform(BoxF& seg);
+	BoxF Transform(const BoxF& seg) const;
 	bool CheckCollision(Object* pObiekt);
 	void SetXY(Float ax, Float ay) {
 		fx = ax;
@@ -34,7 +34,7 @@ public:
 		xp = ax;
 		yp = ay;
 	}
-	void SetXY(PointF& pt) {
+	void SetXY(const PointF& pt) {
 		fx = pt.x;
 		fy = pt.y;
 		xp = pt.x;

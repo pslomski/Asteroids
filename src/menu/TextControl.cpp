@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <math.h>
 #include "TextControl.h"
 #include "../engine/World.h"

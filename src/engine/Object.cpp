@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <assert.h>
 #include "Object.h"
 #include "World.h"
 #include "Tools.h"
@@ -91,7 +91,7 @@ void Object::Move()
 	if (fy > geWorld.clipTop) { fy -= geWorld.clipTop;   yp -= geWorld.clipTop; }
 }
 
-BoxF Object::Transform(BoxF& seg)
+BoxF Object::Transform(const BoxF& seg) const
 {
 	BoxF res;
 	Float sinalfa = sin(-falfa * GE_PIover180);
@@ -109,15 +109,32 @@ bool _CheckPolygWithPoint(Object* pObjPoint, Object* pObjPolyg)
 	Float x, y;
 	//bierzemy wektor przesuniecia punktu
 	BoxF o2 = BoxF(pObjPoint->xp, pObjPoint->yp, pObjPoint->GetX(), pObjPoint->GetY());
-	for (unsigned int i1 = 0; i1 < pObjPolyg->Verts.size(); ++i1) {
-		if (0 == i1)	o1 = pObjPolyg->Transform(BoxF(pObjPolyg->Verts[0].x, pObjPolyg->Verts[0].y,
-			pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].x, pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].y));
-		else		o1 = pObjPolyg->Transform(BoxF(pObjPolyg->Verts[i1 - 1].x, pObjPolyg->Verts[i1 - 1].y,
-			pObjPolyg->Verts[i1].x, pObjPolyg->Verts[i1].y));
-		if (LinesIntersection(o1, o2, x, y) == 0) {
+	for (unsigned int i1 = 0; i1 < pObjPolyg->Verts.size(); ++i1)
+	{
+		if (0 == i1)
+		{	
+			o1 = pObjPolyg->Transform(
+				BoxF(
+					pObjPolyg->Verts[0].x,
+					pObjPolyg->Verts[0].y,
+					pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].x,
+					pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].y));
+		}
+		else
+		{
+			o1 = pObjPolyg->Transform(
+				BoxF(
+					pObjPolyg->Verts[i1 - 1].x,
+					pObjPolyg->Verts[i1 - 1].y,
+					pObjPolyg->Verts[i1].x,
+					pObjPolyg->Verts[i1].y));
+		}
+		if (LinesIntersection(o1, o2, x, y) == 0)
+		{
 			return true;
 		}
-		else {
+		else
+		{
 			PointF pt(pObjPoint->GetX() - pObjPolyg->GetX(), pObjPoint->GetY() - pObjPolyg->GetY());
 			pt = geRotate(pt, -pObjPolyg->GetAlfa());
 			return isPointInPolygon(pObjPolyg->Verts.size(), pObjPolyg->Verts, pt.x, pt.y);
@@ -201,8 +218,8 @@ void Object::CalcBounds(TvecPointF& Verts)
 {
 	Float Max = 0.0;
 	for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it) {
-		Max = max(Max, abs((*it).x));
-		Max = max(Max, abs((*it).y));
+		Max = std::max(Max, abs((*it).x));
+		Max = std::max(Max, abs((*it).y));
 	}
 	Bounds.x0 = -Max;
 	Bounds.x1 = Max;

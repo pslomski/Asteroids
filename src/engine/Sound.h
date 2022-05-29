@@ -2,9 +2,9 @@
 
 #ifdef USE_OPENAL
 #include <al/al.h>
-#endif//USE_OPENAL
+#endif // USE_OPENAL
 
-#include "../bass.h"
+#include <bass.h>
 #include "ObjectSound.h"
 
 #define NUM_BUFFERS 12
@@ -82,7 +82,7 @@ public:
 	ALuint GetSource(int ID){return Src[ID];}
 };
 
-#endif USE_OPENAL
+#endif // USE_OPENAL
 
 class SoundEngineBASS:public SoundEngine {
 private:

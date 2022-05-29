@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Sound.h"
 #include <stdlib.h>
 #include "World.h"
@@ -253,8 +252,8 @@ void TGESoundEngineOAL::Unmute()
 TGEMusicEngineBASS::TGEMusicEngineBASS(void):
 	SoundEngine()
 {
-	m_Channel=NULL;
-	m_hMus=NULL;
+	m_Channel = 0;
+	m_hMus = 0;
 }
 
 bool TGEMusicEngineBASS::Open(void)
@@ -287,7 +286,7 @@ void TGEMusicEngineBASS::FreeSound(void)
 	//BASS_MusicFree(m_hMus);
 	BASS_StreamFree(m_hMus);
 
-	m_hMus=NULL;
+	m_hMus = 0;
 }
 
 void TGEMusicEngineBASS::SetVolume(float in_Vol)
@@ -314,7 +313,7 @@ void TGEMusicEngineBASS::Stop()
 {
 	if(m_Channel)
 		BASS_ChannelStop(m_hMus);
-	m_Channel=NULL;
+	m_Channel = 0;
 }
 
 void TGEMusicEngineBASS::Mute()

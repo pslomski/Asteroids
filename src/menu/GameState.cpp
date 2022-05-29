@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "GameState.h"
 #include "StateManager.h"
 

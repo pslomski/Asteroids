@@ -22,7 +22,7 @@ public:
 	Object *pShip;//wskaznik na statek gracza (ustawiane przy okazji poruszania obiektow)
 	Object *pAster;//wskaznik na najblizsza asteroide (ustawiane przy okazji poruszania obiektow)
 	void Action(TvecBullet& vecBullet);
-	TBullet* FireBullet(PointF &pt);
+	TBullet* FireBullet(const PointF &pt);
 	void Crash(TvecObiekt &vecObiekty);
 	TGEObjectSound sndEngine;
 	TGEObjectSound sndCrash;

@@ -1,5 +1,4 @@
-#include "stdafx.h"
-#include "SDLTools.h"
+#include "../SDLTools.h"
 #include "PlayState.h"
 #include "StateManager.h"
 #include "MenuState.h"

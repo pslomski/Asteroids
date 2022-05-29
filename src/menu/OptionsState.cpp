@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include <assert.h>
 #include "MenuState.h"
 #include "OptionsState.h"
 #include "../engine/world.h"
@@ -150,11 +150,11 @@ namespace menu {
 	{
 		switch (mCurrentSelection) {
 		case 0://Music Volume
-			geWorld.MusicVol = max(0, geWorld.MusicVol - 1);
+			geWorld.MusicVol = std::max(0, geWorld.MusicVol - 1);
 			geMusic.SetVolume(0.1f * geWorld.MusicVol);
 			break;
 		case 1://Sound Volume
-			geWorld.SoundVol = max(0, geWorld.SoundVol - 1);
+			geWorld.SoundVol = std::max(0, geWorld.SoundVol - 1);
 			geSound.SetVolume(0.1f * geWorld.SoundVol);
 			geSound.SoundTest();
 			break;
@@ -165,11 +165,11 @@ namespace menu {
 	{
 		switch (mCurrentSelection) {
 		case 0://Music Volume
-			geWorld.MusicVol = min(10, geWorld.MusicVol + 1);
+			geWorld.MusicVol = std::min(10, geWorld.MusicVol + 1);
 			geMusic.SetVolume(0.1f * geWorld.MusicVol);
 			break;
 		case 1://Sound Volume
-			geWorld.SoundVol = min(10, geWorld.SoundVol + 1);
+			geWorld.SoundVol = std::min(10, geWorld.SoundVol + 1);
 			geSound.SetVolume(0.1f * geWorld.SoundVol);
 			geSound.SoundTest();
 			break;

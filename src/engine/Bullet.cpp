@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Consts.h"
 #include "Bullet.h"
 #include "World.h"

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "GameFont.h"
 #include "../Exception.h"
 #include "../engine/renderer.h"

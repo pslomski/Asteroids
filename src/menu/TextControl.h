@@ -47,4 +47,4 @@ private:
 	TimeInterval blinkInterval_;
 };
 
-#endif  _TEXTCONTROL_H_
+#endif // _TEXTCONTROL_H_

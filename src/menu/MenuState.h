@@ -32,7 +32,7 @@ namespace menu {
 		void SelectionDown();
 		// The player validated the current selection
 		void SelectionChosen();
-		void CMenuState::ExitGame(void);
+		void ExitGame(void);
 
 		ast::GameFont* m_pFont;
 		ast::GameFont* m_pFontSmall;

@@ -27,7 +27,7 @@
 #define GE_INITIAL_LIVES 3
 #define GE_BASE_UFO_TIME 30.0
 #define GE_INITIAL_ASTER_COUNT 4
-#define GE_MAX_ASTER_COUNT 10
+#define GE_MAX_ASTER_COUNT 10u
 #define GE_INITIAL_MAX_BULLETS 3//liczba pociskow na raz
 #define GE_BULLETS_INCREMENT 3//zwiekszenie przez PowerUp
 #define GE_INITIAL_BULLET_SPEED 35.0//predkosc pocisku

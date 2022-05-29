@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "GameConsts.h"
 #include "Object.h"
 #include "Bonuses.h"

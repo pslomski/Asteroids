@@ -10,7 +10,7 @@
 template <typename T>
 T CLAMP(const T& what, const T& a, const T& b)
 {
-	return min(b, max(what, a));
+	return std::min(b, std::max(what, a));
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

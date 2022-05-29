@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "SDLTools.h"
+#include <assert.h>
+#include "../SDLTools.h"
 #include "MenuState.h"
 #include "HighScoreState.h"
 #include "../Menu/OptionsState.h"
@@ -8,7 +8,7 @@
 #include "../engine/World.h"
 #include "../engine/Consts.h"
 #include "../engine/renderer.h"
-#include "SDLApplication.h"
+#include "../SDLApplication.h"
 
 namespace menu {
 

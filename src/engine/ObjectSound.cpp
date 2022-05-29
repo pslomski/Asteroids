@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include <assert.h>
 #include "ObjectSound.h"
 #include "Sound.h"
@@ -11,7 +10,7 @@ ObjectSound::ObjectSound(void)
 
 ObjectSoundBASS::ObjectSoundBASS(void):ObjectSound()
 {
-	m_Channel=NULL;
+	m_Channel = 0;
 }
 
 void ObjectSoundBASS::Play(void)
@@ -19,7 +18,7 @@ void ObjectSoundBASS::Play(void)
 	assert(m_SoundID!=-1);
 	if(m_SoundID==-1) return;
 	m_Channel=BASS_SampleGetChannel(geSound.GetSample(m_SoundID), FALSE);
-	assert(m_Channel!=NULL);
+	assert(m_Channel != 0);
 	BASS_ChannelSetAttribute(m_Channel, BASS_ATTRIB_VOL, m_Volume);
 	BOOL bRes=BASS_ChannelPlay(m_Channel, FALSE);
 	assert(bRes==TRUE);

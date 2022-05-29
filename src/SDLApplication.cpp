@@ -25,7 +25,7 @@ void SDLApplication::Init()
 	geMusic.Open();
 
 	/*Create window*/
-	geWorld.scrHeight = min(geWorld.scrHeight, int(0.80 * GetSystemMetrics(SM_CYSCREEN)));
+	geWorld.scrHeight = std::min(geWorld.scrHeight, int(0.80 * GetSystemMetrics(SM_CYSCREEN)));
 	geWorld.scrWidth = geWorld.scrHeight;
 	fPtrWnd = SDLWindow::Create(geWorld.scrWidth, geWorld.scrHeight);
 	if (fPtrWnd == NULL)
@@ -55,7 +55,7 @@ int GetVRefersh()
 void SDLApplication::Run()
 {
 	geWorld.ReadSettings();
-	geWorld.scrHeight = min(geWorld.scrHeight, int(0.80 * GetSystemMetrics(SM_CYSCREEN)));
+	geWorld.scrHeight = std::min(geWorld.scrHeight, int(0.80 * GetSystemMetrics(SM_CYSCREEN)));
 	geWorld.scrWidth = geWorld.scrHeight;
 	int VRefresh = GetVRefersh();
 	Float FRAME_TIME = (1000.0 / VRefresh);
@@ -74,7 +74,7 @@ void SDLApplication::Run()
 		}
 		dt = geWorld.GetCurrentTime() - lastUpdateTime;	//obliczenie czasu od ostatniej klatki
 		lastUpdateTime += dt;
-		dt = max(0, dt);//upewniamy sie, ze dt >= 0
+		dt = std::max((Float)0, dt);//upewniamy sie, ze dt >= 0
 		accumulator += dt;
 		accumulator = CLAMP(accumulator, 0.0, MAX_ACCUMULATED_TIME);
 		bool bUpdate = false;

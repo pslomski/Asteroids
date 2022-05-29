@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Asteroid.h"
 #include "Bullet.h"
 #include "Bonuses.h"

@@ -7,14 +7,14 @@
 #include <sstream>
 #include "SDL.h"
 
-class EGenericError:public std::exception{
+class EGenericError:public std::runtime_error{
 public:
-	EGenericError(const char * const &what):exception(what){}
+	EGenericError(const char * const &what):std::runtime_error(what){}
 };
 
-class ECannotCreateFont:public std::exception{
+class ECannotCreateFont:public EGenericError{
 public:
-	ECannotCreateFont(const char * const &what):exception(what){}
+	ECannotCreateFont(const char * const &what):EGenericError(what){}
 };
 
 class SDLException : public std::runtime_error

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Ship.h"
 #include "World.h"
 #include "Sound.h"
@@ -132,9 +131,9 @@ void PlayerShip::Update(void)
 		Float cosa = cos(alfa); cosa *= cosa;
 		Color cl1(GE_BONUS_ADD_BULLETS_COLOR); cl1 = cl1 * sina;
 		Color cl2(m_clrTmp); cl2 = cl2 * cosa;
-		m_clrTmp.r = min(1.0, cl1.r + cl2.r);
-		m_clrTmp.g = min(1.0, cl1.g + cl2.g);
-		m_clrTmp.b = min(1.0, cl1.b + cl2.b);
+		m_clrTmp.r = std::min(1.0, cl1.r + cl2.r);
+		m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
+		m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
 	}
 	if (puBulletSpeed.IsActive()) {
 		Float alfa = 2 * GE_PI * puBulletSpeed.duration.elapsed;
@@ -142,9 +141,9 @@ void PlayerShip::Update(void)
 		Float cosa = cos(alfa); cosa *= cosa;
 		Color cl1(GE_BONUS_BULLET_SPEED_COLOR); cl1 = cl1 * sina;
 		Color cl2(m_clrTmp); cl2 = cl2 * cosa;
-		m_clrTmp.r = min(1.0, cl1.r + cl2.r);
-		m_clrTmp.g = min(1.0, cl1.g + cl2.g);
-		m_clrTmp.b = min(1.0, cl1.b + cl2.b);
+		m_clrTmp.r = std::min(1.0, cl1.r + cl2.r);
+		m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
+		m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
 	}
 }
 
@@ -194,13 +193,13 @@ void PlayerShip::AccelerationOff()
 void PlayerShip::RotateLeft()
 {
 	m_tiRotateLeft.Inc(dt);
-	SetAlfa(GetAlfa() + min(0.5 * (1.0 + m_tiRotateLeft.Ratio()), 1.0) * m_RotSpeed * dt);
+	SetAlfa(GetAlfa() + std::min(0.5 * (1.0 + m_tiRotateLeft.Ratio()), 1.0) * m_RotSpeed * dt);
 }
 
 void PlayerShip::RotateRight()
 {
 	m_tiRotateRight.Inc(dt);
-	SetAlfa(GetAlfa() - min(0.5 * (1.0 + m_tiRotateRight.Ratio()), 1.0) * m_RotSpeed * dt);
+	SetAlfa(GetAlfa() - std::min(0.5 * (1.0 + m_tiRotateRight.Ratio()), 1.0) * m_RotSpeed * dt);
 }
 
 TBullet* PlayerShip::FireBullet()
