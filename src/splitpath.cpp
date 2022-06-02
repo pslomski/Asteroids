@@ -2,7 +2,6 @@
 // SplitPath.cpp : implementation of the CSplitPath class.          //
 // (c) 1999, Kevin Lussier                                          //
 //////////////////////////////////////////////////////////////////////
-#include "stdafx.h"
 #include "SplitPath.h"
 
 #ifdef _DEBUG
