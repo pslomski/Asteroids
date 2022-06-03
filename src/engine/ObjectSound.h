@@ -1,4 +1,5 @@
 #pragma once
+
 #include <bass.h>
 
 class ObjectSound

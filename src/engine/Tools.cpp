@@ -1,7 +1,7 @@
+#include <filesystem>
 #include <math.h>
 #include "Tools.h"
 #include "Consts.h"
-#include "../splitpath.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //npol - liczba wierzcholkow wielokata ograniczajacego
@@ -12,31 +12,31 @@
 //false - nie zawiera
 bool isPointInPolygon2(size_t npol, TvecPointF &points, Float x, Float y)
 {
-	bool result=false;
-	int i=0;
-	size_t j=npol-1;
-	while(i<npol){
-		bool bCond1=(points[i].y <= (y)) && ((y) < points[j].y) ||
-			(points[j].y <= (y)) && ((y) < points[i].y);
-		if(bCond1 &&
-		  (x < ((points[j].x - points[i].x) * (y - points[i].y) / (points[j].y - points[i].y) + points[i].x)))
-			result=!result;
-		j=i;
-		++i;
-	}
-	return result;
+    bool result=false;
+    int i=0;
+    size_t j=npol-1;
+    while(i<npol){
+        bool bCond1=(points[i].y <= (y)) && ((y) < points[j].y) ||
+            (points[j].y <= (y)) && ((y) < points[i].y);
+        if(bCond1 &&
+          (x < ((points[j].x - points[i].x) * (y - points[i].y) / (points[j].y - points[i].y) + points[i].x)))
+            result=!result;
+        j=i;
+        ++i;
+    }
+    return result;
 }
 
 bool isPointInPolygon(size_t nvert, TvecPointF &verts, Float testx, Float testy)
 {
-	bool c=false;
-	size_t i, j = 0;
-	for (i = 0, j = nvert-1; i < nvert; j = i++) {
-		if ( ((verts[i].y>testy) != (verts[j].y>testy)) &&
-			(testx < (verts[j].x-verts[i].x) * (testy-verts[i].y) / (verts[j].y-verts[i].y) + verts[i].x) )
-			c = !c;
-	}
-	return c;
+    bool c=false;
+    size_t i, j = 0;
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+        if ( ((verts[i].y>testy) != (verts[j].y>testy)) &&
+            (testx < (verts[j].x-verts[i].x) * (testy-verts[i].y) / (verts[j].y-verts[i].y) + verts[i].x) )
+            c = !c;
+    }
+    return c;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,12 +77,12 @@ int LinesIntersection(const BoxF &o1, const BoxF &o2, Float &x, Float &y)
 
 PointF geRotate(PointF &pt, Float alfa)
 {
-	PointF res;
-	Float sinalfa=sin(-alfa*GE_PIover180);
-	Float cosalfa=cos(-alfa*GE_PIover180);
-	res.x=pt.x*cosalfa+pt.y*sinalfa;
-	res.y=pt.x*sinalfa+pt.y*cosalfa;
-	return res;
+    PointF res;
+    Float sinalfa=sin(-alfa*GE_PIover180);
+    Float cosalfa=cos(-alfa*GE_PIover180);
+    res.x=pt.x*cosalfa+pt.y*sinalfa;
+    res.y=pt.x*sinalfa+pt.y*cosalfa;
+    return res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,34 +96,33 @@ PFNWGLEXTGETSWAPINTERVALPROC wglGetSwapIntervalEXT = NULL;
 //false jezeli nie jest ustawione
 bool setVSync(int interval)
 {
-	const char *extensions = (char *)glGetString( GL_EXTENSIONS );
+    const char *extensions = (char *)glGetString( GL_EXTENSIONS );
 
-	if( strstr( extensions, "WGL_EXT_swap_control" ) == 0 )
-		return false; // Error: WGL_EXT_swap_control extension not supported on your computer.\n");
-	else{
-		wglGetSwapIntervalEXT=(PFNWGLEXTGETSWAPINTERVALPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
-		wglSwapIntervalEXT=(PFNWGLSWAPINTERVALFARPROC)wglGetProcAddress("wglSwapIntervalEXT");
-		if(wglSwapIntervalEXT)wglSwapIntervalEXT(interval);
-		if(wglGetSwapIntervalEXT)
-			return wglGetSwapIntervalEXT()>0;
-		else
-			return false;
-	}
+    if( strstr( extensions, "WGL_EXT_swap_control" ) == 0 )
+        return false; // Error: WGL_EXT_swap_control extension not supported on your computer.\n");
+    else{
+        wglGetSwapIntervalEXT=(PFNWGLEXTGETSWAPINTERVALPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
+        wglSwapIntervalEXT=(PFNWGLSWAPINTERVALFARPROC)wglGetProcAddress("wglSwapIntervalEXT");
+        if(wglSwapIntervalEXT)wglSwapIntervalEXT(interval);
+        if(wglGetSwapIntervalEXT)
+            return wglGetSwapIntervalEXT()>0;
+        else
+            return false;
+    }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 std::string FloatToStr(double val)
 {
-	char buf[1024];
-	sprintf_s(buf, "%f", val);
-	return std::string(buf);
+    char buf[1024];
+    sprintf_s(buf, "%f", val);
+    return std::string(buf);
 }
 
-std::string GetAppDir(void)
+std::string getAppDir(void)
 {
-	char buf[MAX_PATH];
-	GetModuleFileName(NULL, buf, MAX_PATH);
-	
-	CSplitPath sp(buf);
-	return sp.GetDrive()+sp.GetDirectory();
+    char buf[MAX_PATH];
+    GetModuleFileName(NULL, buf, MAX_PATH);
+    std::filesystem::path path(buf);
+    return path.root_path().string() + path.relative_path().string();
 }

@@ -3,11 +3,8 @@ target_sources(Asteroids
         Asteroids.cpp
         Exception.h
         Log.cpp Log.h
-        SDLApplication.cpp SDLApplication.h
-        SDLTools.h
-        SDLWindow.cpp SDLWindow.h
-        splitpath.cpp splitpath.h 
 )
 
 add_subdirectory(engine)
-add_subdirectory(menu)
+add_subdirectory(sdl)
+add_subdirectory(ui)

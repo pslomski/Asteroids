@@ -1,13 +1,12 @@
-#ifndef _ASTEROID_H_
-#define _ASTEROID_H_
+#pragma once
 
-#include "Object.h"
-#include "Bonuses.h"
 #include <list>
+#include "Bonuses.h"
+#include "Object.h"
 #include "ObjectSound.h"
 
-namespace ge{
-
+namespace ge
+{
 #define ASTERVERTCOUNT 8
 
 class Asteroid;
@@ -31,7 +30,4 @@ public:
 protected:
 	void OnRender(void);
 };
-
-}//namespace ge
-
-#endif // _ASTEROID_H_
+} // namespace ge

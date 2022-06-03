@@ -18,6 +18,9 @@ include_directories(${BASS_INCLUDE_DIRS})
 
 set(LIBS opengl32 ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} ${BASS_LIBRARIES})
 
-add_executable(Asteroids "")
+add_executable(${PROJECT_NAME} "")
 add_subdirectory(src)
+include_directories(src)
 target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)

@@ -1,10 +1,10 @@
 #include "GameState.h"
 #include "StateManager.h"
 
-namespace menu{
-
+namespace ui
+{
 CGameState::CGameState(StateManager* pManager)
-  : m_pStateManager(pManager)
+ : m_pStateManager(pManager)
 {
 }
 
@@ -14,7 +14,6 @@ CGameState::~CGameState()
 
 void CGameState::ChangeState(CGameState* pNewState)
 {
-	m_pStateManager->ChangeState(pNewState);
+    m_pStateManager->ChangeState(pNewState);
 }
-
-} // namespace menu
+} // namespace ui

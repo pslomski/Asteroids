@@ -1,9 +1,11 @@
-#include "SDLWindow.h"
-#include "SDLTools.h"
 #include "engine/World.h"
-#include "engine/renderer.h"
-#include "Menu/MenuState.h"
+#include "engine/Renderer.h"
+
+#include "ui/gstate/MenuState.h"
+
 #include "Exception.h"
+#include "SDLTools.h"
+#include "SDLWindow.h"
 
 SDLWindow::SDLWindow(int width, int height)
 {
@@ -28,8 +30,8 @@ SDLWindow::SDLWindow(int width, int height)
 
 	InitGL();
 	OnSize(width, height);
-	fStateManager = new menu::StateManager;
-	fStateManager->ChangeState(menu::CMenuState::GetInstance(fStateManager));
+	fStateManager = new ui::StateManager;
+	fStateManager->ChangeState(ui::CMenuState::GetInstance(fStateManager));
 }
 
 SDLWindow::~SDLWindow()

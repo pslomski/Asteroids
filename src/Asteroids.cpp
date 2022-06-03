@@ -2,7 +2,7 @@
 //
 
 #include "Log.h"
-#include "SDLApplication.h"
+#include "sdl/SDLApplication.h"
 
 int main(int argc, char* argv[])
 {
