@@ -7,7 +7,7 @@
 
 namespace ui
 {
-TextControl::TextControl(ui::GameFont* pFont, const Rect& rectPosition)
+TextControl::TextControl(Font* pFont, const Rect& rectPosition)
     : font(pFont), rect(rectPosition), text(""),
     red_(1.0), green_(1.0), blue_(1.0), blinkInterval(0.5)
 {
@@ -19,33 +19,36 @@ TextControl::~TextControl()
 {
 }
 
-void TextControl::update(double TimeStep)
+void TextControl::update(const double TimeStep)
 {
-    if (blinkInterval.Inc(TimeStep)) {
+    if (blinkInterval.Inc(TimeStep))
+    {
         blinkInterval.Reset();
     }
 }
 
 void TextControl::draw()
 {
-    Rect textSize = font->getTextSize(text);
-    int yOffset = rect.getHeight() / 2 + textSize.getHeight() / 2;
+    Font::Size textSize = font->getTextSize(text);
+    int yOffset = rect.getHeight() / 2 + textSize.height / 2;
     int xOffset = 0;
-    switch (alignment) {
+    switch (alignment)
+    {
     case taLeft:
         break;
     case taCenter:
-        xOffset = (rect.getWidth() - textSize.getWidth()) / 2;
+        xOffset = (rect.getWidth() - textSize.width) / 2;
         break;
     case taRight:
-        xOffset = rect.getWidth() - textSize.getWidth();
+        xOffset = rect.getWidth() - textSize.width;
         break;
     }
 
     int x = rect.left + xOffset;
     int y = rect.top + yOffset - 5;
     GLfloat fFact = 1.0;
-    if (isBlink_) {
+    if (isBlink_)
+    {
         fFact = GLfloat(0.25 * (2.0 + sin(2.0 * GE_PI * blinkInterval.Ratio())));
     }
     GLColor color(fFact * red_, fFact * green_, fFact * blue_);

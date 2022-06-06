@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "ui/GameFont.h"
+#include "ui/Font.h"
 #include "ui/Rectangle.h"
 #include "ui/TextControl.h"
 
@@ -32,10 +32,8 @@ public:
     void LeaveState();
 
     static HighScoreState* GetInstance(StateManager* pManager);
-
 protected:
     HighScoreState(StateManager* pManager);
-
 private:
     void Init();
     void Cleanup();
@@ -72,14 +70,14 @@ private:
     // The index of the next char to be entered.
     int mNameIndex;
 
-    ui::GameFont* mFont;
-    ui::GameFont* mFontSmall;
+    Font* mFont;
+    Font* mFontSmall;
 
     typedef std::vector<HighScoreData> THighScoreTable;
     // The high-score table.
     THighScoreTable mHighScores;
     TextControl* mHighScore;
-    ui::Rectanglei mHighScoreRect;
-    ui::Rectanglei mEntriesRect;
+    Rectangle mHighScoreRect;
+    Rectangle mEntriesRect;
 };
 } // namespace ui

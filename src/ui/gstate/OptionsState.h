@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/GameFont.h"
+#include "ui/Font.h"
 #include "ui/TextControl.h"
 #include "ui/gstate/GameState.h"
 
@@ -19,7 +19,7 @@ protected:
     OptionsState(StateManager* pManager);
 private:
     int mCurrentSelection;
-    GameFont* mFont;
+    Font* mFont;
     TextControl* mTitleText;
     TextControl* mMusicVolText;
     TextControl* mSoundVolText;

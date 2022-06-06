@@ -1,4 +1,4 @@
-target_sources(Asteroids
+target_sources(${ASTER_LIB}
     PRIVATE
         SDLApplication.cpp SDLApplication.h
         SDLTools.h

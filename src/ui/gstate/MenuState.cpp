@@ -22,42 +22,43 @@ CMenuState::CMenuState(StateManager* pManager)
 
 void CMenuState::Init()
 {
-    m_pFont = new GameFont("vector battle", 20);
-    m_pFontSmall = new GameFont("vector battle", 15);
-    m_pFontLarge = new GameFont("vector battle", 40);
-    m_pFontSmall2 = new GameFont("vector battle", 10);
+    m_pFont = new Font("vector battle", 20);
+    m_pFontSmall = new Font("vector battle", 15);
+    m_pFontLarge = new Font("vector battle", 40);
+    m_pFontSmall2 = new Font("vector battle", 10);
 
     int dy = int(1.0 / 12.0 * geWorld.scrHeight);
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
     int top = int(1.0 / 4.5 * geWorld.scrHeight);
     int bottom = top + dy;
-
-    m_pTitleText = new TextControl(m_pFontLarge, ui::Rectanglei(0, top, 0, geWorld.scrWidth));
+    // Rectangle(T aTop, T aBottom, T aLeft, T aRight)
+    // m_pTitleText = new TextControl(m_pFontLarge, Rectangle(0, top, geWorld.scrWidth, 0));
+    m_pTitleText = new TextControl(m_pFontLarge, Rectangle(0, 50, geWorld.scrWidth, 200));
     m_pTitleText->setAlignement(TextControl::taCenter);
     m_pTitleText->setText("Asteroids 2010");
-
-    m_pNewGameText = new TextControl(m_pFont, ui::Rectanglei(top, bottom, left, right));
+  
+    m_pNewGameText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
     m_pNewGameText->setAlignement(TextControl::taCenter);
     m_pNewGameText->setText("New game");
 
     top += dy; bottom += dy;
-    m_pResumeGameText = new TextControl(m_pFont, ui::Rectanglei(top, bottom, left, right));
+    m_pResumeGameText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
     m_pResumeGameText->setAlignement(TextControl::taCenter);
     m_pResumeGameText->setText("Resume game");
 
     top += dy; bottom += dy;
-    m_pOptionsText = new TextControl(m_pFont, ui::Rectanglei(top, bottom, left, right));
+    m_pOptionsText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
     m_pOptionsText->setAlignement(TextControl::taCenter);
     m_pOptionsText->setText("Settings");
 
     top += dy; bottom += dy;
-    m_pScoresText = new TextControl(m_pFont, ui::Rectanglei(top, bottom, left, right));
+    m_pScoresText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
     m_pScoresText->setAlignement(TextControl::taCenter);
     m_pScoresText->setText("High scores");
 
     top += dy; bottom += dy;
-    m_pExitText = new TextControl(m_pFont, ui::Rectanglei(top, bottom, left, right));
+    m_pExitText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
     m_pExitText->setAlignement(TextControl::taCenter);
     m_pExitText->setText("Exit");
 }
@@ -137,7 +138,6 @@ void CMenuState::Update(double TimeStep)
 
 void CMenuState::Draw()
 {
-    //auto dm = ast::DrawMode2DText();
     glMatrixMode(GL_PROJECTION); // Select The Projection Matrix
     glLoadIdentity();			 // Reset The Projection Matrix
     glOrtho(0, geWorld.scrWidth, geWorld.scrHeight, 0, -1, 1);
@@ -151,22 +151,22 @@ void CMenuState::Draw()
     m_pScoresText->draw();
     m_pExitText->draw();
 
-    TextControl txtControls(m_pFontSmall2, ui::Rectanglei(int(0.7 * geWorld.scrHeight), int(0.7 * geWorld.scrHeight + 20), 0, geWorld.scrWidth));
+    TextControl txtControls(m_pFontSmall2, Rectangle(0, int(0.7 * geWorld.scrHeight), geWorld.scrWidth, int(0.7 * geWorld.scrHeight + 20)));
     txtControls.setAlignement(TextControl::taCenter);
     txtControls.setTextColor(0.8f, 0.8f, 0.8f);
     txtControls.setText("Controls:");
     txtControls.draw();
-    txtControls.rect.offsetRect(0, 20);
+    txtControls.rect.offset(0, 20);
     txtControls.setText("left arrow - turn left, right arrow - turn right");
     txtControls.draw();
-    txtControls.rect.offsetRect(0, 20);
+    txtControls.rect.offset(0, 20);
     txtControls.setText("up arrow - forward, space - fire");
     txtControls.draw();
 
-    TextControl line(m_pFontSmall, ui::Rectanglei(geWorld.scrHeight - 100, geWorld.scrHeight - 50, 0, geWorld.scrWidth));
+    TextControl line(m_pFontSmall, Rectangle(0, geWorld.scrHeight - 100, geWorld.scrWidth, geWorld.scrHeight - 50));
     line.setAlignement(TextControl::taCenter);
     line.setTextColor(0.7f, 0.7f, 0.7f);
-    line.setText("Asteroids remake by Piotr Slomski");
+    line.setText("Asteroids remake");
     line.draw();
 }
 

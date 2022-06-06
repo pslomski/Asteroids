@@ -28,9 +28,25 @@ SDL2
 
 ### 3.2
 SDL TTF
+Linux:
+  sudo apt-get install libsdl2-ttf-dev
 
 ### 3.3
 Bass
 
 ### 3.4
 vectorb.ttf font
+
+4. Building
+In root dir:
+  mkdir build
+  cd build
+  cmake ..
+  ninja
+
+output is
+  Asteroids(.exe)
+  Test(.exe)
+  
+## 5. UT
+./Test.exe --gtest_color=yes --gtest_filter=Rectangle.shouldInit

@@ -5,5 +5,5 @@
 class Log
 {
 public:
-	static void Write(const std::string& line);
+    static void Write(const std::string& line);
 };

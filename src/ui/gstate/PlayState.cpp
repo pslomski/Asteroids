@@ -21,10 +21,10 @@ PlayState::PlayState(StateManager* pManager)
 void PlayState::Init()
 {
     m_bDispFPS = false;
-    m_pFontSmall = new GameFont("vector battle", FNTSIZESMALL);
-    m_pFontLarge = new GameFont("vector battle", FNTSIZELARGE);
+    m_pFontSmall = new Font("vector battle", FNTSIZESMALL);
+    m_pFontLarge = new Font("vector battle", FNTSIZELARGE);
 
-    m_pGameOverText = new TextControl(m_pFontLarge, ui::Rectanglei(0, geWorld.scrHeight, 0, geWorld.scrWidth));
+    m_pGameOverText = new TextControl(m_pFontLarge, ui::Rectangle(0, geWorld.scrHeight, 0, geWorld.scrWidth));
     m_pGameOverText->setAlignement(TextControl::taCenter);
     m_pGameOverText->setText("Game Over");
 }

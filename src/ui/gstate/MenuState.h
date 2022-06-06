@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/GameFont.h"
+#include "ui/Font.h"
 #include "ui/TextControl.h"
 
 #include "GameState.h"
@@ -26,7 +26,6 @@ protected:
     CMenuState(StateManager* pManager);
 
 private:
-    using Font = ui::GameFont;
     void Init();
     void Cleanup();
     void SelectionUp();

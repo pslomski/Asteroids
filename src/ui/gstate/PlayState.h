@@ -2,7 +2,7 @@
 
 #include "engine/AsterGame.h"
 
-#include "ui/GameFont.h"
+#include "ui/Font.h"
 #include "ui/TextControl.h"
 
 #include "GameState.h"
@@ -29,8 +29,8 @@ protected:
     PlayState(StateManager* pManager);
 private:
     // The font used to draw text
-    ui::GameFont* m_pFontSmall;
-    ui::GameFont* m_pFontLarge;
+    ui::Font* m_pFontSmall;
+    ui::Font* m_pFontLarge;
     TextControl* m_pGameOverText;
     ge::AsterGame AsterGame;
     bool m_bDispFPS;

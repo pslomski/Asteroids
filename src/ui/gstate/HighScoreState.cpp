@@ -21,15 +21,15 @@ HighScoreState::HighScoreState(StateManager* pManager)
 void HighScoreState::Init()
 {
     mCurrentName[0] = '\0';
-    mFont = new ui::GameFont("vector battle", 20);
-    mFontSmall = new ui::GameFont("vector battle", 15);
+    mFont = new Font("vector battle", 20);
+    mFontSmall = new Font("vector battle", 15);
 
     int dy = 20;
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
     int top = 50;
     int bottom = top + dy;
-    mHighScore = new TextControl(mFont, ui::Rectanglei(top, bottom, left, right));
+    mHighScore = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
     mHighScore->setAlignement(TextControl::taCenter);
     mHighScore->setText("High Scores");
 
@@ -167,9 +167,9 @@ void HighScoreState::Draw()
 {
     auto dm = ast::DrawMode2DText();
     mHighScore->draw();
-    ui::Rectanglei rcNum=mEntriesRect;
+    ui::Rectangle rcNum=mEntriesRect;
     rcNum.right=mEntriesRect.left+40;
-    ui::Rectanglei rcTxt=mEntriesRect;
+    ui::Rectangle rcTxt=mEntriesRect;
     rcTxt.left=mEntriesRect.left+60;
     int iCount=1;
     char buf[256];
@@ -193,8 +193,8 @@ void HighScoreState::Draw()
         txtEntry.setText(ssScore.str());
         txtEntry.draw();
 
-        rcNum.offsetRect(0, 35);
-        rcTxt.offsetRect(0, 35);
+        rcNum.offset(0, 35);
+        rcTxt.offset(0, 35);
         ++iCount;
     }
 
@@ -208,8 +208,8 @@ void HighScoreState::Draw()
         glVertex2i(mHighScoreRect.left, mHighScoreRect.top);
         glEnd();
 
-        ui::Rectanglei rc(mHighScoreRect);
-        rc.offsetRect(0, -50);
+        ui::Rectangle rc(mHighScoreRect);
+        rc.offset(0, -50);
         TextControl txtEnterName(mFont, rc);
         txtEnterName.setAlignement(TextControl::taCenter);
         txtEnterName.setText("Enter Your name:");
@@ -221,7 +221,7 @@ void HighScoreState::Draw()
         txtEntry.draw();
     }
     else{
-        ui::Rectanglei rc(geWorld.scrHeight-100, geWorld.scrHeight-50, 0, geWorld.scrWidth);
+        ui::Rectangle rc(geWorld.scrHeight-100, geWorld.scrHeight-50, 0, geWorld.scrWidth);
         TextControl txtEnterName(mFontSmall, rc);
         txtEnterName.setAlignement(TextControl::taCenter);
         txtEnterName.setText("Press Enter");

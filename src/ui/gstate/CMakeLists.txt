@@ -1,4 +1,4 @@
-target_sources(Asteroids
+target_sources(${ASTER_LIB}
     PRIVATE
         GameState.cpp GameState.h
         HighScoreState.cpp HighScoreState.h

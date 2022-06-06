@@ -22,27 +22,27 @@ OptionsState* OptionsState::GetInstance(StateManager* pManager)
 void OptionsState::Init()
 {
     mCurrentSelection = 0;
-    mFont = new GameFont("vector battle", 20);
+    mFont = new Font("vector battle", 20);
 
     int dy = 20;
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
     int top = 50;
     int bottom = top + dy;
-    mTitleText = new TextControl(mFont, ui::Rectanglei(top, bottom, left, right));
+    mTitleText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
     mTitleText->setAlignement(TextControl::taCenter);
     mTitleText->setText("Settings");
 
     dy = 45;
     top = 135;
     bottom += dy;
-    mMusicVolText = new TextControl(mFont, ui::Rectanglei(top, bottom, left, right));
+    mMusicVolText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
     mMusicVolText->setAlignement(TextControl::taCenter);
     mMusicVolText->setText("Music volume: ");
 
     top += dy;
     bottom += dy;
-    mSoundVolText = new TextControl(mFont, ui::Rectanglei(top, bottom, left, right));
+    mSoundVolText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
     mSoundVolText->setAlignement(TextControl::taCenter);
     mSoundVolText->setText("Sound volume: ");
 }

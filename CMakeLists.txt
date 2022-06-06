@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.23)
 
 project(Asteroids)
 
+set(CMAKE_CXX_STANDARD 20)
+
 find_package(OpenGL REQUIRED)
 
 set(SDL2_DIR d:/dev/SDL2-2.0.22)
@@ -16,11 +18,16 @@ set(BASS_DIR d:/dev/Bass)
 find_package(BASS REQUIRED)
 include_directories(${BASS_INCLUDE_DIRS})
 
-set(LIBS opengl32 ${SDL2_LIBRARIES} ${SDL2TTF_LIBRARIES} ${BASS_LIBRARIES})
+set(ASTER_LIB aster)
+add_library(${ASTER_LIB})
 
-add_executable(${PROJECT_NAME} "")
-add_subdirectory(src)
+set(ASTER_EXE asteroids)
+add_executable(${ASTER_EXE})
+
+set(TEST_EXE test)
+add_executable(${TEST_EXE})
+
 include_directories(src)
-target_link_libraries(${PROJECT_NAME} ${LIBS})
-
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+add_subdirectory(src)
+add_subdirectory(gtest)
+add_subdirectory(test)

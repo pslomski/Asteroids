@@ -1,45 +1,47 @@
 #include "engine/Renderer.h"
 #include "Exception.h"
-#include "GameFont.h"
+#include "Font.h"
 
-const std::string fontFileName = "vectorb.ttf";
 
 namespace ui
 {
-GameFont::GameFont() : ptrFont_(NULL)
+const std::string fontFileName = "vectorb.ttf";
+
+Font::Font(const std::string& fontFace, const int height)
 {
+    createFont(fontFace, height);
 }
 
-GameFont::~GameFont()
+Font::~Font()
 {
-    TTF_CloseFont(ptrFont_);
+    TTF_CloseFont(font);
 }
 
-void GameFont::createFont(const std::string& fontFace, int height)
+void Font::createFont(const std::string& fontFace, const int height)
 {
-    ptrFont_ = TTF_OpenFont(fontFileName.c_str(), height);
-    if (ptrFont_ == NULL)
+    font = TTF_OpenFont(fontFileName.c_str(), height);
+    if (font == nullptr)
         throw SDLException("Couldn't load font");
 
     // TTF_HINTING_MONO gives best result for vectorb font
-    TTF_SetFontHinting(ptrFont_, TTF_HINTING_MONO);
+    TTF_SetFontHinting(font, TTF_HINTING_MONO);
 }
 
-GameFont::Rect GameFont::getTextSize(const std::string& strText)
+Font::Size Font::getTextSize(const std::string& strText)
 {
-    int w, h;
-    TTF_SizeText(ptrFont_, strText.c_str(), &w, &h);
-    return Rect(0, h, 0, w);
+    int width, height;
+    TTF_SizeText(font, strText.c_str(), &width, &height);
+    return Size{width: width, height: height};
 }
 
-void GameFont::drawText(const std::string& text, int x, int y, GLColor& color)
+void Font::drawText(const std::string& text, const int x, const int y, const GLColor& color)
 {
     glColor4fv(color);
-    constexpr SDL_Color sdlcolorWhite = { 0xFF, 0xFF, 0xFF, 0 };
+    constexpr SDL_Color sdlcolorWhite{0xFF, 0xFF, 0xFF, 0};
     SDL_Color white = sdlcolorWhite;
     // TTF_RenderText_Solid gives best result for vectorb font
-    SDL_Surface* surf = TTF_RenderText_Solid(ptrFont_, text.c_str(), white);
-    if (surf == NULL)
+    SDL_Surface* surf = TTF_RenderText_Solid(font, text.c_str(), white);
+    if (surf == nullptr)
         throw SDLException("Couldn't render text");
 
     /* Convert the text into an OpenGL texture */
@@ -72,16 +74,16 @@ void GameFont::drawText(const std::string& text, int x, int y, GLColor& color)
     glEnd();
 }
 
-void GameFont::drawFmtText(int x, int y, GLColor& color, const char* fmt, ...)	// Custom GL "Print" Routine
+void Font::drawFmtText(const int x, const int y, const GLColor& color, const char* fmt, ...)	// Custom GL "Print" Routine
 {
-    if (fmt == NULL)							// If There's No Text
-        return; 								// Do Nothing
+    if (fmt == nullptr)                         // If There's No Text
+        return;                                 // Do Nothing
 
-    char text[256]; 							// Holds Our String
-    va_list	ap;		 							// Pointer To List Of Arguments
-    va_start(ap, fmt);							// Parses The String For Variables
-    int len = vsprintf_s(text, fmt, ap);		// And Converts Symbols To Actual Numbers
-    va_end(ap); 								// Results Are Stored In Text
+    char text[256];                             // Holds Our String
+    va_list	ap;                                 // Pointer To List Of Arguments
+    va_start(ap, fmt);                          // Parses The String For Variables
+    int len = vsprintf_s(text, fmt, ap);        // And Converts Symbols To Actual Numbers
+    va_end(ap);                                 // Results Are Stored In Text
 
     drawText(text, x, y, color);
 }

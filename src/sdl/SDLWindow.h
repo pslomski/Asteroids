@@ -18,10 +18,12 @@ private:
     void OnSize(GLsizei width, GLsizei height);
     void handleWindowEvent(SDL_Event* e);
 public:
-    static SDLWindow* Create(int width, int height) {
+    static SDLWindow* Create(int width, int height)
+    {
         return new SDLWindow(width, height);
     }
-    static void Destroy(SDLWindow* &ptrWindow) {
+    static void Destroy(SDLWindow* &ptrWindow)
+    {
         delete ptrWindow;
         ptrWindow = NULL;
     }
