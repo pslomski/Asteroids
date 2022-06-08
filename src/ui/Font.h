@@ -13,6 +13,7 @@ namespace ui
 class Font
 {
 public:
+    static SDL_Renderer* renderer;
     struct Size
     {
         int width;

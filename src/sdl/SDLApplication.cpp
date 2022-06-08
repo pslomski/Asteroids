@@ -1,6 +1,7 @@
 #include "engine/Tools.h"
 #include "engine/World.h"
 #include "engine/Sound.h"
+#include "ui/Font.h"
 
 #include "Exception.h"
 #include "SDLApplication.h"
@@ -36,6 +37,7 @@ void SDLApplication::Init()
     {
         throw std::runtime_error("Main window could not be created");
     }
+    ui::Font::renderer = fPtrWnd->getRenderer();
 }
 
 void SDLApplication::Cleanup()

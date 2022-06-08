@@ -8,7 +8,8 @@
 class SDLWindow {
 private:
     ui::StateManager* fStateManager;
-    SDL_Window* fPtrWnd = NULL;
+    SDL_Window* fPtrWnd{nullptr};
+    SDL_Renderer* renderer{nullptr};
     SDL_GLContext fContext;
 
     SDLWindow(int width, int height);
@@ -30,4 +31,5 @@ public:
     void Update(double time);
     void Draw();
     void OnEvent(SDL_Event* e);
+    SDL_Renderer* getRenderer(){ return renderer; }
 };

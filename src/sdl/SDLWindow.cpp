@@ -16,14 +16,15 @@ SDLWindow::SDLWindow(int width, int height)
     fPtrWnd = SDL_CreateWindow("Asteroids remake",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    if (fPtrWnd == NULL)
+    if (fPtrWnd == nullptr)
         throw SDLException("SDL Window could not be created");
 
     //Create context
     fContext = SDL_GL_CreateContext(fPtrWnd);
-    if (fContext == NULL)
+    if (fContext == nullptr)
         throw SDLException("OpenGL context could not be created");
 
+    renderer = SDL_CreateRenderer(fPtrWnd, -1, SDL_RENDERER_ACCELERATED);
     //Use Vsync
     if (SDL_GL_SetSwapInterval(1) < 0)
         throw SDLException("Warning: Unable to set VSync");
@@ -64,7 +65,8 @@ void SDLWindow::Draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     fStateManager->Draw();
-    SDL_GL_SwapWindow(fPtrWnd);
+    SDL_RenderPresent(renderer);
+    //SDL_GL_SwapWindow(fPtrWnd);
 }
 
 void SDLWindow::OnEvent(SDL_Event* e)
