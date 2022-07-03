@@ -2,47 +2,75 @@
 
 namespace ui
 {
-StateManager::StateManager() : m_pActiveState(NULL)
-{
-}
+StateManager::StateManager()
+{}
 
 StateManager::~StateManager()
+{}
+
+void StateManager::changeState(GameState* const newState)
 {
+    if (activeState)
+    {
+        activeState->leaveState();
+    }
+    activeState = newState;
+    if (activeState)
+    {
+        activeState->enterState();
+    }
 }
 
-void StateManager::OnKeyDown(SDL_KeyboardEvent& e)
+GameState* StateManager::getActiveState() const
 {
-    if (m_pActiveState)
-        m_pActiveState->OnKeyDown(e);
+    return activeState;
 }
 
-void StateManager::OnKeyUp(SDL_KeyboardEvent& e)
+void StateManager::onKeyDown(SDL_KeyboardEvent& e)
 {
-    if (m_pActiveState)
-        m_pActiveState->OnKeyUp(e);
+    if (activeState)
+    {
+        activeState->onKeyDown(e);
+    }
 }
 
-void StateManager::OnChar(char* c)
+void StateManager::onKeyUp(SDL_KeyboardEvent& e)
 {
-    if (m_pActiveState)
-        m_pActiveState->OnChar(c);
+    if (activeState)
+    {
+        activeState->onKeyUp(e);
+    }
 }
 
-void StateManager::OnResize(int cx, int cy)
+void StateManager::onChar(char* c)
 {
-    if (m_pActiveState)
-        m_pActiveState->OnResize(cx, cy);
+    if (activeState)
+    {
+        activeState->onChar(c);
+    }
 }
 
-void StateManager::Update(double dwCurrentTime)
+void StateManager::onResize(int cx, int cy)
 {
-    if (m_pActiveState)
-        m_pActiveState->Update(dwCurrentTime);
+    if (activeState)
+    {
+        activeState->onResize(cx, cy);
+    }
 }
 
-void StateManager::Draw()
+void StateManager::update(double dwCurrentTime)
 {
-    if (m_pActiveState)
-        m_pActiveState->Draw();
+    if (activeState)
+    {
+        activeState->update(dwCurrentTime);
+    }
+}
+
+void StateManager::draw()
+{
+    if (activeState)
+    {
+        activeState->draw();
+    }
 }
 } // namespace ui

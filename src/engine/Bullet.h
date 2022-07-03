@@ -1,62 +1,56 @@
 #pragma once
-
-#ifndef TBULLET_H
-#define TBULLET_H
-
-#include <windows.h>
-#include <math.h>
 #include <gl\gl.h>
-#include "Object.h"
+#include <math.h>
 
-class TBullet :public TTempObiekt {
+#include "TempObject.hpp"
+
+class TBullet :public TempObject
+{
 public:
-	TBullet();
-	~TBullet() {}
+    TBullet();
+    ~TBullet() {}
 
 protected:
-	void OnRender(void);
+    void OnRender(void);
 };
 
 typedef std::list<TBullet*> TvecBullet;
 typedef std::list<TBullet*>::iterator TvecBulletIt;
 
-class TShipDebris :public TTempObiekt
+class TShipDebris: public TempObject
 {
 private:
-	Float m_Ratio;
+    Float m_Ratio;
 protected:
-	void OnRender(void);
+    void OnRender(void);
 public:
-	TShipDebris();
-	~TShipDebris() {}
-	void Update(void);
+    TShipDebris();
+    ~TShipDebris() {}
+    void Update(void);
 };
 
-class TAsterDebris :public TTempObiekt
+class TAsterDebris: public TempObject
 {
 private:
-	Float m_Ratio;
+    Float m_Ratio;
 protected:
-	void OnRender(void);
+    void OnRender(void);
 public:
-	TAsterDebris();
-	~TAsterDebris() {}
-	void Update(void);
+    TAsterDebris();
+    ~TAsterDebris() {}
+    void Update(void);
 };
 
-class TStarBlink :public TTempObiekt
+class TStarBlink: public TempObject
 {
 private:
-	Float m_Ratio;
-	Float m_Size;
-	void Init();
+    Float m_Ratio;
+    Float m_Size;
+    void Init();
 protected:
-	void OnRender(void);
+    void OnRender(void);
 public:
-	TStarBlink();
-	~TStarBlink() {}
-	void Update(void);
+    TStarBlink();
+    ~TStarBlink() {}
+    void Update(void);
 };
-
-#endif //TBULLET_H
-

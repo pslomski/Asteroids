@@ -1,157 +1,162 @@
 #include <assert.h>
 
-#include "engine/World.h"
-#include "engine/Consts.h"
-#include "engine/renderer.h"
-#include "sdl/SDLApplication.h"
-#include "sdl/SDLTools.h"
-
 #include "HighScoreState.h"
 #include "MenuState.h"
 #include "OptionsState.h"
 #include "PlayState.h"
 #include "StateManager.h"
 
+#include "engine/Consts.h"
+#include "engine/World.h"
+#include "gl/renderer.h"
+#include "log/Log.hpp"
+#include "sdl/SDLApplication.h"
+#include "sdl/SDLTools.h"
+
 namespace ui
 {
-CMenuState::CMenuState(StateManager* pManager)
-    : CGameState(pManager), m_pFont(NULL), m_iCurrentSelection(0),
-    m_pCurrentGame(NULL)
-{
-}
+MenuState::MenuState(StateManager* const manager):
+    GameState(manager),
+    font(nullptr),
+    currentSelection(0),
+    currentGame(nullptr)
+{}
 
-void CMenuState::Init()
+void MenuState::init()
 {
-    m_pFont = new Font("vector battle", 20);
-    m_pFontSmall = new Font("vector battle", 15);
-    m_pFontLarge = new Font("vector battle", 40);
-    m_pFontSmall2 = new Font("vector battle", 10);
+    font = new Font("vector battle", 20);
+    fontSmall = new Font("vector battle", 15);
+    fontSmall2 = new Font("vector battle", 10);
+    fontLarge = new Font("vector battle", 40);
 
     int dy = int(1.0 / 12.0 * geWorld.scrHeight);
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
-    int top = int(1.0 / 4.5 * geWorld.scrHeight);
-    int bottom = top + dy;
-    // Rectangle(T aTop, T aBottom, T aLeft, T aRight)
-    // m_pTitleText = new TextControl(m_pFontLarge, Rectangle(0, top, geWorld.scrWidth, 0));
-    m_pTitleText = new TextControl(m_pFontLarge, Rectangle(0, 50, geWorld.scrWidth, 200));
-    m_pTitleText->setAlignement(TextControl::taCenter);
-    m_pTitleText->setText("Asteroids 2010");
+    int bottom = int(1.0 / 4.5 * geWorld.scrHeight);
+    int top = bottom + dy;
+
+    titleText = new TextControl(fontLarge, Rectangle(left, top, right, bottom));
+    titleText->setAlignement(TextControl::taCenter);
+    titleText->setText("Asteroids 2010");
   
-    m_pNewGameText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
-    m_pNewGameText->setAlignement(TextControl::taCenter);
-    m_pNewGameText->setText("New game");
+    newGameText = new TextControl(font, Rectangle(left, top, right, bottom));
+    newGameText->setAlignement(TextControl::taCenter);
+    newGameText->setText("New game");
 
     top += dy; bottom += dy;
-    m_pResumeGameText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
-    m_pResumeGameText->setAlignement(TextControl::taCenter);
-    m_pResumeGameText->setText("Resume game");
+    resumeGameText = new TextControl(font, Rectangle(left, top, right, bottom));
+    resumeGameText->setAlignement(TextControl::taCenter);
+    resumeGameText->setText("Resume game");
 
     top += dy; bottom += dy;
-    m_pOptionsText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
-    m_pOptionsText->setAlignement(TextControl::taCenter);
-    m_pOptionsText->setText("Settings");
+    optionsText = new TextControl(font, Rectangle(left, top, right, bottom));
+    optionsText->setAlignement(TextControl::taCenter);
+    optionsText->setText("Settings");
 
     top += dy; bottom += dy;
-    m_pScoresText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
-    m_pScoresText->setAlignement(TextControl::taCenter);
-    m_pScoresText->setText("High scores");
+    scoresText = new TextControl(font, Rectangle(left, top, right, bottom));
+    scoresText->setAlignement(TextControl::taCenter);
+    scoresText->setText("High scores");
 
     top += dy; bottom += dy;
-    m_pExitText = new TextControl(m_pFont, Rectangle(left, top, right, bottom));
-    m_pExitText->setAlignement(TextControl::taCenter);
-    m_pExitText->setText("Exit");
+    exitText = new TextControl(font, Rectangle(left, top, right, bottom));
+    exitText->setAlignement(TextControl::taCenter);
+    exitText->setText("Exit");
 }
 
-void CMenuState::Cleanup()
+void MenuState::cleanup()
 {
-    delete m_pFont;
-    delete m_pFontSmall;
-    delete m_pFontSmall2;
-    delete m_pFontLarge;
-    delete m_pNewGameText;
-    delete m_pResumeGameText;
-    delete m_pScoresText;
-    delete m_pExitText;
-    delete m_pOptionsText;
+    delete font;
+    delete fontSmall;
+    delete fontSmall2;
+    delete fontLarge;
+    delete titleText;
+    delete newGameText;
+    delete resumeGameText;
+    delete scoresText;
+    delete exitText;
+    delete optionsText;
 
-    m_pFontSmall = NULL;
-    m_pFontSmall2 = NULL;
-    m_pFontLarge = NULL;
-    m_pNewGameText = NULL;
-    m_pResumeGameText = NULL;
-    m_pScoresText = NULL;
-    m_pExitText = NULL;
-    m_pOptionsText = NULL;
+    font = nullptr;
+    fontSmall = nullptr;
+    fontSmall2 = nullptr;
+    fontLarge = nullptr;
+    titleText = nullptr;
+    newGameText = nullptr;
+    resumeGameText = nullptr;
+    scoresText = nullptr;
+    exitText = nullptr;
+    optionsText = nullptr;
 }
 
-void CMenuState::EnterState()
+void MenuState::enterState()
 {
-    Init();
-    SetBlinkText(m_iCurrentSelection, false);
-    if (!m_pCurrentGame || m_pCurrentGame->IsGameOver()) {
-        if (1 == m_iCurrentSelection)
-            m_iCurrentSelection = 0;
-        m_pResumeGameText->setTextColor(0.3f, 0.3f, 0.3f);
+    LOG_INF("MenuState::enterState");
+    init();
+    setBlinkText(currentSelection, false);
+    if (!currentGame or currentGame->isGameOver())
+    {
+        if (1 == currentSelection)
+        {
+            currentSelection = 0;
+        }
+        resumeGameText->setTextColor(0.3f, 0.3f, 0.3f);
     }
-    else {
-        m_pResumeGameText->setTextColor(1.0f, 1.0f, 1.0f);
+    else
+    {
+        resumeGameText->setTextColor(1.0f, 1.0f, 1.0f);
     }
-    SetBlinkText(m_iCurrentSelection, true);
+    setBlinkText(currentSelection, true);
 }
 
-void CMenuState::LeaveState()
+void MenuState::leaveState()
 {
-    Cleanup();
+    cleanup();
+    LOG_INF("MenuState::leaveState");
 }
 
-CMenuState* CMenuState::GetInstance(StateManager* pManager)
+MenuState* MenuState::getInstance(StateManager* const manager)
 {
-    static CMenuState Instance(pManager);
-    return &Instance;
+    static MenuState instance(manager);
+    return &instance;
 }
 
-void CMenuState::OnKeyDown(SDL_KeyboardEvent& e)
+void MenuState::onKeyDown(SDL_KeyboardEvent& e)
 {
     switch (SDLTools::GetKeycode(e))
     {
     case SDLK_DOWN:
-        SelectionDown();
+        selectionDown();
         break;
     case SDLK_UP:
-        SelectionUp();
+        selectionUp();
         break;
     case SDLK_RETURN:
-        SelectionChosen();
+        selectionChosen();
         break;
     case SDLK_ESCAPE:
-        ExitGame();
+        exitGame();
         break;
     }
 }
 
-void CMenuState::Update(double TimeStep)
+void MenuState::update(double TimeStep)
 {
-    TextControl* pTxtCtrl = GetTextControl(m_iCurrentSelection);
+    TextControl* pTxtCtrl = getTextControl(currentSelection);
     if (pTxtCtrl) pTxtCtrl->update(TimeStep);
 }
 
-void CMenuState::Draw()
+void MenuState::draw()
 {
-    glMatrixMode(GL_PROJECTION); // Select The Projection Matrix
-    glLoadIdentity();			 // Reset The Projection Matrix
-    glOrtho(0, geWorld.scrWidth, geWorld.scrHeight, 0, -1, 1);
-    glMatrixMode(GL_MODELVIEW);	 // Select The Modelview Matrix
-    glLoadIdentity();			 // Reset The Modelview Matrix
-    
-    m_pTitleText->draw();
-    m_pNewGameText->draw();
-    m_pResumeGameText->draw();
-    m_pOptionsText->draw();
-    m_pScoresText->draw();
-    m_pExitText->draw();
+    gl::Renderer::enter2DMode(geWorld.scrWidth, geWorld.scrHeight);
+    titleText->draw();
+    newGameText->draw();
+    resumeGameText->draw();
+    optionsText->draw();
+    scoresText->draw();
+    exitText->draw();
 
-    TextControl txtControls(m_pFontSmall2, Rectangle(0, int(0.7 * geWorld.scrHeight), geWorld.scrWidth, int(0.7 * geWorld.scrHeight + 20)));
+    TextControl txtControls(fontSmall2, Rectangle(0, int(0.7 * geWorld.scrHeight + 20), geWorld.scrWidth, int(0.7 * geWorld.scrHeight)));
     txtControls.setAlignement(TextControl::taCenter);
     txtControls.setTextColor(0.8f, 0.8f, 0.8f);
     txtControls.setText("Controls:");
@@ -163,101 +168,113 @@ void CMenuState::Draw()
     txtControls.setText("up arrow - forward, space - fire");
     txtControls.draw();
 
-    TextControl line(m_pFontSmall, Rectangle(0, geWorld.scrHeight - 100, geWorld.scrWidth, geWorld.scrHeight - 50));
+    TextControl line(fontSmall, Rectangle(0, geWorld.scrHeight - 50, geWorld.scrWidth, geWorld.scrHeight - 100));
     line.setAlignement(TextControl::taCenter);
     line.setTextColor(0.7f, 0.7f, 0.7f);
     line.setText("Asteroids remake");
     line.draw();
+    gl::Renderer::leave2DMode();
 }
 
-TextControl* CMenuState::GetTextControl(int id)
+TextControl* MenuState::getTextControl(const int id)
 {
     switch (id) {
-    case 0: return m_pNewGameText; break;
-    case 1: return m_pResumeGameText; break;
-    case 2: return m_pOptionsText; break;
-    case 3: return m_pScoresText; break;
-    case 4: return m_pExitText; break;
+    case 0: return newGameText;
+    case 1: return resumeGameText;
+    case 2: return optionsText;
+    case 3: return scoresText;
+    case 4: return exitText;
     }
-    assert(NULL);
-    return NULL;
+    assert(false);
+    return nullptr;
 }
 
-void CMenuState::SetBlinkText(int id, bool in_bBlink)
+void MenuState::setBlinkText(const int id,const  bool isBlink)
 {
-    TextControl* pTxtCtrl = GetTextControl(m_iCurrentSelection);
-    if (pTxtCtrl) pTxtCtrl->setBlink(in_bBlink);
+    TextControl* textCtrl = getTextControl(currentSelection);
+    if (textCtrl)
+    {
+        textCtrl->setBlink(isBlink);
+    }
 }
 
-void CMenuState::SelectionUp()
+void MenuState::selectionUp()
 {
-    SetBlinkText(m_iCurrentSelection, false);
-    m_iCurrentSelection--;
-    if (m_iCurrentSelection == -1)
-        m_iCurrentSelection = 4;
+    setBlinkText(currentSelection, false);
+    currentSelection--;
+    if (currentSelection == -1)
+    {
+        currentSelection = 4;
+    }
 
     // If there is no current game, we should skip
     // the "Resume game" item.
-    if (m_iCurrentSelection == 1)
+    if (currentSelection == 1)
     {
-        if (!m_pCurrentGame || m_pCurrentGame->IsGameOver())
-            m_iCurrentSelection--;
+        if (!currentGame or currentGame->isGameOver())
+        {
+            currentSelection--;
+        }
     }
-    SetBlinkText(m_iCurrentSelection, true);
+    setBlinkText(currentSelection, true);
 }
 
-void CMenuState::SelectionDown()
+void MenuState::selectionDown()
 {
-    SetBlinkText(m_iCurrentSelection, false);
-    m_iCurrentSelection++;
-    if (m_iCurrentSelection == 5)
-        m_iCurrentSelection = 0;
+    setBlinkText(currentSelection, false);
+    currentSelection++;
+    if (currentSelection == 5)
+    {
+        currentSelection = 0;
+    }
 
     // If there is no current game, we should skip
     // the "Resume game" item.
-    if (m_iCurrentSelection == 1)
+    if (currentSelection == 1)
     {
-        if (!m_pCurrentGame || m_pCurrentGame->IsGameOver())
-            m_iCurrentSelection++;
+        if (!currentGame or currentGame->isGameOver())
+        {
+            currentSelection++;
+        }
     }
-    SetBlinkText(m_iCurrentSelection, true);
+    setBlinkText(currentSelection, true);
 }
 
-void CMenuState::SelectionChosen()
+void MenuState::selectionChosen()
 {
-    switch (m_iCurrentSelection)
+    switch (currentSelection)
     {
     case 0:
-        if (!m_pCurrentGame)
-            m_pCurrentGame = PlayState::GetInstance(m_pStateManager);
-        m_pCurrentGame->Reset();
-        SetBlinkText(m_iCurrentSelection, false);
-        m_iCurrentSelection = 1;
-        SetBlinkText(m_iCurrentSelection, true);
-        ChangeState(m_pCurrentGame);
+        if (!currentGame)
+        {
+            currentGame = PlayState::getInstance(stateManager);
+        }
+        currentGame->reset();
+        setBlinkText(currentSelection, false);
+        currentSelection = 1;
+        setBlinkText(currentSelection, true);
+        changeState(currentGame);
         break;
-
     case 1:
-        if (m_pCurrentGame && !m_pCurrentGame->IsGameOver())
-            ChangeState(m_pCurrentGame);
+        if (currentGame and !currentGame->isGameOver())
+        {
+            changeState(currentGame);
+        }
         break;
-
     case 2:
-        ChangeState(OptionsState::GetInstance(m_pStateManager));
+        changeState(OptionsState::getInstance(stateManager));
         break;
-
     case 3:
-        ChangeState(HighScoreState::GetInstance(m_pStateManager));
+        changeState(HighScoreState::getInstance(stateManager));
         break;
-
     case 4:
-        SDLApplication::QuitApp();
+        SDLApplication::quitApp();
         break;
     }
 }
 
-void CMenuState::ExitGame(void)
+void MenuState::exitGame()
 {
-    SDLApplication::QuitApp();
+    SDLApplication::quitApp();
 }
 } // namespace ui

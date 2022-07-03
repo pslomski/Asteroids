@@ -7,13 +7,13 @@
 #define GE_SCREEN_WIDTH 800
 #define GE_SCREEN_HEIGHT 800
 
-#define _GE_GAME_DEBUG
+#define GE_GAME_DEBUG
 
 #ifdef GE_GAME_DEBUG
-#define GE_INITIAL_LIVES 3
+#define GE_INITIAL_LIVES 1
 #define GE_BASE_UFO_TIME 30.0
 #define GE_INITIAL_ASTER_COUNT 4
-#define GE_MAX_ASTER_COUNT 10
+#define GE_MAX_ASTER_COUNT 10u
 #define GE_INITIAL_MAX_BULLETS 3//liczba pociskow na raz
 #define GE_BULLETS_INCREMENT 3//zwiekszenie przez PowerUp
 #define GE_INITIAL_BULLET_SPEED 30.0//predkosc pocisku
@@ -28,12 +28,12 @@
 #define GE_BASE_UFO_TIME 30.0
 #define GE_INITIAL_ASTER_COUNT 4
 #define GE_MAX_ASTER_COUNT 10u
-#define GE_INITIAL_MAX_BULLETS 3//liczba pociskow na raz
-#define GE_BULLETS_INCREMENT 3//zwiekszenie przez PowerUp
-#define GE_INITIAL_BULLET_SPEED 35.0//predkosc pocisku
-#define GE_BULLET_SPEED_INC 30.0//zwiekszenie przedkosci przez PowerUp
-#define GE_BONUS_LIFETIME 15.0//czas zycia bonusu
-#define GE_NEXT_LIFE_SCORE 2000//dodatkowe zycie co GE_NEXT_LIFE_SCORE punktow
+#define GE_INITIAL_MAX_BULLETS 3 // liczba pociskow na raz
+#define GE_BULLETS_INCREMENT 3 // zwiekszenie przez PowerUp
+#define GE_INITIAL_BULLET_SPEED 35.0 // predkosc pocisku
+#define GE_BULLET_SPEED_INC 30.0 // zwiekszenie przedkosci przez PowerUp
+#define GE_BONUS_LIFETIME 15.0 // czas zycia bonusu
+#define GE_NEXT_LIFE_SCORE 2000 // dodatkowe zycie co GE_NEXT_LIFE_SCORE punktow
 #define GE_PAUSE_TIME 2.0
 #define GE_GAMEOVER_PAUSE_TIME 5.0
 #define GE_POWERUP_DURATION_TIME 20.0

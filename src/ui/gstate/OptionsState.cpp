@@ -1,161 +1,165 @@
 #include <assert.h>
 
-#include "engine/World.h"
-#include "engine/Renderer.h"
-
 #include "MenuState.h"
 #include "OptionsState.h"
 
+#include "engine/World.h"
+#include "gl/Renderer.h"
+
 namespace ui
 {
-OptionsState::OptionsState(StateManager* pManager)
-    :CGameState(pManager)
+OptionsState::OptionsState(StateManager* const manager):
+    GameState(manager)
+{}
+
+OptionsState* OptionsState::getInstance(StateManager* const manager)
 {
+    static OptionsState instance(manager);
+    return &instance;
 }
 
-OptionsState* OptionsState::GetInstance(StateManager* pManager)
+void OptionsState::init()
 {
-    static OptionsState Instance(pManager);
-    return &Instance;
-}
-
-void OptionsState::Init()
-{
-    mCurrentSelection = 0;
-    mFont = new Font("vector battle", 20);
+    using Rect = Rectangle;
+    currentSelection = 0;
+    font = new Font("vector battle", 20);
 
     int dy = 20;
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
-    int top = 50;
-    int bottom = top + dy;
-    mTitleText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
-    mTitleText->setAlignement(TextControl::taCenter);
-    mTitleText->setText("Settings");
+    int bottom = 50;
+    int top = bottom + dy;
+    titleText = new TextControl(font, Rect(left, top, right, bottom));
+    titleText->setAlignement(TextControl::taCenter);
+    titleText->setText("Settings");
 
     dy = 45;
-    top = 135;
-    bottom += dy;
-    mMusicVolText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
-    mMusicVolText->setAlignement(TextControl::taCenter);
-    mMusicVolText->setText("Music volume: ");
+    bottom = 135;
+    top = bottom + dy;
+    musicVolText = new TextControl(font, Rect(left, top, right, bottom));
+    musicVolText->setAlignement(TextControl::taCenter);
+    musicVolText->setText("Music volume: ");
 
+    bottom += dy;
     top += dy;
-    bottom += dy;
-    mSoundVolText = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
-    mSoundVolText->setAlignement(TextControl::taCenter);
-    mSoundVolText->setText("Sound volume: ");
+    soundVolText = new TextControl(font, Rect(left, top, right, bottom));
+    soundVolText->setAlignement(TextControl::taCenter);
+    soundVolText->setText("Sound volume: ");
 }
 
-void OptionsState::Cleanup()
+void OptionsState::cleanup()
 {
-    delete mFont;
-    delete mTitleText;
-    delete mMusicVolText;
-    delete mSoundVolText;
+    delete font;
+    delete titleText;
+    delete musicVolText;
+    delete soundVolText;
 }
 
-void OptionsState::EnterState()
+void OptionsState::enterState()
 {
-    Init();
-    geWorld.ReadSettings();
-    SetBlinkText(mCurrentSelection, true);
+    init();
+    geWorld.readSettings();
+    setBlinkText(currentSelection, true);
 }
 
-void OptionsState::LeaveState()
+void OptionsState::leaveState()
 {
-    geWorld.SaveSettings();
-    Cleanup();
+    geWorld.saveSettings();
+    cleanup();
 }
 
-void OptionsState::OnKeyDown(SDL_KeyboardEvent& e)
+void OptionsState::onKeyDown(SDL_KeyboardEvent& e)
 {
     switch (e.keysym.sym) {
     case SDLK_DOWN:
-        SelectionDown();
+        selectionDown();
         break;
     case SDLK_UP:
-        SelectionUp();
+        selectionUp();
         break;
     case SDLK_LEFT:
-        LeftArrow();
+        leftArrow();
         break;
     case SDLK_RIGHT:
-        RightArrow();
+        rightArrow();
         break;
     case SDLK_ESCAPE:
-        ChangeState(CMenuState::GetInstance(m_pStateManager));
+        changeState(MenuState::getInstance(stateManager));
         break;
     }
 }
 
-void OptionsState::Update(double TimeStep)
+void OptionsState::update(double TimeStep)
 {
-    TextControl* txtCtrl = GetTextControl(mCurrentSelection);
+    TextControl* txtCtrl = getTextControl(currentSelection);
     if (txtCtrl)
         txtCtrl->update(TimeStep);
 }
 
-void OptionsState::Draw()
+void OptionsState::draw()
 {
-    auto dm = ast::DrawMode2DText();
+    auto dm = gl::DrawMode2DText(geWorld.scrWidth, geWorld.scrHeight);
     static const int BUF_SIZE = 128;
     static char buf[BUF_SIZE];
-    mTitleText->draw();
+    titleText->draw();
 
     int musicVol = int(ceil(10 * geMusic.GetVolume()));
     int soundVol = int(ceil(10 * geSound.GetVolume()));
     sprintf_s(buf, BUF_SIZE, "Music volume: %d", musicVol);
-    mMusicVolText->setText(std::string(buf));
-    mMusicVolText->draw();
+    musicVolText->setText(std::string(buf));
+    musicVolText->draw();
     sprintf_s(buf, BUF_SIZE, "Sound volume: %d", soundVol);
-    mSoundVolText->setText(buf);
-    mSoundVolText->draw();
+    soundVolText->setText(buf);
+    soundVolText->draw();
 }
 
-TextControl* OptionsState::GetTextControl(int id)
+TextControl* OptionsState::getTextControl(int id)
 {
     switch (id) {
-    case 0: return mMusicVolText; break;
-    case 1: return mSoundVolText; break;
+    case 0: return musicVolText; break;
+    case 1: return soundVolText; break;
     }
     assert(NULL);
-    return NULL;
+    return nullptr;
 }
 
-void OptionsState::SetBlinkText(int id, bool isBlink)
+void OptionsState::setBlinkText(int id, bool isBlink)
 {
-    TextControl* txtCtrl = GetTextControl(mCurrentSelection);
+    TextControl* txtCtrl = getTextControl(currentSelection);
     if (txtCtrl) txtCtrl->setBlink(isBlink);
 }
 
-void OptionsState::SelectionUp()
+void OptionsState::selectionUp()
 {
-    SetBlinkText(mCurrentSelection, false);
-    mCurrentSelection--;
-    if (mCurrentSelection == -1)
-        mCurrentSelection = 1;
-
-    SetBlinkText(mCurrentSelection, true);
+    setBlinkText(currentSelection, false);
+    currentSelection--;
+    if (currentSelection <= -1)
+    {
+        currentSelection = 1;
+    }
+    setBlinkText(currentSelection, true);
 }
 
-void OptionsState::SelectionDown()
+void OptionsState::selectionDown()
 {
-    SetBlinkText(mCurrentSelection, false);
-    mCurrentSelection++;
-    if (mCurrentSelection == 2)
-        mCurrentSelection = 0;
-    SetBlinkText(mCurrentSelection, true);
+    setBlinkText(currentSelection, false);
+    currentSelection++;
+    if (currentSelection >= 2)
+    {
+        currentSelection = 0;
+    }
+    setBlinkText(currentSelection, true);
 }
 
-void OptionsState::LeftArrow()
+void OptionsState::leftArrow()
 {
-    switch (mCurrentSelection) {
-    case 0://Music Volume
+    switch (currentSelection)
+    {
+    case MusicVolume:
         geWorld.MusicVol = std::max(0, geWorld.MusicVol - 1);
         geMusic.SetVolume(0.1f * geWorld.MusicVol);
         break;
-    case 1://Sound Volume
+    case SoundVolume:
         geWorld.SoundVol = std::max(0, geWorld.SoundVol - 1);
         geSound.SetVolume(0.1f * geWorld.SoundVol);
         geSound.SoundTest();
@@ -163,14 +167,14 @@ void OptionsState::LeftArrow()
     }
 }
 
-void OptionsState::RightArrow()
+void OptionsState::rightArrow()
 {
-    switch (mCurrentSelection) {
-    case 0://Music Volume
+    switch (currentSelection) {
+    case MusicVolume:
         geWorld.MusicVol = std::min(10, geWorld.MusicVol + 1);
         geMusic.SetVolume(0.1f * geWorld.MusicVol);
         break;
-    case 1://Sound Volume
+    case SoundVolume:
         geWorld.SoundVol = std::min(10, geWorld.SoundVol + 1);
         geSound.SetVolume(0.1f * geWorld.SoundVol);
         geSound.SoundTest();

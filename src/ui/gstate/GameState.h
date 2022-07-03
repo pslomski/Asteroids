@@ -7,32 +7,24 @@ namespace ui
 class StateManager;
 
 // Base class for the different states of the game.
-class CGameState {
+class GameState
+{
 public:
-    // Constructor
-    CGameState(StateManager* pManager);
-    // Destructor
-    virtual ~CGameState();
+    GameState(StateManager* const manager);
+    virtual ~GameState();
 
-    // The different 'events' functions. Child classes can 
-    // implement the ones in which they are interested in.
-    virtual void OnKeyDown(SDL_KeyboardEvent&) {};
-    virtual void OnKeyUp(SDL_KeyboardEvent&) {};
-    virtual void OnChar(char* c) { }
-    virtual void OnResize(int cx, int cy) { }
-    virtual void Update(double TimeStep) { }
-    virtual void Draw() { }
-
-    // Functions called when the state is entered or left
-    // (transition from/to another state).
-    virtual void EnterState() { }
-    virtual void LeaveState() { }
+    virtual void onKeyDown(SDL_KeyboardEvent&) {}
+    virtual void onKeyUp(SDL_KeyboardEvent&) {}
+    virtual void onChar(char* c) {}
+    virtual void onResize(int cx, int cy) {}
+    virtual void update(double TimeStep) {}
+    virtual void draw() {}
+    virtual void enterState() {}
+    virtual void leaveState() {}
 
 protected:
-    // Helper function to switch to a new active state.
-    void ChangeState(CGameState* pNewState);
+    void changeState(GameState* const newState) const;
 
-    // The state manager.
-    StateManager* m_pStateManager;
+    StateManager* const stateManager;
 };
 } // namespace ui

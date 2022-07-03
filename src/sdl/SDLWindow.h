@@ -1,35 +1,32 @@
 #pragma once
 
 #include <SDL.h>
-#include <GL/gl.h>
-
 #include "ui/gstate/StateManager.h"
 
-class SDLWindow {
-private:
-    ui::StateManager* fStateManager;
-    SDL_Window* fPtrWnd{nullptr};
-    SDL_Renderer* renderer{nullptr};
-    SDL_GLContext fContext;
-
-    SDLWindow(int width, int height);
-    ~SDLWindow();
-
-    void InitGL();
-    void OnSize(GLsizei width, GLsizei height);
-    void handleWindowEvent(SDL_Event* e);
+class SDLWindow
+{
 public:
-    static SDLWindow* Create(int width, int height)
+    static SDLWindow* create(ui::StateManager* stateManager, int width, int height)
     {
-        return new SDLWindow(width, height);
+        return new SDLWindow(stateManager, width, height);
     }
-    static void Destroy(SDLWindow* &ptrWindow)
+    static void destroy(SDLWindow* &ptrWindow)
     {
         delete ptrWindow;
-        ptrWindow = NULL;
+        ptrWindow = nullptr;
     }
-    void Update(double time);
-    void Draw();
-    void OnEvent(SDL_Event* e);
-    SDL_Renderer* getRenderer(){ return renderer; }
+    void update(double time);
+    void draw();
+    void onEvent(SDL_Event* e);
+
+private:
+    SDLWindow(ui::StateManager* stateManager, int width, int height);
+    ~SDLWindow();
+    void initGL();
+    void onSize(int width, int height);
+    void handleWindowEvent(SDL_Event* e);
+
+    ui::StateManager* stateManager{nullptr};
+    SDL_Window* window{nullptr};
+    SDL_GLContext context{nullptr};
 };

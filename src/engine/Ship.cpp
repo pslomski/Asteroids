@@ -20,7 +20,7 @@ void PowerUp::Start(void)
 void PowerUp::Stop(void)
 {
     if (isActive) OnStop();
-    duration.Reset();
+    duration.reset();
     isActive = false;
 }
 
@@ -99,33 +99,42 @@ PlayerShip::~PlayerShip()
 
 void PlayerShip::Update(void)
 {
-    Object::Update();
-    if (puAddBullet.duration.Inc(dt)) puAddBullet.Stop();
-    if (puBulletSpeed.duration.Inc(dt)) puBulletSpeed.Stop();
+    Object::update();
+    if (puAddBullet.duration.inc(dt)) puAddBullet.Stop();
+    if (puBulletSpeed.duration.inc(dt)) puBulletSpeed.Stop();
 
-    if (Respawning) {
-        if (m_tiRespawnBlink.Inc(dt)) {
-            m_tiRespawnBlink.Reset();
+    if (Respawning)
+    {
+        if (m_tiRespawnBlink.inc(dt))
+        {
+            m_tiRespawnBlink.reset();
             bDarken = !bDarken;
         }
         Float d = bDarken ? 0.5 : 1.0;
-        m_RespBlinkColRatio = 0.5 * (1 + m_tiRespawnBlink.Ratio()) * d;
+        m_RespBlinkColRatio = 0.5 * (1 + m_tiRespawnBlink.ratio()) * d;
     }
-    else {
+    else
+    {
         m_RespBlinkColRatio = 1.0;
     }
 
-    if (faccelerated) {
-        if (m_tiEngineBlink.Inc(dt)) m_tiEngineBlink.Reset();
+    if (faccelerated)
+    {
+        if (m_tiEngineBlink.inc(dt))
+        {
+            m_tiEngineBlink.reset();
+        }
     }
 
-    if (faccelerated) {
-        m_BoostLen = GetA() / AccelBurst * 2.0 + 0.25 * sin(m_tiEngineBlink.Ratio() * 2 * GE_PI);
+    if (faccelerated)
+    {
+        m_BoostLen = GetA() / AccelBurst * 2.0 + 0.25 * sin(m_tiEngineBlink.ratio() * 2 * GE_PI);
     }
 
     // compute color
     m_clrTmp = clr;
-    if (puAddBullet.IsActive()) {
+    if (puAddBullet.IsActive())
+    {
         Float alfa = 2 * GE_PI * puAddBullet.duration.elapsed;
         Float sina = sin(alfa); sina *= sina;
         Float cosa = cos(alfa); cosa *= cosa;
@@ -135,7 +144,8 @@ void PlayerShip::Update(void)
         m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
         m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
     }
-    if (puBulletSpeed.IsActive()) {
+    if (puBulletSpeed.IsActive())
+    {
         Float alfa = 2 * GE_PI * puBulletSpeed.duration.elapsed;
         Float sina = sin(alfa); sina *= sina;
         Float cosa = cos(alfa); cosa *= cosa;
@@ -166,8 +176,8 @@ void PlayerShip::OnRender(void)
 
 void PlayerShip::AccelerationOn()
 {
-    if (m_tiAccel.Inc(dt)) m_tiAccel.elapsed = m_tiAccel.interval;
-    SetA(Accel + (1.0 - m_tiAccel.Ratio()) * AccelBurst);
+    if (m_tiAccel.inc(dt)) m_tiAccel.elapsed = m_tiAccel.interval;
+    SetA(Accel + (1.0 - m_tiAccel.ratio()) * AccelBurst);
     sndEngineGain = SND_VOL_SHIP_ENGINE * GetA() / AccelMax;
     sndEngine.SetPitch(float(GetA() / AccelMax));
     if (!faccelerated) {
@@ -176,7 +186,7 @@ void PlayerShip::AccelerationOn()
         EngSndStopped = false;
     }
     faccelerated = true;
-    m_tiFade.Reset();
+    m_tiFade.reset();
 }
 
 void PlayerShip::AccelerationOff()
@@ -185,21 +195,21 @@ void PlayerShip::AccelerationOff()
         sndEngine.SlideVol(0.0f, 100);
     }
 
-    m_tiAccel.Reset();
+    m_tiAccel.reset();
     SetA(0.0);
     faccelerated = false;
 }
 
 void PlayerShip::RotateLeft()
 {
-    m_tiRotateLeft.Inc(dt);
-    SetAlfa(GetAlfa() + std::min(0.5 * (1.0 + m_tiRotateLeft.Ratio()), 1.0) * m_RotSpeed * dt);
+    m_tiRotateLeft.inc(dt);
+    SetAlfa(GetAlfa() + std::min(0.5 * (1.0 + m_tiRotateLeft.ratio()), 1.0) * m_RotSpeed * dt);
 }
 
 void PlayerShip::RotateRight()
 {
-    m_tiRotateRight.Inc(dt);
-    SetAlfa(GetAlfa() - std::min(0.5 * (1.0 + m_tiRotateRight.Ratio()), 1.0) * m_RotSpeed * dt);
+    m_tiRotateRight.inc(dt);
+    SetAlfa(GetAlfa() - std::min(0.5 * (1.0 + m_tiRotateRight.ratio()), 1.0) * m_RotSpeed * dt);
 }
 
 TBullet* PlayerShip::FireBullet()
@@ -252,8 +262,8 @@ void PlayerShip::Crash(TvecObiekt& vecObiekty)
 
 void PlayerShip::Respawn(void)
 {
-    if (m_tiRespawn.Inc(dt)) {
-        m_tiRespawn.Reset();
+    if (m_tiRespawn.inc(dt)) {
+        m_tiRespawn.reset();
         Respawning = false;
     }
     else {

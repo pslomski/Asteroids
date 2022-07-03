@@ -16,9 +16,9 @@ public:
     bool isValid() const;
     void offset(const T xOffset, const T yOffset);
 
-    T top;
-    T bottom;
     T left;
+    T top;
     T right;
+    T bottom;
 };
 } // namespace ui

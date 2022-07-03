@@ -34,9 +34,9 @@ TEST_F(RectangleTest, testDefaultConstructor)
 TEST_F(RectangleTest, testConstructor2)
 {
     int left{1};
-    int top{2};
+    int top{4};
     int right{3};
-    int bottom{4};
+    int bottom{2};
 
     Rectangle rect{left, top, right, bottom};
 
@@ -49,9 +49,9 @@ TEST_F(RectangleTest, testConstructor2)
 TEST_F(RectangleTest, testSet)
 {
     int left{1};
-    int top{2};
+    int top{4};
     int right{3};
-    int bottom{4};
+    int bottom{2};
 
     rect.set(left, top, right, bottom);
 
@@ -80,7 +80,10 @@ TEST_F(RectangleTest, shouldEvaluateIsValidAsFalseH)
     int right{1};
     int bottom{3};
 
-    rect.set(left, top, right, bottom);
+    rect.left = left;
+    rect.top = top;
+    rect.right = right;
+    rect.bottom = bottom;
 
     ASSERT_FALSE(rect.isValid());
 }
@@ -92,7 +95,10 @@ TEST_F(RectangleTest, shouldEvaluateIsValidAsFalseV)
     int right{2};
     int bottom{4};
 
-    rect.set(left, top, right, bottom);
+    rect.left = left;
+    rect.top = top;
+    rect.right = right;
+    rect.bottom = bottom;
 
     ASSERT_FALSE(rect.isValid());
 }

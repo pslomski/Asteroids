@@ -2,23 +2,27 @@
 #include <sstream>
 #include <algorithm>
 
-#include "engine/World.h"
-#include "engine/Consts.h"
-#include "engine/Renderer.h"
-#include "sdl/SDLTools.h"
-
 #include "HighScoreState.h"
 #include "MenuState.h"
 
+#include "engine/Consts.h"
+#include "engine/World.h"
+#include "gl/Renderer.h"
+#include "log/Log.hpp"
+#include "sdl/SDLTools.h"
+
 namespace ui
 {
-HighScoreState::HighScoreState(StateManager* pManager)
-  : CGameState(pManager), mNewHighScore(0), mEnterName(false), 
-    mFont(NULL), mNameIndex(0), mHighScores(10)
-{
-}
+HighScoreState::HighScoreState(StateManager* const manager):
+    GameState(manager),
+    mNewHighScore(0),
+    mEnterName(false), 
+    mFont(nullptr),
+    mNameIndex(0),
+    mHighScores(10)
+{}
 
-void HighScoreState::Init()
+void HighScoreState::init()
 {
     mCurrentName[0] = '\0';
     mFont = new Font("vector battle", 20);
@@ -27,25 +31,25 @@ void HighScoreState::Init()
     int dy = 20;
     int left = int(1.0 / 4.0 * geWorld.scrWidth);
     int right = int(3.0 / 4.0 * geWorld.scrWidth);
-    int top = 50;
-    int bottom = top + dy;
-    mHighScore = new TextControl(mFont, ui::Rectangle(top, bottom, left, right));
+    int bottom = 50;
+    int top = bottom + dy;
+    mHighScore = new TextControl(mFont, ui::Rectangle(left, top, right, bottom));
     mHighScore->setAlignement(TextControl::taCenter);
     mHighScore->setText("High Scores");
 
     int Marg = 10;
-    mHighScoreRect.top = 550;
-    mHighScoreRect.bottom = 600;
     mHighScoreRect.left = left - Marg;
+    mHighScoreRect.top = 600;
     mHighScoreRect.right = right + Marg;
+    mHighScoreRect.bottom = 550;
 
-    mEntriesRect.top = 135;
-    mEntriesRect.bottom = mEntriesRect.top + 35;
     mEntriesRect.left = left / 2;
+    mEntriesRect.bottom = 135;
+    mEntriesRect.top = mEntriesRect.bottom + 35;
     mEntriesRect.right = right + left / 2;
 }
 
-void HighScoreState::Cleanup()
+void HighScoreState::cleanup()
 {
     delete mHighScore;
     delete mFont;
@@ -56,16 +60,18 @@ void HighScoreState::Cleanup()
     mFontSmall = NULL;
 }
 
-void HighScoreState::EnterState()
+void HighScoreState::enterState()
 {
-    Init();
-    // Clear the high-score table
+    LOG_INF("HighScoreState::enterState");
+    init();
     mHighScores.clear();
     std::ifstream inputFile("HighScores.txt");
     if (inputFile.fail())
     {
         if (mNewHighScore)
+        {
             mEnterName = true;
+        }
         return;
     }
 
@@ -73,43 +79,51 @@ void HighScoreState::EnterState()
     std::string line;
     HighScoreData newScore;
     std::basic_string <char>::size_type idx;
-    while (!inputFile.eof()) {
+    while (!inputFile.eof()) 
+    {
         getline(inputFile, line);
-        if (line.empty()) continue;
+        if (line.empty())
+            continue;
         idx = line.find(";");
-        if (idx == -1) continue;
-        newScore.strPlayer = line.substr(0, idx); //strtok_s(buf, sep, &next_token1);
+        if (idx == -1)
+            continue;
+        newScore.strPlayer = line.substr(0, idx);
         newScore.ulScore = atoi(line.substr(idx + 1).c_str());
         mHighScores.push_back(newScore);
     }
     while (mHighScores.size() < 10)
+    {
         mHighScores.push_back(HighScoreData());
+    }
 
-    // Sort the table
     sort(mHighScores.begin(), mHighScores.end());
 
     // Check if we have a new high-score that should be
-    // added in the table. If yes, m_bEnterName is set
-    // to true.
+    // added in the table. If yes, m_bEnterName is set to true.
     ULONG lastScore = 0;
     if (mHighScores.size())
+    {
         lastScore = mHighScores[mHighScores.size() - 1].ulScore;
+    }
     if (mNewHighScore && mNewHighScore > lastScore)
+    {
         mEnterName = true;
+    }
 }
 
-void HighScoreState::LeaveState()
+void HighScoreState::leaveState()
 {
-    Cleanup();
+    cleanup();
+    LOG_INF("HighScoreState::leaveState");
 }
 
-HighScoreState* HighScoreState::GetInstance(StateManager* pManager)
+HighScoreState* HighScoreState::getInstance(StateManager* const manager)
 {
-    static HighScoreState Instance(pManager);
-    return &Instance;
+    static HighScoreState instance(manager);
+    return &instance;
 }
 
-void HighScoreState::OnKeyDown(SDL_KeyboardEvent& e)
+void HighScoreState::onKeyDown(SDL_KeyboardEvent& e)
 { 
     if (mEnterName)
     {
@@ -118,7 +132,7 @@ void HighScoreState::OnKeyDown(SDL_KeyboardEvent& e)
             // In case of a return, the new score should be added.
         case SDLK_RETURN:
             if(!std::string(mCurrentName).empty()){
-                AddNewScore(mCurrentName, mNewHighScore);
+                addNewScore(mCurrentName, mNewHighScore);
                 mNewHighScore = 0;
                 mEnterName = false;
                 mNameIndex = 0;
@@ -141,13 +155,13 @@ void HighScoreState::OnKeyDown(SDL_KeyboardEvent& e)
         {
         case SDLK_ESCAPE:
         case SDLK_RETURN:
-            ChangeState(CMenuState::GetInstance(m_pStateManager));
+            changeState(MenuState::getInstance(stateManager));
             break;
         }
     }
 }
 
-void HighScoreState::OnChar(char* c) 
+void HighScoreState::onChar(char* c) 
 { 
     if (mEnterName && (mNameIndex<25))
     {
@@ -163,15 +177,15 @@ void HighScoreState::OnChar(char* c)
     }
 }
 
-void HighScoreState::Draw()  
+void HighScoreState::draw()  
 {
-    auto dm = ast::DrawMode2DText();
+    auto dm = gl::DrawMode2DText(geWorld.scrWidth, geWorld.scrHeight);
     mHighScore->draw();
-    ui::Rectangle rcNum=mEntriesRect;
-    rcNum.right=mEntriesRect.left+40;
-    ui::Rectangle rcTxt=mEntriesRect;
-    rcTxt.left=mEntriesRect.left+60;
-    int iCount=1;
+    ui::Rectangle rcNum = mEntriesRect;
+    rcNum.right = mEntriesRect.left + 40;
+    ui::Rectangle rcTxt = mEntriesRect;
+    rcTxt.left=mEntriesRect.left + 60;
+    int iCount = 1;
     char buf[256];
     THighScoreTable::iterator iter = mHighScores.begin();
     for (iter; iter!=mHighScores.end(); iter++)
@@ -199,7 +213,8 @@ void HighScoreState::Draw()
     }
 
     // If the player should enter its name, we draw something additional.
-    if (mEnterName){
+    if (mEnterName)
+    {
         glColor3f(1.0, 1.0, 1.0);
         glBegin(GL_LINE_LOOP);
         glVertex2i(mHighScoreRect.left, mHighScoreRect.bottom);
@@ -208,7 +223,7 @@ void HighScoreState::Draw()
         glVertex2i(mHighScoreRect.left, mHighScoreRect.top);
         glEnd();
 
-        ui::Rectangle rc(mHighScoreRect);
+        Rectangle rc(mHighScoreRect);
         rc.offset(0, -50);
         TextControl txtEnterName(mFont, rc);
         txtEnterName.setAlignement(TextControl::taCenter);
@@ -220,8 +235,9 @@ void HighScoreState::Draw()
         txtEntry.setText(mCurrentName);
         txtEntry.draw();
     }
-    else{
-        ui::Rectangle rc(geWorld.scrHeight-100, geWorld.scrHeight-50, 0, geWorld.scrWidth);
+    else
+    {
+        Rectangle rc(0, geWorld.scrHeight - 50, geWorld.scrWidth, geWorld.scrHeight - 100);
         TextControl txtEnterName(mFontSmall, rc);
         txtEnterName.setAlignement(TextControl::taCenter);
         txtEnterName.setText("Press Enter");
@@ -229,14 +245,12 @@ void HighScoreState::Draw()
     }
 }
 
-void HighScoreState::SaveScores()
+void HighScoreState::saveScores()
 {
-    // Create the file
     std::ofstream outputFile("HighScores.txt");
     if (outputFile.fail())
         return;
 
-    // Write all the entries in the file.
     THighScoreTable::iterator iter = mHighScores.begin();
     for (iter; iter != mHighScores.end(); iter++)
     {
@@ -244,21 +258,19 @@ void HighScoreState::SaveScores()
     }
 }
 
-void HighScoreState::AddNewScore(const std::string& strName, ULONG ulScore)
+void HighScoreState::addNewScore(const std::string& strName, ULONG ulScore)
 {
-    // Create a new high-score and push it into the table 
     HighScoreData newData;
     newData.strPlayer = strName;
     newData.ulScore = ulScore;
     mHighScores.push_back(newData);
     
-    // Sort the table
     sort(mHighScores.begin(), mHighScores.end());
 
-    // If too much elements, remove the last one.
     while (mHighScores.size() > 10)
+    {
         mHighScores.pop_back();
-
-    SaveScores();
+    }
+    saveScores();
 }
 } // namespace ui

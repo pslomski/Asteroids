@@ -1,127 +1,146 @@
-#include "engine/World.h"
-#include "engine/Consts.h"
-#include "engine/renderer.h"
-#include "sdl/SDLTools.h"
 
 #include "HighScoreState.h"
 #include "MenuState.h"
 #include "PlayState.h"
 #include "StateManager.h"
 
+#include "engine/Consts.h"
+#include "engine/World.h"
+#include "log/Log.hpp"
+#include "gl/renderer.h"
+#include "sdl/SDLTools.h"
+
 namespace ui
 {
 #define FNTSIZESMALL 15
 #define FNTSIZELARGE 25
 
-PlayState::PlayState(StateManager* pManager)
-    : CGameState(pManager), m_pFontSmall(NULL), m_pFontLarge(NULL)
+PlayState::PlayState(StateManager* const manager):
+    GameState(manager),
+    fontSmall(nullptr),
+    fontLarge(nullptr)
+{}
+
+void PlayState::init()
 {
+    isDispFps = false;
+    fontSmall = new Font("vector battle", FNTSIZESMALL);
+    fontLarge = new Font("vector battle", FNTSIZELARGE);
+
+    gameOverText = new TextControl(fontLarge, ui::Rectangle(0, geWorld.scrHeight, geWorld.scrWidth, 0));
+    gameOverText->setAlignement(TextControl::taCenter);
+    gameOverText->setText("Game Over");
 }
 
-void PlayState::Init()
+void PlayState::cleanup()
 {
-    m_bDispFPS = false;
-    m_pFontSmall = new Font("vector battle", FNTSIZESMALL);
-    m_pFontLarge = new Font("vector battle", FNTSIZELARGE);
-
-    m_pGameOverText = new TextControl(m_pFontLarge, ui::Rectangle(0, geWorld.scrHeight, 0, geWorld.scrWidth));
-    m_pGameOverText->setAlignement(TextControl::taCenter);
-    m_pGameOverText->setText("Game Over");
+    delete fontSmall;
+    delete fontLarge;
+    delete gameOverText;
 }
 
-void PlayState::Cleanup()
+PlayState* PlayState::getInstance(StateManager* manager)
 {
-    delete m_pFontSmall;
-    delete m_pFontLarge;
-    delete m_pGameOverText;
-}
-
-PlayState* PlayState::GetInstance(StateManager* pManager)
-{
-    static PlayState Instance(pManager);
+    static PlayState Instance(manager);
     return &Instance;
 }
 
-void PlayState::EnterState()
+void PlayState::enterState()
 {
-    Init();
-    AsterGame.EnterState();
+    LOG_INF("PlayState::enterState");
+    init();
+    asterGame.EnterState();
     geWorld.IsGameRunning = true;
-    AsterGame.IsMusic = geMusic.GetVolume() > 0.001;
+    asterGame.IsMusic = geMusic.GetVolume() > 0.001;
     geSound.Unmute();
     if (geMusic.IsStarted())
+    {
         geMusic.Play();
+    }
 }
 
-void PlayState::LeaveState()
+void PlayState::leaveState()
 {
     geWorld.IsGameRunning = false;
-    AsterGame.LeaveState();
+    asterGame.LeaveState();
     geSound.Mute();
-    if (AsterGame.IsGameOver())
+    if (asterGame.isGameOver())
         geMusic.Stop();
     else
         geMusic.Pause();
-    Cleanup();
+    cleanup();
+    LOG_INF("PlayState::leaveState");
 }
 
-void PlayState::Reset()
+void PlayState::reset()
 {
-    AsterGame.Reset();
+    asterGame.Reset();
 }
 
-void PlayState::OnKeyDown(SDL_KeyboardEvent& e)
+bool PlayState::isGameOver()
 {
-    AsterGame.Key[SDLTools::GetScancode(e)] = true;
+    return asterGame.isGameOver();
+}
+
+void PlayState::onKeyDown(SDL_KeyboardEvent& e)
+{
+    asterGame.Key[SDLTools::GetScancode(e)] = true;
     SDL_Keycode keycode = SDLTools::GetKeycode(e);
     switch (keycode) {
-    case SDLK_f: m_bDispFPS = !m_bDispFPS;
+    case SDLK_f: isDispFps = not isDispFps;
     case SDLK_ESCAPE:
     case SDLK_RETURN:
-        if (AsterGame.IsGameOver()) {
-            HighScoreState* pHighScores = HighScoreState::GetInstance(m_pStateManager);
-            pHighScores->SetNewHighScore(AsterGame.Score.Get());
-            AsterGame.Clear();
-            ChangeState(pHighScores);
+        if (asterGame.isGameOver())
+        {
+            HighScoreState* pHighScores = HighScoreState::getInstance(stateManager);
+            pHighScores->SetNewHighScore(asterGame.score.get());
+            asterGame.Clear();
+            changeState(pHighScores);
         }
-        else {
+        else
+        {
             if (keycode == SDLK_ESCAPE)
-                ChangeState(CMenuState::GetInstance(m_pStateManager));
+            {
+                changeState(MenuState::getInstance(stateManager));
+            }
         }
         break;
     }
 }
 
-void PlayState::OnKeyUp(SDL_KeyboardEvent& e)
+void PlayState::onKeyUp(SDL_KeyboardEvent& e)
 {
-    AsterGame.Key[SDLTools::GetScancode(e)] = false;
+    asterGame.Key[SDLTools::GetScancode(e)] = false;
 }
 
-void PlayState::OnResize(int cx, int cy)
+void PlayState::onResize(int cx, int cy)
 {
 }
 
-void PlayState::Update(double TimeStep)
+void PlayState::update(double timeStep)
 {
-    AsterGame.Update();
+    asterGame.Update();
 }
 
-void PlayState::Draw()
+void PlayState::draw()
 {
-    AsterGame.Draw();
+    asterGame.Draw();
 
-    auto dm = ast::DrawMode2DText();
+    const auto dm = gl::DrawMode2DText(geWorld.scrWidth, geWorld.scrHeight);
     GLColor color(1.0, 1.0, 1.0);
     GLint w = GLint(geWorld.scrWidth);
     GLint h = GLint(geWorld.scrHeight);
     GLint y = FNTSIZESMALL + 5;
-    m_pFontSmall->drawFmtText(10, y, color, "Level: %d", AsterGame.GameLevel);
-    m_pFontSmall->drawFmtText(w / 2 - 80, y, color, "Score: %d", AsterGame.Score.Get());
-    m_pFontSmall->drawFmtText(w - 150, y, color, "Lives: %d", AsterGame.Lives);
-    if (m_bDispFPS)
-        m_pFontSmall->drawFmtText(w / 2 - 80, y + 20, color, "FPS: %.0f", AsterGame.FPS);
-
-    if (IsGameOver())
-        m_pGameOverText->draw();
+    fontSmall->drawFmtText(10, y, color, "Level: %d", asterGame.gameLevel);
+    fontSmall->drawFmtText(w / 2 - 80, y, color, "Score: %d", asterGame.score.get());
+    fontSmall->drawFmtText(w - 150, y, color, "Lives: %d", asterGame.Lives);
+    if (isDispFps)
+    {
+        fontSmall->drawFmtText(w / 2 - 80, y + 20, color, "FPS: %.0f", asterGame.FPS);
+    }
+    if (isGameOver())
+    {
+        gameOverText->draw();
+    }
 }
 } // namespace ui

@@ -1,31 +1,28 @@
 #pragma once
+#include "engine/TempObject.hpp"
+#include "engine/Tools.h"
 
-#include "Object.h"
-#include "Tools.h"
-
-/////////////////////////////////////////////
-
-class TGEBonusObj:public TTempObiekt
+class TGEBonusObj: public TempObject
 {
 private:
-	TimeInterval tiRot;
-	Float m_ColRatio;
+    TimeInterval tiRot;
+    Float m_ColRatio;
 public:
-	BonusType Type;
-	TGEBonusObj(BonusType in_Type);
-	virtual ~TGEBonusObj(void);
-	void Update(void);
-	void OnRender(void);
+    BonusType Type;
+    TGEBonusObj(BonusType in_Type);
+    virtual ~TGEBonusObj(void);
+    void Update(void);
+    void OnRender(void);
 };
 
 /////////////////////////////////////////////
 
-class TGEBonusBulletSpeed:public TGEBonusObj
+class TGEBonusBulletSpeed: public TGEBonusObj
 {
 public:
-	TGEBonusBulletSpeed(void);
+    TGEBonusBulletSpeed(void);
 private:
-	void Create(void);
+    void Create(void);
 };
 
 /////////////////////////////////////////////
@@ -33,9 +30,9 @@ private:
 class TGEBonusAddBullets:public TGEBonusObj
 {
 public:
-	TGEBonusAddBullets(void);
+    TGEBonusAddBullets(void);
 private:
-	void Create(void);
+    void Create(void);
 };
 
 /////////////////////////////////////////////
@@ -43,9 +40,9 @@ private:
 class TGEBonusPoints:public TGEBonusObj
 {
 public:
-	TGEBonusPoints(void);
+    TGEBonusPoints(void);
 private:
-	void Create(void);
+    void Create(void);
 };
 
 /////////////////////////////////////////////
@@ -53,6 +50,4 @@ private:
 typedef std::list<TGEBonusObj*> TvecBonus;
 typedef std::list<TGEBonusObj*>::iterator TvecBonusIt;
 
-/////////////////////////////////////////////
-
-TGEBonusObj* geCreateBonusObj(BonusType in_Type); 
+TGEBonusObj* geCreateBonusObj(BonusType in_Type);

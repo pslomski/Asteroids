@@ -1,18 +1,24 @@
 #pragma once
 
 #include <SDL.h>
-#include <SDL_ttf.h>
-#include "SDLWindow.h"
+#include "sdl/SDLWindow.h"
 
 class SDLApplication
 {
-private:
-    static bool fQuit;
-    SDLWindow *fPtrWnd;
-    void OnEvent(SDL_Event* e);
 public:
-    static void QuitApp() { fQuit = true; }
-    void Init();
-    void Run();
-    void Cleanup();
+    SDLApplication();
+    ~SDLApplication();
+    static void quitApp()
+    {
+        canQuit = true;
+    }
+    void init(SDLWindow *window);
+    void run();
+
+private:
+    void cleanup();
+    void onEvent(SDL_Event* e);
+
+    static bool canQuit;
+    SDLWindow *window;
 };

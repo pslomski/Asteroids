@@ -34,7 +34,7 @@ TEST_F(SDL_ttfTest, shouldLoadFont)
     ASSERT_TRUE(font != nullptr);
 }
 
-TEST_F(SDL_ttfTest, shouldRenderFont)
+TEST_F(SDL_ttfTest, DISABLED_shouldRenderFont)
 {
     font = TTF_OpenFont("vectorb.ttf", 32);
     ASSERT_TRUE(font != nullptr);
@@ -73,38 +73,6 @@ TEST_F(SDL_ttfTest, shouldRenderFont)
     // Render our text on a rectangle
     ASSERT_EQ(0, SDL_RenderCopy(renderer, textureText, NULL, &rectangle));
 
-    // Finally show what we've drawn
-    //SDL_RenderPresent(renderer);
-
-/*
-    bool gameIsRunning = true;
-    // Main application loop
-    while(gameIsRunning){
-        SDL_Event event;
-
-        // (1) Handle Input
-        // Start our event loop
-        while(SDL_PollEvent(&event)){
-            // Handle each specific event
-            if(event.type == SDL_QUIT){
-                gameIsRunning= false;
-            }
-
-        }
-        // (2) Handle Updates
-        
-        // (3) Clear and Draw the Screen
-        // Gives us a clear "canvas"
-        SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(renderer);
-
-        // Render our text on a rectangle
-        SDL_RenderCopy(renderer,textureText,NULL,&rectangle);
-
-        // Finally show what we've drawn
-        SDL_RenderPresent(renderer);
-    }
-*/
     // Destroy our textured text
     SDL_DestroyTexture(textureText);
     SDL_DestroyWindow(window);

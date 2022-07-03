@@ -6,31 +6,36 @@
 
 namespace ui
 {
-class OptionsState : public CGameState{
+class OptionsState : public GameState
+{
 public:
-    void OnKeyDown(SDL_KeyboardEvent& e);
-    void Update(double TimeStep);
-    void Draw();
-    void EnterState();
-    void LeaveState();
-    static OptionsState* GetInstance(StateManager* pManager);
+    static OptionsState* getInstance(StateManager* const manager);
+    void onKeyDown(SDL_KeyboardEvent& e) override;
+    void update(double TimeStep) override;
+    void draw() override;
+    void enterState() override;
+    void leaveState() override;
 
 protected:
-    OptionsState(StateManager* pManager);
-private:
-    int mCurrentSelection;
-    Font* mFont;
-    TextControl* mTitleText;
-    TextControl* mMusicVolText;
-    TextControl* mSoundVolText;
+    OptionsState(StateManager* const manager);
 
-    void Init();
-    void Cleanup();
-    void SelectionUp();
-    void SelectionDown();
-    void LeftArrow();
-    void RightArrow();
-    TextControl* GetTextControl(int id);
-    void SetBlinkText(int id, bool isBlink);
+private:
+    static constexpr int MusicVolume{0};
+    static constexpr int SoundVolume{1};
+    
+    void init();
+    void cleanup();
+    void selectionUp();
+    void selectionDown();
+    void leftArrow();
+    void rightArrow();
+    TextControl* getTextControl(int id);
+    void setBlinkText(int id, bool isBlink);
+
+    int currentSelection;
+    Font* font;
+    TextControl* titleText;
+    TextControl* musicVolText;
+    TextControl* soundVolText;
 };
 } // namespace ui

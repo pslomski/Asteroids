@@ -9,33 +9,33 @@
 
 namespace ui
 {
-class PlayState : public CGameState
+class PlayState : public GameState
 {
 public:
-    // Implementation of specific events
-    void OnKeyDown(SDL_KeyboardEvent& e);
-    void OnKeyUp(SDL_KeyboardEvent& e);
-    void OnResize(int cx, int cy);
-    void Update(double TimeStep);
-    void Draw();
+    static PlayState* getInstance(StateManager* const manager);
 
-    void Reset();
-    bool IsGameOver(){return AsterGame.IsGameOver();}
-    void EnterState();
-    void LeaveState();
-    // Returns the single instance
-    static PlayState* GetInstance(StateManager* pManager);
+    void onKeyDown(SDL_KeyboardEvent& e) override;
+    void onKeyUp(SDL_KeyboardEvent& e) override;
+    void onResize(int cx, int cy) override;
+    void update(double timeStep) override;
+    void draw() override;
+    void enterState() override;
+    void leaveState() override;
+
+    bool isGameOver();
+    void reset();
+
 protected:
-    PlayState(StateManager* pManager);
-private:
-    // The font used to draw text
-    ui::Font* m_pFontSmall;
-    ui::Font* m_pFontLarge;
-    TextControl* m_pGameOverText;
-    ge::AsterGame AsterGame;
-    bool m_bDispFPS;
+    PlayState(StateManager* const manager);
 
-    void Init();
-    void Cleanup();
+private:
+    ge::AsterGame asterGame;
+    ui::Font* fontSmall;
+    ui::Font* fontLarge;
+    TextControl* gameOverText;
+    bool isDispFps;
+
+    void init();
+    void cleanup();
 };
 } // namespace ui

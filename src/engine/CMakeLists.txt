@@ -8,9 +8,11 @@ target_sources(${ASTER_LIB}
         GameConsts.h
         Object.cpp Object.h
         ObjectSound.cpp ObjectSound.h
-        Renderer.cpp Renderer.h
+        ScoreCounter.cpp ScoreCounter.hpp
         Ship.cpp Ship.h
         Sound.cpp Sound.h
+        TempObject.cpp TempObject.hpp
+        TimeInterval.cpp TimeInterval.hpp
         Tools.cpp Tools.h
         Types.h
         Ufo.cpp Ufo.h

@@ -1,56 +1,47 @@
 #pragma once
 
-#include "ui/Font.h"
-#include "ui/TextControl.h"
-
 #include "GameState.h"
 #include "PlayState.h"
 
+#include "ui/Font.h"
+#include "ui/TextControl.h"
+
 namespace ui
 {
-// Specialization of the CGameState class for 
-// the menu state. This displays a menu in which
-// the player can start a new game, continue an 
-// existing game, see the high-scores or exit the game.
-class CMenuState : public CGameState
+class MenuState : public GameState
 {
 public:
-    void OnKeyDown(SDL_KeyboardEvent&);
-    void Update(double TimeStep);
-    void Draw();
-    void EnterState();
-    void LeaveState();
-    static CMenuState* GetInstance(StateManager* pManager);
+    static MenuState* getInstance(StateManager* const manager);
+    void onKeyDown(SDL_KeyboardEvent&) override;
+    void update(double TimeStep) override;
+    void draw() override;
+    void enterState() override;
+    void leaveState() override;
 
 protected:
-    CMenuState(StateManager* pManager);
+    MenuState(StateManager* const manager);
 
 private:
-    void Init();
-    void Cleanup();
-    void SelectionUp();
-    void SelectionDown();
-    // The player validated the current selection
-    void SelectionChosen();
-    void ExitGame(void);
+    void init();
+    void cleanup();
+    void selectionUp();
+    void selectionDown();
+    void selectionChosen();
+    void exitGame();
+    TextControl* getTextControl(const int id);
+    void setBlinkText(const int id, const bool isBlink);
 
-    Font* m_pFont;
-    Font* m_pFontSmall;
-    Font* m_pFontSmall2;
-    Font* m_pFontLarge;
-    // Index of the current selected menu item
-    int m_iCurrentSelection;
-    // A pointer to the current active game (if any).
-    PlayState* m_pCurrentGame;
-
-    // The text controls of the different entries.
-    TextControl* m_pTitleText;
-    TextControl* m_pNewGameText;
-    TextControl* m_pResumeGameText;
-    TextControl* m_pScoresText;
-    TextControl* m_pExitText;
-    TextControl* m_pOptionsText;
-    TextControl* GetTextControl(int id);
-    void SetBlinkText(int id, bool in_bBlink);
+    Font* font;
+    Font* fontSmall;
+    Font* fontSmall2;
+    Font* fontLarge;
+    int currentSelection;
+    PlayState* currentGame;
+    TextControl* titleText;
+    TextControl* newGameText;
+    TextControl* resumeGameText;
+    TextControl* scoresText;
+    TextControl* exitText;
+    TextControl* optionsText;
 };
 } // namespace ui

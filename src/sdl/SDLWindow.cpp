@@ -1,53 +1,45 @@
-#include "engine/World.h"
-#include "engine/Renderer.h"
-
-#include "ui/gstate/MenuState.h"
-
-#include "Exception.h"
-#include "SDLTools.h"
 #include "SDLWindow.h"
+#include "Exception.h"
+#include "engine/World.h"
+#include "gl/Renderer.h"
+#include "sdl/SDLTools.h"
 
-SDLWindow::SDLWindow(int width, int height)
+SDLWindow::SDLWindow(ui::StateManager* stateManager, int width, int height)
 {
+    this->stateManager = stateManager;
     //Use OpenGL 2.1
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-    fPtrWnd = SDL_CreateWindow("Asteroids remake",
+    window = SDL_CreateWindow("Asteroids remake",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    if (fPtrWnd == nullptr)
+    if (window == nullptr)
+    {
         throw SDLException("SDL Window could not be created");
-
-    //Create context
-    fContext = SDL_GL_CreateContext(fPtrWnd);
-    if (fContext == nullptr)
+    }
+    context = SDL_GL_CreateContext(window);
+    if (context == nullptr)
+    {
         throw SDLException("OpenGL context could not be created");
-
-    renderer = SDL_CreateRenderer(fPtrWnd, -1, SDL_RENDERER_ACCELERATED);
-    //Use Vsync
-    if (SDL_GL_SetSwapInterval(1) < 0)
-        throw SDLException("Warning: Unable to set VSync");
-
-    InitGL();
-    OnSize(width, height);
-    fStateManager = new ui::StateManager;
-    fStateManager->ChangeState(ui::CMenuState::GetInstance(fStateManager));
+    }
+    initGL();
+    onSize(width, height);
 }
 
 SDLWindow::~SDLWindow()
 {
-    SDL_DestroyWindow(fPtrWnd);
+    SDL_DestroyWindow(window);
 }
 
-void SDLWindow::OnSize(GLsizei width, GLsizei height)
+void SDLWindow::onSize(int width, int height)
 {
     geWorld.scrWidth = width;
     geWorld.scrHeight = height;
-    ast::Renderer::setWindowSize(width, height);
+    gl::Renderer::setWindowSize(width, height);
 }
 
-void SDLWindow::InitGL()
+void SDLWindow::initGL()
 {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -56,33 +48,32 @@ void SDLWindow::InitGL()
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void SDLWindow::Update(double time)
+void SDLWindow::update(double time)
 {
-    fStateManager->Update(time);
+    stateManager->update(time);
 }
 
-void SDLWindow::Draw()
+void SDLWindow::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    fStateManager->Draw();
-    SDL_RenderPresent(renderer);
-    //SDL_GL_SwapWindow(fPtrWnd);
+    stateManager->draw();
+    SDL_GL_SwapWindow(window);
 }
 
-void SDLWindow::OnEvent(SDL_Event* e)
+void SDLWindow::onEvent(SDL_Event* e)
 {
     switch (e->type) {
     case SDL_WINDOWEVENT:
         handleWindowEvent(e);
         break;
     case SDL_KEYDOWN:
-        fStateManager->OnKeyDown(*SDLTools::GetKbEvent(e));
+        stateManager->onKeyDown(*SDLTools::GetKbEvent(e));
         break;
     case SDL_KEYUP:
-        fStateManager->OnKeyUp(*SDLTools::GetKbEvent(e));
+        stateManager->onKeyUp(*SDLTools::GetKbEvent(e));
         break;
     case SDL_TEXTINPUT:
-        fStateManager->OnChar(SDLTools::GetTextInputEvent(e)->text);
+        stateManager->onChar(SDLTools::GetTextInputEvent(e)->text);
         break;
     }
 }
@@ -91,6 +82,6 @@ void SDLWindow::handleWindowEvent(SDL_Event* e)
 {
     if (e->window.event == SDL_WINDOWEVENT_RESIZED)
     {
-        OnSize(e->window.data1, e->window.data2);
+        onSize(e->window.data1, e->window.data2);
     }
 }

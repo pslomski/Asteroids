@@ -27,7 +27,11 @@ add_executable(${ASTER_EXE})
 set(TEST_EXE test)
 add_executable(${TEST_EXE})
 
+set(TESTSDL_EXE testsdl)
+add_executable(${TESTSDL_EXE})
+
 include_directories(src)
 add_subdirectory(src)
 add_subdirectory(gtest)
 add_subdirectory(test)
+add_subdirectory(testsdl)

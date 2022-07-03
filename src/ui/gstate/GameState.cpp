@@ -3,17 +3,15 @@
 
 namespace ui
 {
-CGameState::CGameState(StateManager* pManager)
- : m_pStateManager(pManager)
-{
-}
+GameState::GameState(StateManager* const manager):
+    stateManager(manager)
+{}
 
-CGameState::~CGameState()
-{
-}
+GameState::~GameState()
+{}
 
-void CGameState::ChangeState(CGameState* pNewState)
+void GameState::changeState(GameState* const newState) const
 {
-    m_pStateManager->ChangeState(pNewState);
+    stateManager->changeState(newState);
 }
 } // namespace ui

@@ -3,58 +3,44 @@
 #include <string>
 #include <vector>
 
+#include "GameState.h"
+
 #include "ui/Font.h"
 #include "ui/Rectangle.h"
 #include "ui/TextControl.h"
 
-#include "GameState.h"
-
 namespace ui
 {
-// Specialization of the CGameState class for 
-// the high scores state. This displays the high
-// scores (player name+score). When a new high 
-// score is available after a game, it lets the 
-// player enters his name.
-class HighScoreState : public CGameState
+class HighScoreState : public GameState
 {
 public:
-    // Sets a new score: if this score should be 
-    // part of the high scores, the user will need 
-    // to enter his name.
     void SetNewHighScore(ULONG NewHighScore) { mNewHighScore = NewHighScore; }
+    void onKeyDown(SDL_KeyboardEvent& e) override;
+    void onChar(char* c) override;
+    void draw() override;
+    void enterState() override;
+    void leaveState() override;
 
-    // Implementation of specific events
-    void OnKeyDown(SDL_KeyboardEvent& e);
-    void OnChar(char* c);
-    void Draw();
-    void EnterState();
-    void LeaveState();
+    static HighScoreState* getInstance(StateManager* const manager);
 
-    static HighScoreState* GetInstance(StateManager* pManager);
 protected:
-    HighScoreState(StateManager* pManager);
+    HighScoreState(StateManager* const manager);
+
 private:
-    void Init();
-    void Cleanup();
+    void init();
+    void cleanup();
+    void saveScores();
+    void addNewScore(const std::string& strName, ULONG ulScore);
 
-    // Saves the current high scores
-    void SaveScores();
-
-    // Adds a new score in the high-score table and
-    // insert it at the correct location.
-    void AddNewScore(const std::string& strName, ULONG ulScore);
-
-    // High-score data: score and player name.
     struct HighScoreData
     {
         std::string strPlayer;
         ULONG ulScore;
         HighScoreData():strPlayer(), ulScore(0){}
-        // We have to sort in decreasing order, so the <
-        // operator returns the opposite.
         bool operator< (const HighScoreData& other)
         {
+            // We have to sort in decreasing order, so the <
+            // operator returns the opposite.
             if  (this->ulScore > other.ulScore) 
                 return true;
             return false;
