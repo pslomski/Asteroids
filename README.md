@@ -37,7 +37,7 @@ Bass
 ### 3.4
 vectorb.ttf font
 
-4. Building
+## 4. Building
 In root dir:
   mkdir build
   cd build
