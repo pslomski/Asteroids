@@ -50,3 +50,7 @@ output is
   
 ## 5. UT
 ./Test.exe --gtest_color=yes --gtest_filter=Rectangle.shouldInit
+
+## 6. 
+Managing game states based on article "TetroGL: An OpenGL Game Tutorial in C++ for Win32 platforms - Part 3"
+https://www.codeproject.com/Articles/30775/TetroGL-An-OpenGL-Game-Tutorial-in-Cplusplus-for-W

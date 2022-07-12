@@ -2,7 +2,7 @@
 #include "Exception.h"
 #include "engine/World.h"
 #include "log/Log.hpp"
-#include "sdl/SDLApplication.h"
+#include "sdl/Application.hpp"
 #include "sdl/SDLTools.h"
 
 #include "TestState.hpp"
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     int res = 0;
     try
     {
-        SDLApplication app;
+        sdl::Application app;
 
         geWorld.scrHeight = std::min(geWorld.scrHeight, int(0.80 * SDLTools::getScreenSize().height));
         geWorld.scrWidth = geWorld.scrHeight;
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
         ui::StateManager stateManager;
         ui::TestState testState(&stateManager);
         stateManager.changeState(&testState);
-        SDLWindow* window = SDLWindow::create(&stateManager, geWorld.scrWidth, geWorld.scrHeight);
+        sdl::Window* window = sdl::Window::create(&stateManager, geWorld.scrWidth, geWorld.scrHeight);
         if (window == nullptr)
         {
             throw std::runtime_error("Main window could not be created");

@@ -1,6 +1,6 @@
 target_sources(${ASTER_LIB}
     PRIVATE
-        SDLApplication.cpp SDLApplication.h
+        Application.cpp Application.hpp
         SDLTools.h
-        SDLWindow.cpp SDLWindow.h
+        Window.cpp Window.hpp
 )

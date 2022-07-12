@@ -3,14 +3,16 @@
 #include <SDL.h>
 #include "ui/gstate/StateManager.h"
 
-class SDLWindow
+namespace sdl
+{
+class Window
 {
 public:
-    static SDLWindow* create(ui::StateManager* stateManager, int width, int height)
+    static Window* create(ui::StateManager* stateManager, int width, int height)
     {
-        return new SDLWindow(stateManager, width, height);
+        return new Window(stateManager, width, height);
     }
-    static void destroy(SDLWindow* &ptrWindow)
+    static void destroy(Window* &ptrWindow)
     {
         delete ptrWindow;
         ptrWindow = nullptr;
@@ -20,8 +22,8 @@ public:
     void onEvent(SDL_Event* e);
 
 private:
-    SDLWindow(ui::StateManager* stateManager, int width, int height);
-    ~SDLWindow();
+    Window(ui::StateManager* stateManager, int width, int height);
+    ~Window();
     void initGL();
     void onSize(int width, int height);
     void handleWindowEvent(SDL_Event* e);
@@ -30,3 +32,4 @@ private:
     SDL_Window* window{nullptr};
     SDL_GLContext context{nullptr};
 };
+}

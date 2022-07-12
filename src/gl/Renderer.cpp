@@ -1,6 +1,5 @@
 #include <GL/gl.h>
-
-#include "Renderer.h"
+#include "gl/Renderer.hpp"
 
 namespace
 {

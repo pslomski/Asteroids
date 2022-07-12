@@ -1,18 +1,21 @@
 #pragma once
 
 #include <SDL.h>
-#include "sdl/SDLWindow.h"
+#include "sdl/Window.hpp"
 
-class SDLApplication
+namespace sdl
+{
+class Application
 {
 public:
-    SDLApplication();
-    ~SDLApplication();
+    Application();
+    ~Application();
+
     static void quitApp()
     {
         canQuit = true;
     }
-    void init(SDLWindow *window);
+    void init(Window *window);
     void run();
 
 private:
@@ -20,5 +23,6 @@ private:
     void onEvent(SDL_Event* e);
 
     static bool canQuit;
-    SDLWindow *window;
+    Window *window;
 };
+}

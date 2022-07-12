@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Font.h"
+#include "ui/Font.hpp"
 #include "ui/TextControl.h"
 #include "ui/gstate/GameState.h"
 

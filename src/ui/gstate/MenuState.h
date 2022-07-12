@@ -3,7 +3,7 @@
 #include "GameState.h"
 #include "PlayState.h"
 
-#include "ui/Font.h"
+#include "ui/Font.hpp"
 #include "ui/TextControl.h"
 
 namespace ui

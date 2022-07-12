@@ -4,7 +4,7 @@
 #include "OptionsState.h"
 
 #include "engine/World.h"
-#include "gl/Renderer.h"
+#include "gl/Renderer.hpp"
 
 namespace ui
 {

@@ -5,8 +5,8 @@
 
 namespace ge
 {
-ScoreCounter::ScoreCounter(AsterGame* game_):
-    game(game_)
+ScoreCounter::ScoreCounter(AsterGame* asterGame):
+    game(asterGame)
 {
     reset();
 }

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <SDL_ttf.h>
 
-#include "ui/Font.h"
+#include "ui/Font.hpp"
 
 namespace ui
 {

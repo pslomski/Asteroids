@@ -3,7 +3,7 @@
 
 #include "engine/TimeInterval.hpp"
 #include "engine/Tools.h"
-#include "Font.h"
+#include "Font.hpp"
 #include "Rectangle.h"
 
 namespace ui

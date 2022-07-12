@@ -7,7 +7,7 @@
 #include "engine/Consts.h"
 #include "engine/World.h"
 #include "log/Log.hpp"
-#include "gl/renderer.h"
+#include "gl/renderer.hpp"
 #include "sdl/SDLTools.h"
 
 namespace ui

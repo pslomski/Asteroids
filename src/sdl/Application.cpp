@@ -4,13 +4,15 @@
 #include "engine/Tools.h"
 #include "engine/World.h"
 #include "engine/Sound.h"
-#include "sdl/SDLApplication.h"
-#include "sdl/SDLWindow.h"
+#include "sdl/Application.hpp"
+#include "sdl/Window.hpp"
 #include "ui/gstate/MenuState.h"
 
-bool SDLApplication::canQuit = false;
+namespace sdl
+{
+bool Application::canQuit = false;
 
-SDLApplication::SDLApplication()
+Application::Application()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -24,21 +26,21 @@ SDLApplication::SDLApplication()
     geMusic.Open();
 }
 
-SDLApplication::~SDLApplication()
+Application::~Application()
 {
     cleanup();
 }
 
-void SDLApplication::cleanup()
+void Application::cleanup()
 {
     geMusic.Close();
     geSound.Close();
     TTF_Quit();
     SDL_Quit();
-    SDLWindow::destroy(window);
+    Window::destroy(window);
 }
 
-void SDLApplication::init(SDLWindow *window)
+void Application::init(Window *window)
 {
     this->window = window;
 }
@@ -57,7 +59,7 @@ int GetVRefersh()
     }
 }
 
-void SDLApplication::run()
+void Application::run()
 {
     int VRefresh = GetVRefersh();
     Float FRAME_TIME = (1000.0 / VRefresh);
@@ -93,7 +95,7 @@ void SDLApplication::run()
     }
 }
 
-void SDLApplication::onEvent(SDL_Event* e)
+void Application::onEvent(SDL_Event* e)
 {
     switch (e->type)
     {
@@ -103,4 +105,5 @@ void SDLApplication::onEvent(SDL_Event* e)
     default:
         window->onEvent(e);
     }
+}
 }

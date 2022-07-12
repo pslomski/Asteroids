@@ -1,10 +1,12 @@
-#include "SDLWindow.h"
 #include "Exception.h"
 #include "engine/World.h"
-#include "gl/Renderer.h"
+#include "gl/Renderer.hpp"
 #include "sdl/SDLTools.h"
+#include "sdl/Window.hpp"
 
-SDLWindow::SDLWindow(ui::StateManager* stateManager, int width, int height)
+namespace sdl
+{
+Window::Window(ui::StateManager* stateManager, int width, int height)
 {
     this->stateManager = stateManager;
     //Use OpenGL 2.1
@@ -27,19 +29,19 @@ SDLWindow::SDLWindow(ui::StateManager* stateManager, int width, int height)
     onSize(width, height);
 }
 
-SDLWindow::~SDLWindow()
+Window::~Window()
 {
     SDL_DestroyWindow(window);
 }
 
-void SDLWindow::onSize(int width, int height)
+void Window::onSize(int width, int height)
 {
     geWorld.scrWidth = width;
     geWorld.scrHeight = height;
     gl::Renderer::setWindowSize(width, height);
 }
 
-void SDLWindow::initGL()
+void Window::initGL()
 {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,19 +50,19 @@ void SDLWindow::initGL()
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void SDLWindow::update(double time)
+void Window::update(double time)
 {
     stateManager->update(time);
 }
 
-void SDLWindow::draw()
+void Window::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     stateManager->draw();
     SDL_GL_SwapWindow(window);
 }
 
-void SDLWindow::onEvent(SDL_Event* e)
+void Window::onEvent(SDL_Event* e)
 {
     switch (e->type) {
     case SDL_WINDOWEVENT:
@@ -78,10 +80,11 @@ void SDLWindow::onEvent(SDL_Event* e)
     }
 }
 
-void SDLWindow::handleWindowEvent(SDL_Event* e)
+void Window::handleWindowEvent(SDL_Event* e)
 {
     if (e->window.event == SDL_WINDOWEVENT_RESIZED)
     {
         onSize(e->window.data1, e->window.data2);
     }
+}
 }

@@ -1,11 +1,8 @@
 #pragma once
-
 #include <SDL_ttf.h>
 #include <string>
-
 #include "engine/Types.h"
-
-#include "Rectangle.h"
+#include "ui/Rectangle.h"
 
 namespace ui
 {

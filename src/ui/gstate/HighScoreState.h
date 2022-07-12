@@ -5,7 +5,7 @@
 
 #include "GameState.h"
 
-#include "ui/Font.h"
+#include "ui/Font.hpp"
 #include "ui/Rectangle.h"
 #include "ui/TextControl.h"
 

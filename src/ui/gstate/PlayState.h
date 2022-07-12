@@ -2,7 +2,7 @@
 
 #include "engine/AsterGame.h"
 
-#include "ui/Font.h"
+#include "ui/Font.hpp"
 #include "ui/TextControl.h"
 
 #include "GameState.h"

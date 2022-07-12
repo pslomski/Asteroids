@@ -1,10 +1,10 @@
 #include <assert.h>
 
-#include "gl/Renderer.h"
+#include "gl/Renderer.hpp"
 #include "log/Log.hpp"
 
 #include "Exception.h"
-#include "Font.h"
+#include "Font.hpp"
 
 namespace ui
 {

@@ -8,13 +8,15 @@
 
 #include "engine/Consts.h"
 #include "engine/World.h"
-#include "gl/renderer.h"
+#include "gl/renderer.hpp"
 #include "log/Log.hpp"
-#include "sdl/SDLApplication.h"
+#include "sdl/Application.hpp"
 #include "sdl/SDLTools.h"
 
 namespace ui
 {
+using Application = sdl::Application;
+
 MenuState::MenuState(StateManager* const manager):
     GameState(manager),
     font(nullptr),
@@ -268,13 +270,13 @@ void MenuState::selectionChosen()
         changeState(HighScoreState::getInstance(stateManager));
         break;
     case 4:
-        SDLApplication::quitApp();
+        Application::quitApp();
         break;
     }
 }
 
 void MenuState::exitGame()
 {
-    SDLApplication::quitApp();
+    Application::quitApp();
 }
 } // namespace ui

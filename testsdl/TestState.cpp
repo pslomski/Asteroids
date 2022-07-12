@@ -1,9 +1,9 @@
 #include <assert.h>
 #include "TestState.hpp"
 
-#include "gl/Renderer.h"
+#include "gl/Renderer.hpp"
 #include "log/Log.hpp"
-#include "sdl/SDLApplication.h"
+#include "sdl/Application.hpp"
 #include "sdl/SDLTools.h"
 #include "ui/gstate/StateManager.h"
 
@@ -76,6 +76,6 @@ void TestState::Draw()
 
 void TestState::ExitGame()
 {
-    SDLApplication::quitApp();
+    sdl::Application::quitApp();
 }
 } // namespace ui

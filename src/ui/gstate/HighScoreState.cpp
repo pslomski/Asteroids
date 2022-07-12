@@ -7,7 +7,7 @@
 
 #include "engine/Consts.h"
 #include "engine/World.h"
-#include "gl/Renderer.h"
+#include "gl/Renderer.hpp"
 #include "log/Log.hpp"
 #include "sdl/SDLTools.h"
 
