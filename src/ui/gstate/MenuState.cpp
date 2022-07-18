@@ -6,8 +6,8 @@
 #include "PlayState.h"
 #include "StateManager.h"
 
-#include "engine/Consts.h"
-#include "engine/World.h"
+#include "aster/Consts.h"
+#include "aster/World.h"
 #include "gl/renderer.hpp"
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"

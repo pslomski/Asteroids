@@ -11,7 +11,7 @@
 #include "Types.h"
 #include "Ufo.h"
 
-namespace ge
+namespace aster
 {
 class AsterGame
 {
@@ -28,10 +28,10 @@ public:
     bool Key[256]; // Array Used For The Keyboard Routine
     bool Keypress[256]; // Array Used For The Keyboard Routine
 
-    void Clear(void);
-    bool Reset(void);
-    void Update(void);
-    void Draw(void);
+    void Clear();
+    bool Reset();
+    void Update();
+    void Draw();
     bool isGameOver() const;
     void EnterState();
     void LeaveState();
@@ -39,12 +39,12 @@ public:
 private:
     void PlayStartBeep(float pitch, float gain);
     void GenerateAsters(int iCount, int iGameLevel);
-    void ClearBackground(void);
-    void generateBackground(void);
-    void ProcessUserInput(void);
+    void ClearBackground();
+    void generateBackground();
+    void ProcessUserInput();
     void analyzeGameState();
     void UpdateObjects();
-    void CheckCollisions(void);
+    void CheckCollisions();
 
     TGEObjectSound sndBroom;
     TGEObjectSound sndStartBeep;
@@ -75,4 +75,4 @@ private:
     bool bPitchBroomSound;
     TimeInterval tiChangeBroomSoundFreq;
 };
-} // namespace ge
+} // namespace aster

@@ -7,7 +7,7 @@
 #include "Sound.h"
 #include "World.h"
 
-namespace ge
+namespace aster
 {
 AsterGame::AsterGame():
     score(this),
@@ -18,8 +18,8 @@ AsterGame::AsterGame():
     sndStartBeep.Init(SND_START_BEEP, SND_VOL_START_BEEP);
     sndBonusBeep.Init(SND_BONUS_BEEP, SND_VOL_BONUS_BEEP);
     sndPowerUp.Init(SND_POWERUP, SND_VOL_POWERUP);
-    tiChangeBroomSoundFreq.interval = GE_TI_CHANGE_BROOM_FREQ;
-    tiFPS.interval = 1.0;
+    tiChangeBroomSoundFreq.set(GE_TI_CHANGE_BROOM_FREQ);
+    tiFPS.set(1.0);
     ship = NULL;
     ufo = NULL;
     gameState = gsRun;
@@ -30,7 +30,7 @@ AsterGame::AsterGame():
     m_ListBkg2 = 0;
     tiPause.reset(GE_PAUSE_TIME);
     tiGameStart.reset(1.2);
-    tiUfoRespawn.interval = GE_BASE_UFO_TIME;
+    tiUfoRespawn.set(GE_BASE_UFO_TIME);
     m_BeepCount = 0;
     m_pitch = 0.5;
     m_gain = 0.5;
@@ -40,7 +40,7 @@ AsterGame::~AsterGame()
 {
 }
 
-void AsterGame::generateBackground(void)
+void AsterGame::generateBackground()
 {
     int w = int(geWorld.getWidth());
     int h = int(geWorld.GetHeight());
@@ -76,7 +76,7 @@ void AsterGame::generateBackground(void)
     }
 }
 
-void AsterGame::ClearBackground(void)
+void AsterGame::ClearBackground()
 {
     if (m_ListBkg1) glDeleteLists(m_ListBkg1, 1);
     m_ListBkg1 = 0;
@@ -106,7 +106,7 @@ void AsterGame::LeaveState()
     }
 }
 
-void AsterGame::Update(void)
+void AsterGame::Update()
 {
     Object::dt = geWorld.dt;
     ++m_FrameCount;
@@ -122,7 +122,7 @@ void AsterGame::Update(void)
     UpdateObjects();
 }
 
-void AsterGame::Clear(void)
+void AsterGame::Clear()
 {
     geSound.Stop();
     for (int i = 0; i < 256; ++i) Key[i] = false;
@@ -206,7 +206,7 @@ void AsterGame::PlayStartBeep(float pitch, float gain)
     sndStartBeep.Play();
 }
 
-bool AsterGame::Reset(void)
+bool AsterGame::Reset()
 {
     Clear();
     srand((unsigned)time(NULL));
@@ -231,7 +231,7 @@ bool AsterGame::Reset(void)
     return true;
 };
 
-void AsterGame::ProcessUserInput(void)
+void AsterGame::ProcessUserInput()
 {
     if (Key[SDL_SCANCODE_UP]) {
         if (ship) ship->AccelerationOn();
@@ -327,14 +327,17 @@ void AsterGame::analyzeGameState()
             bPitchBroomSound = not bPitchBroomSound;
         }
 
-        if (NULL == ship) {
+        if (NULL == ship)
+        {
             // Ship destroyed
             --Lives;
-            if (Lives > 0) {
+            if (Lives > 0)
+            {
                 gameState = gsShipDestroyed;
                 tiPause.reset(GE_PAUSE_TIME);
             }
-            else {
+            else
+            {
                 gameState = gsGameOver;
                 tiPause.reset(GE_GAMEOVER_PAUSE_TIME);
             }
@@ -351,7 +354,8 @@ void AsterGame::analyzeGameState()
             if (!ufo) 
             {
                 // Handle Ufo
-                if (tiUfoRespawn.inc(Object::dt)) {
+                if (tiUfoRespawn.inc(Object::dt))
+                {
                     tiUfoRespawn.reset(std::max(15.0, tiUfoRespawn.interval - 1));
                     ufo = new TUfo;
                     ufo->SetXY(geWorld.GetRandomPosAtEdge());
@@ -361,16 +365,17 @@ void AsterGame::analyzeGameState()
     }
     break;
     case gsNextLevelPause:
-        if (tiPause.inc(Object::dt)) {
+        if (tiPause.inc(Object::dt))
+        {
             tiPause.reset();
             gameState = gsRun;
-            if (vecAsters.empty()) {
+            if (vecAsters.empty())
+            {
                 ++m_AstersCount;
                 m_AstersCount = std::min(m_AstersCount, GE_MAX_ASTER_COUNT);
                 GenerateAsters(m_AstersCount, gameLevel++);
-                tiBroomSound.reset();
                 tiBroomSound.reset(5.0);
-                tiChangeBroomSoundFreq.interval += 2;
+                tiChangeBroomSoundFreq.inc(2.0);
             }
         }
         break;
@@ -397,23 +402,28 @@ void AsterGame::analyzeGameState()
 
 void AsterGame::UpdateObjects()
 {
-    if (ship) {
+    if (ship)
+    {
         if (ship->Respawning) ship->Respawn();
         ship->Update();
     }
 
-    if (ufo) {
+    if (ufo)
+    {
         ufo->Update();
         ufo->pAster = NULL;
     }
 
     Float Rmin = 1e6;
     TvecAsterIt itAster;
-    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++) {
+    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++)
+    {
         (*itAster)->update();
-        if (ufo) {
+        if (ufo)
+        {
             Float Dist = geObDist(ufo, (*itAster));
-            if (Dist < Rmin) {
+            if (Dist < Rmin)
+            {
                 Rmin = Dist;
                 ufo->pAster = (*itAster);
             }
@@ -421,8 +431,9 @@ void AsterGame::UpdateObjects()
     }
 
     TvecBulletIt itBullet;
-    for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();) {
-        if ((*itBullet)->Expired())
+    for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();)
+    {
+        if ((*itBullet)->expired())
         {
             delete (*itBullet);
             itBullet = vecBullets.erase(itBullet);
@@ -434,8 +445,9 @@ void AsterGame::UpdateObjects()
         }
     }
 
-    for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();) {
-        if ((*itBullet)->Expired())
+    for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();)
+    {
+        if ((*itBullet)->expired())
         {
             delete (*itBullet);
             itBullet = vecUfoBullets.erase(itBullet);
@@ -448,45 +460,55 @@ void AsterGame::UpdateObjects()
     }
 
     TvecObiektIt itOb;
-    for (itOb = vecDebris.begin(); itOb != vecDebris.end();) {
-        if ((*itOb)->Expired()) {
+    for (itOb = vecDebris.begin(); itOb != vecDebris.end();)
+    {
+        if ((*itOb)->expired())
+        {
             delete (*itOb);
             itOb = vecDebris.erase(itOb);
         }
-        else {
+        else
+        {
             (*itOb)->update();
             ++itOb;
         }
     }
 
-    for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end();) {
-        if ((*it)->Expired()) {
+    for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end();)
+    {
+        if ((*it)->expired())
+        {
             delete (*it);
             it = vecBonus.erase(it);
         }
-        else {
+        else
+        {
             (*it)->Update();
             ++it;
         }
     }
 
-    if (ufo) {
+    if (ufo)
+    {
         ufo->pShip = ship;
         ufo->Action(vecUfoBullets);
     }
 
-    for (TvecObiektIt it = vecStarBlink.begin(); it != vecStarBlink.end(); ++it) {
+    for (TvecObiektIt it = vecStarBlink.begin(); it != vecStarBlink.end(); ++it)
+    {
         (*it)->update();
     }
 }
 
-void AsterGame::CheckCollisions(void)
+void AsterGame::CheckCollisions()
 {
     TvecAster vecAstersTmp;
 
     //kolizja Statek-Ufo
-    if (ufo) {
-        if (ship && !ship->Respawning && ship->CheckCollision(ufo)) {
+    if (ufo)
+    {
+        if (ship && !ship->Respawning && ship->CheckCollision(ufo))
+        {
             ship->Crash(vecDebris);
             delete ship;
             ship = NULL;
@@ -500,8 +522,10 @@ void AsterGame::CheckCollisions(void)
     //kolizja Strzal_nasz-Ufo
     if (ufo) {
         TvecBulletIt itBullet;
-        for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();) {
-            if (ufo->CheckCollision(*itBullet)) {
+        for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();)
+        {
+            if (ufo->CheckCollision(*itBullet))
+            {
                 score.inc(ufo->ScoreValue);
                 delete (*itBullet);
                 itBullet = vecBullets.erase(itBullet);
@@ -510,16 +534,20 @@ void AsterGame::CheckCollisions(void)
                 ufo = NULL;
                 break;
             }
-            else {
+            else
+            {
                 ++itBullet;
             }
         }
     }
 
     //kolizja Strzal_Ufo-Statek
-    if (ship && !ship->Respawning) {
-        for (TvecBulletIt itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();) {
-            if (ship->CheckCollision(*itBullet)) {
+    if (ship && !ship->Respawning)
+    {
+        for (TvecBulletIt itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();)
+        {
+            if (ship->CheckCollision(*itBullet))
+            {
                 delete (*itBullet);
                 itBullet = vecUfoBullets.erase(itBullet);
                 ship->Crash(vecDebris);
@@ -527,7 +555,8 @@ void AsterGame::CheckCollisions(void)
                 ship = NULL;
                 break;
             }
-            else {
+            else
+            {
                 ++itBullet;
             }
         }
@@ -535,21 +564,24 @@ void AsterGame::CheckCollisions(void)
 
     //tutaj sprawdzanie kolizji z asteroidami i ew. strzalami przeciwnika
     TvecAsterIt itAster;
-    for (itAster = vecAsters.begin(); itAster != vecAsters.end();) {
-
+    for (itAster = vecAsters.begin(); itAster != vecAsters.end();)
+    {
         bool bIncrement = true;
-        if (ship && !ship->Respawning && ship->CheckCollision(*itAster)) {
+        if (ship && !ship->Respawning && ship->CheckCollision(*itAster))
+        {
             ship->Crash(vecDebris);
             delete ship;
-            ship = NULL;
+            ship = nullptr;
 
             (*itAster)->Crash(vecAstersTmp, vecDebris, vecBonus);
             delete (*itAster);
             itAster = vecAsters.erase(itAster);
             bIncrement = false;
             if (itAster == vecAsters.end())
+            {
                 break;
-        };//if (Ship->CheckCollision(*itAster)){
+            }
+        }
 
         if (ufo && ufo->CheckCollision(*itAster))
         {
@@ -558,19 +590,23 @@ void AsterGame::CheckCollisions(void)
             ufo = NULL;
             tiUfoRespawn.reset();
 
-            Asteroid::CreateBonus = false;//ufo nie generuje bonusow
+            Asteroid::CreateBonus = false; // ufo doesn't generate bonuses
             (*itAster)->Crash(vecAstersTmp, vecDebris, vecBonus);
             Asteroid::CreateBonus = true;
             delete (*itAster);
             itAster = vecAsters.erase(itAster);
             bIncrement = false;
             if (itAster == vecAsters.end())
+            {
                 break;
-        };//if (pUfo->CheckCollision(*itAster)){
+            }
+        }
 
         TvecBulletIt itBullet;
-        for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();) {
-            if ((*itAster)->CheckCollision(*itBullet)) {
+        for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();)
+        {
+            if ((*itAster)->CheckCollision(*itBullet))
+            {
                 delete (*itBullet);
                 itBullet = vecBullets.erase(itBullet);
                 score.inc((*itAster)->ScoreValue);
@@ -581,48 +617,62 @@ void AsterGame::CheckCollisions(void)
                 if (itAster == vecAsters.end())
                     break;
             }
-            else {
+            else
+            {
                 ++itBullet;
             }
         }
 
-        if (itAster != vecAsters.end()) {
-            for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();) {
-                if ((*itAster)->CheckCollision(*itBullet)) {
+        if (itAster != vecAsters.end())
+        {
+            for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();)
+            {
+                if ((*itAster)->CheckCollision(*itBullet))
+                {
                     delete (*itBullet);
                     itBullet = vecUfoBullets.erase(itBullet);
-
-                    Asteroid::CreateBonus = false;//ufo nie generuje bonusow
+                    Asteroid::CreateBonus = false; // ufo doesn't generate bonuses
                     (*itAster)->Crash(vecAstersTmp, vecDebris, vecBonus);
                     Asteroid::CreateBonus = true;
                     delete (*itAster);
                     itAster = vecAsters.erase(itAster);
                     bIncrement = false;
                     if (itAster == vecAsters.end())
+                    {
                         break;
+                    }
                 }
-                else {
+                else
+                {
                     ++itBullet;
                 }
             }
         }
         if (bIncrement)
+        {
             ++itAster;
-    }//for(itAster=vecAsters.begin(); itAster!=vecAsters.end(); itAster++){
+        }
+    }
 
-    for (itAster = vecAstersTmp.begin(); itAster != vecAstersTmp.end(); itAster++) {
+    for (itAster = vecAstersTmp.begin(); itAster != vecAstersTmp.end(); itAster++)
+    {
         vecAsters.push_back(*itAster);
     }
 
-    //kolizja Statek-Bonus
-    if (ship) {
-        for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end();) {
-            if (ship->CheckCollision(*it)) {
+    // Ship-Bonus collision
+    if (ship)
+    {
+        for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end();)
+        {
+            if (ship->CheckCollision(*it))
+            {
                 score.inc((*it)->ScoreValue);
-                if ((*it)->Type == btPoints) {
+                if ((*it)->Type == btPoints)
+                {
                     sndBonusBeep.Play();
                 }
-                else {
+                else
+                {
                     ship->AddBonus((*it)->Type);
                     sndPowerUp.Play();
                 }
@@ -630,14 +680,15 @@ void AsterGame::CheckCollisions(void)
                 it = vecBonus.erase(it);
                 break;
             }
-            else {
+            else
+            {
                 ++it;
             }
         }
     }
 }
 
-void AsterGame::Draw(void)
+void AsterGame::Draw()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -651,35 +702,45 @@ void AsterGame::Draw(void)
     glCallList(m_ListBkg2);
 
     if (ship)
+    {
         ship->Draw();
+    }
 
     if (ufo)
+    {
         ufo->Draw();
+    }
 
     TvecAsterIt itAster;
-    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++) {
+    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++)
+    {
         (*itAster)->Draw();
     }
 
     TvecBulletIt itBullet;
-    for (itBullet = vecBullets.begin(); itBullet != vecBullets.end(); ++itBullet) {
+    for (itBullet = vecBullets.begin(); itBullet != vecBullets.end(); ++itBullet)
+    {
         (*itBullet)->Draw();
     }
 
-    for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end(); ++itBullet) {
+    for (itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end(); ++itBullet)
+    {
         (*itBullet)->Draw();
     }
 
-    for (TvecObiektIt itOb = vecDebris.begin(); itOb != vecDebris.end(); ++itOb) {
+    for (TvecObiektIt itOb = vecDebris.begin(); itOb != vecDebris.end(); ++itOb)
+    {
         (*itOb)->Draw();
     }
 
-    for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end(); ++it) {
+    for (TvecBonusIt it = vecBonus.begin(); it != vecBonus.end(); ++it)
+    {
         (*it)->Draw();
     }
 
-    for (TvecObiektIt it = vecStarBlink.begin(); it != vecStarBlink.end(); ++it) {
+    for (TvecObiektIt it = vecStarBlink.begin(); it != vecStarBlink.end(); ++it)
+    {
         (*it)->Draw();
     }
 }
-} // namespace ge
+} // namespace aster

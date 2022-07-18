@@ -1,9 +1,9 @@
 #include <math.h>
 
-#include "TextControl.h"
+#include "aster/Consts.h"
+#include "aster/World.h"
 
-#include "engine/Consts.h"
-#include "engine/World.h"
+#include "ui/TextControl.h"
 
 namespace ui
 {

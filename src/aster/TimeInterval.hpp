@@ -4,16 +4,20 @@
 class TimeInterval
 {
 public:
-    TimeInterval(Float interval_);
     TimeInterval();
+    TimeInterval(Float interval_);
+    Float get() const
+    {
+        return interval;
+    }
     void set(Float newInterval);
     void reset();
     void reset(Float newInterval);
     void setExpired();
+    bool hasExpired() const;
     bool inc(Float dt);
     Float ratio();
 
     Float interval;
     Float elapsed{0.0};
-private:
 };

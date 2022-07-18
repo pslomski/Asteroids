@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "engine/TimeInterval.hpp"
-#include "engine/Tools.h"
+#include "aster/TimeInterval.hpp"
+#include "aster/Tools.h"
 #include "Font.hpp"
 #include "Rectangle.h"
 

@@ -1,11 +1,11 @@
 #pragma once
+
 #include <math.h>
 #include <gl\gl.h>
 #include "Tools.h"
 #include "Object.h"
 #include "Bullet.h"
 #include "ObjectSound.h"
-
 
 class PlayerShip;
 

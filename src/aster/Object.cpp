@@ -6,7 +6,7 @@
 
 Float Object::dt = 0.0;
 
-Float geObDist(Object* pO1, Object* pO2)
+Float geObDist(Object *pO1, Object *pO2)
 {
     Float dx = pO2->fx - pO1->fx;
     Float dy = pO2->fy - pO1->fy;
@@ -26,7 +26,7 @@ Object::Object()
     fomega = 0.0;
     SetXY(0.0, 0.0);
     SetA(0.0);
-    SetV(0.0);//zeruje predkosc
+    SetV(0.0); // zeruje predkosc
     KDec = 0.0;
 }
 
@@ -62,8 +62,10 @@ void Object::SetRandV(Float vmin, Float vmax)
 
 Float Object::CorrectAlfa(Float alfa)
 {
-    while (alfa < 0.0) alfa += 360.0;
-    while (alfa > 360.0) alfa -= 360.0;
+    while (alfa < 0.0)
+        alfa += 360.0;
+    while (alfa > 360.0)
+        alfa -= 360.0;
     return alfa;
 }
 
@@ -74,24 +76,42 @@ void Object::Move()
     alphap = falfa;
 
     falfa += fomega * dt;
-    if (abs(KDec) > 1e-6) {
+    if (abs(KDec) > 1e-6)
+    {
         fvx += (fax - KDec * fvx * abs(fvx)) * dt;
         fvy += (fay - KDec * fvy * abs(fvy)) * dt;
     }
-    else {
+    else
+    {
         fvx += fax * dt;
         fvy += fay * dt;
     }
     fx += fvx * dt;
     fy += fvy * dt;
 
-    if (fx < geWorld.clipLeft) { fx += geWorld.clipRight; xp += geWorld.clipRight; }
-    if (fx > geWorld.clipRight) { fx -= geWorld.clipRight; xp -= geWorld.clipRight; }
-    if (fy < geWorld.clipBottom) { fy += geWorld.clipTop;   yp += geWorld.clipTop; }
-    if (fy > geWorld.clipTop) { fy -= geWorld.clipTop;   yp -= geWorld.clipTop; }
+    if (fx < geWorld.clipLeft)
+    {
+        fx += geWorld.clipRight;
+        xp += geWorld.clipRight;
+    }
+    if (fx > geWorld.clipRight)
+    {
+        fx -= geWorld.clipRight;
+        xp -= geWorld.clipRight;
+    }
+    if (fy < geWorld.clipBottom)
+    {
+        fy += geWorld.clipTop;
+        yp += geWorld.clipTop;
+    }
+    if (fy > geWorld.clipTop)
+    {
+        fy -= geWorld.clipTop;
+        yp -= geWorld.clipTop;
+    }
 }
 
-BoxF Object::Transform(const BoxF& seg) const
+BoxF Object::Transform(const BoxF &seg) const
 {
     BoxF res;
     Float sinalfa = sin(-falfa * GE_PIover180);
@@ -103,16 +123,16 @@ BoxF Object::Transform(const BoxF& seg) const
     return res;
 }
 
-bool _CheckPolygWithPoint(Object* pObjPoint, Object* pObjPolyg)
+bool _CheckPolygWithPoint(Object *pObjPoint, Object *pObjPolyg)
 {
     BoxF o1;
     Float x, y;
-    //bierzemy wektor przesuniecia punktu
+    // bierzemy wektor przesuniecia punktu
     BoxF o2 = BoxF(pObjPoint->xp, pObjPoint->yp, pObjPoint->GetX(), pObjPoint->GetY());
     for (unsigned int i1 = 0; i1 < pObjPolyg->Verts.size(); ++i1)
     {
         if (0 == i1)
-        {	
+        {
             o1 = pObjPolyg->Transform(
                 BoxF(
                     pObjPolyg->Verts[0].x,
@@ -143,7 +163,7 @@ bool _CheckPolygWithPoint(Object* pObjPoint, Object* pObjPolyg)
     return false;
 }
 
-bool Object::CheckCollision(Object* pObiekt)
+bool Object::CheckCollision(Object *pObiekt)
 {
     assert(NULL != pObiekt);
 
@@ -152,39 +172,54 @@ bool Object::CheckCollision(Object* pObiekt)
         ((GetY() + Bounds.y0) > (pObiekt->GetY() + pObiekt->Bounds.y1)) ||
         ((GetY() + Bounds.y1) < (pObiekt->GetY() + pObiekt->Bounds.y0)))
         return false;
-    else {
-        if (ogPolyg == ObjGeom) {
+    else
+    {
+        if (ogPolyg == ObjGeom)
+        {
             BoxF o1, o2;
             Float _x, _y;
-            if (ogPolyg == pObiekt->ObjGeom) {
-                for (unsigned int i1 = 0; i1 < Verts.size(); ++i1) {
-                    if (0 == i1)	o1 = Transform(BoxF(Verts[0].x, Verts[0].y, Verts[Verts.size() - 1].x, Verts[Verts.size() - 1].y));
-                    else		o1 = Transform(BoxF(Verts[i1 - 1].x, Verts[i1 - 1].y, Verts[i1].x, Verts[i1].y));
-                    for (unsigned int i2 = 0; i2 < pObiekt->Verts.size(); ++i2) {
-                        if (0 == i2)	o2 = pObiekt->Transform(BoxF(pObiekt->Verts[0].x, pObiekt->Verts[0].y, pObiekt->Verts[pObiekt->Verts.size() - 1].x, pObiekt->Verts[pObiekt->Verts.size() - 1].y));
-                        else		o2 = pObiekt->Transform(BoxF(pObiekt->Verts[i2 - 1].x, pObiekt->Verts[i2 - 1].y, pObiekt->Verts[i2].x, pObiekt->Verts[i2].y));
+            if (ogPolyg == pObiekt->ObjGeom)
+            {
+                for (unsigned int i1 = 0; i1 < Verts.size(); ++i1)
+                {
+                    if (0 == i1)
+                        o1 = Transform(BoxF(Verts[0].x, Verts[0].y, Verts[Verts.size() - 1].x, Verts[Verts.size() - 1].y));
+                    else
+                        o1 = Transform(BoxF(Verts[i1 - 1].x, Verts[i1 - 1].y, Verts[i1].x, Verts[i1].y));
+                    for (unsigned int i2 = 0; i2 < pObiekt->Verts.size(); ++i2)
+                    {
+                        if (0 == i2)
+                            o2 = pObiekt->Transform(BoxF(pObiekt->Verts[0].x, pObiekt->Verts[0].y, pObiekt->Verts[pObiekt->Verts.size() - 1].x, pObiekt->Verts[pObiekt->Verts.size() - 1].y));
+                        else
+                            o2 = pObiekt->Transform(BoxF(pObiekt->Verts[i2 - 1].x, pObiekt->Verts[i2 - 1].y, pObiekt->Verts[i2].x, pObiekt->Verts[i2].y));
                         if (LinesIntersection(o1, o2, _x, _y) == 0)
                             return true;
                     }
                 }
             }
-            else if (ogPoint == pObiekt->ObjGeom) {
+            else if (ogPoint == pObiekt->ObjGeom)
+            {
                 if (_CheckPolygWithPoint(pObiekt, this))
                     return true;
             }
-            else {
-                return true;//przyjmyjemy przeciecie Bounds za kolizje
+            else
+            {
+                return true; // przyjmyjemy przeciecie Bounds za kolizje
             }
         }
-        else if (ogPoint == ObjGeom) {
-            if (ogPolyg == pObiekt->ObjGeom) {
+        else if (ogPoint == ObjGeom)
+        {
+            if (ogPolyg == pObiekt->ObjGeom)
+            {
                 if (_CheckPolygWithPoint(this, pObiekt))
                     return true;
             }
-            else return true;//w przypadku 2 punktow przyjmyjemy przeciecie Bounds za kolizje
+            else
+                return true; // w przypadku 2 punktow przyjmyjemy przeciecie Bounds za kolizje
         }
-        else {
-            return true;//przyjmyjemy przeciecie Bounds za kolizje
+        else
+        {
+            return true; // przyjmyjemy przeciecie Bounds za kolizje
         }
         return false;
     }
@@ -214,10 +249,11 @@ void Object::Render(void)
     OnRender();
 }
 
-void Object::CalcBounds(TvecPointF& Verts)
+void Object::CalcBounds(TvecPointF &Verts)
 {
     Float Max = 0.0;
-    for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it) {
+    for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it)
+    {
         Max = std::max(Max, abs((*it).x));
         Max = std::max(Max, abs((*it).y));
     }

@@ -3,7 +3,7 @@
 #include "MenuState.h"
 #include "OptionsState.h"
 
-#include "engine/World.h"
+#include "aster/World.h"
 #include "gl/Renderer.hpp"
 
 namespace ui

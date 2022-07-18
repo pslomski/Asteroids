@@ -1,7 +1,7 @@
 set(LIBS opengl32 ${SDL2_LIBRARY} ${SDL2TTF_LIBRARIES} ${BASS_LIBRARIES})
 
 target_link_libraries(${ASTER_LIB} ${LIBS})
-add_subdirectory(engine)
+add_subdirectory(aster)
 add_subdirectory(gl)
 add_subdirectory(log)
 add_subdirectory(sdl)

@@ -10,12 +10,12 @@ TempObject::TempObject(Float in_LifeTime) :
 {
 }
 
-bool TempObject::Expired()
+bool TempObject::expired()
 {
     return LifeTime.inc(dt);
 }
 
-void TempObject::SetExpired()
+void TempObject::setExpired()
 {
     LifeTime.setExpired();
 }
