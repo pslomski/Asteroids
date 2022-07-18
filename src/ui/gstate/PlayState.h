@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/AsterGame.h"
+#include "aster/AsterGame.h"
 
 #include "ui/Font.hpp"
 #include "ui/TextControl.h"
@@ -29,7 +29,7 @@ protected:
     PlayState(StateManager* const manager);
 
 private:
-    ge::AsterGame asterGame;
+    aster::AsterGame asterGame;
     ui::Font* fontSmall;
     ui::Font* fontLarge;
     TextControl* gameOverText;

@@ -120,7 +120,7 @@ TBullet* TUfo::FireBullet(const PointF &pt)
 {
     Float Speed = 22.0;
     TBullet *bullet = new TBullet;
-    bullet->LifeTime.reset(3.0);
+    bullet->LifeTime.set(3.0);
     bullet->SetXY(GetX(), GetY());
     Float alfa = atan2(pt.y - GetY(), pt.x - GetX()) * GE_180overPI;
     bullet->SetAlfa(alfa + rand() % 6-3);
@@ -131,14 +131,7 @@ TBullet* TUfo::FireBullet(const PointF &pt)
 
 void TUfo::Crash(TvecObiekt &vecObiekty)
 {
-/*	ALfloat Pos[]={ALfloat(GetX()), ALfloat(GetY()), 0.0f};
-    ALfloat Vel[]={ALfloat(GetV()), ALfloat(GetV()), 0.0f};
-    alSourcefv(geSound.Src[SND_ASTER_CRASH2], AL_POSITION, Pos);
-    alSourcefv(geSound.Src[SND_ASTER_CRASH2], AL_VELOCITY, Vel);
-    alSourcef (geSound.Src[SND_ASTER_CRASH2], AL_PITCH, ALfloat(0.7+0.1*RAND(3)));
-    geSound.PlaySound(SND_ASTER_CRASH2, SND_VOL_ASTER_CRASH2);*/
     sndCrash.Play();
-
     int iDebCount=GE_UFO_DEBR_COUNT;
     for(int i=0; i<iDebCount; ++i){
         TAsterDebris *pDeb=new TAsterDebris;

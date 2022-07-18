@@ -4,51 +4,57 @@
 
 #include "TempObject.hpp"
 
-class TBullet :public TempObject
+class TBullet : public TempObject
 {
 public:
     TBullet();
     ~TBullet() {}
 
 protected:
-    void OnRender(void);
+    void OnRender();
 };
 
-typedef std::list<TBullet*> TvecBullet;
-typedef std::list<TBullet*>::iterator TvecBulletIt;
+typedef std::list<TBullet *> TvecBullet;
+typedef std::list<TBullet *>::iterator TvecBulletIt;
 
-class TShipDebris: public TempObject
+class TShipDebris : public TempObject
 {
 private:
     Float m_Ratio;
+
 protected:
-    void OnRender(void);
+    void OnRender();
+
 public:
     TShipDebris();
     ~TShipDebris() {}
-    void Update(void);
+    void Update();
 };
 
-class TAsterDebris: public TempObject
+class TAsterDebris : public TempObject
 {
 private:
     Float m_Ratio;
+
 protected:
     void OnRender(void);
+
 public:
     TAsterDebris();
     ~TAsterDebris() {}
-    void Update(void);
+    void Update();
 };
 
-class TStarBlink: public TempObject
+class TStarBlink : public TempObject
 {
 private:
     Float m_Ratio;
     Float m_Size;
     void Init();
+
 protected:
     void OnRender(void);
+
 public:
     TStarBlink();
     ~TStarBlink() {}

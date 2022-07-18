@@ -1,11 +1,11 @@
 #include "TimeInterval.hpp"
 
 TimeInterval::TimeInterval() :
-    interval()
+    interval(1.0)
 {}
 
 TimeInterval::TimeInterval(Float interval_) :
-    interval(1.0)
+    interval(interval_)
 {}
 
 void TimeInterval::set(Float newInterval)
@@ -27,6 +27,11 @@ void TimeInterval::reset(Float newInterval)
 void TimeInterval::setExpired()
 {
     elapsed = interval + 0.01;
+}
+
+bool TimeInterval::hasExpired() const
+{
+    return elapsed >= interval;
 }
 
 bool TimeInterval::inc(Float dt)

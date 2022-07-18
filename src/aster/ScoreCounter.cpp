@@ -3,7 +3,7 @@
 #include "AsterGame.h"
 #include "GameConsts.h"
 
-namespace ge
+namespace aster
 {
 ScoreCounter::ScoreCounter(AsterGame* asterGame):
     game(asterGame)
@@ -33,4 +33,4 @@ void ScoreCounter::reset()
     nextLife = GE_NEXT_LIFE_SCORE;
     level = 1;
 }
-} // namespace ge
+} // namespace aster

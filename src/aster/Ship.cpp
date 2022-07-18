@@ -4,10 +4,9 @@
 #include "Consts.h"
 #include "GameConsts.h"
 
-PowerUp::PowerUp(Float in_Duration) :
-    isActive(false)
+PowerUp::PowerUp(Float in_Duration) : isActive(false)
 {
-    duration.interval = in_Duration;
+    duration.set(in_Duration);
 }
 
 void PowerUp::Start(void)
@@ -19,7 +18,8 @@ void PowerUp::Start(void)
 
 void PowerUp::Stop(void)
 {
-    if (isActive) OnStop();
+    if (isActive)
+        OnStop();
     duration.reset();
     isActive = false;
 }
@@ -47,7 +47,7 @@ void PowerUpBulletSpeed::OnStop(void)
 //////////////////////////////////////////////////////////////////////////
 
 PlayerShip::PlayerShip(Float ax, Float ay, Float aangle)
-    :Object(), puAddBullet(GE_POWERUP_DURATION_TIME), puBulletSpeed(GE_POWERUP_DURATION_TIME)
+    : Object(), puAddBullet(GE_POWERUP_DURATION_TIME), puBulletSpeed(GE_POWERUP_DURATION_TIME)
 {
     sndFire.Init(SND_SHIP_FIRE, SND_VOL_SHIP_FIRE);
     sndFirePow.Init(SND_SHIP_FIRE_POWER, SND_VOL_SHIP_FIRE_POWER);
@@ -79,9 +79,9 @@ PlayerShip::PlayerShip(Float ax, Float ay, Float aangle)
     faccelerated = false;
     Respawning = false;
     KDec = 0.05;
-    Accel = 20.0;//ok. 2g
+    Accel = 20.0; // ok. 2g
     AccelBurst = 15.0;
-    AccelMax = Accel + AccelBurst;//pomocnicza przy wyswietlaniu plomienia
+    AccelMax = Accel + AccelBurst; // pomocnicza przy wyswietlaniu plomienia
     sndEngineGain = 0.0;
     EngSndStopped = true;
 
@@ -100,8 +100,10 @@ PlayerShip::~PlayerShip()
 void PlayerShip::Update(void)
 {
     Object::update();
-    if (puAddBullet.duration.inc(dt)) puAddBullet.Stop();
-    if (puBulletSpeed.duration.inc(dt)) puBulletSpeed.Stop();
+    if (puAddBullet.duration.inc(dt))
+        puAddBullet.Stop();
+    if (puBulletSpeed.duration.inc(dt))
+        puBulletSpeed.Stop();
 
     if (Respawning)
     {
@@ -136,10 +138,14 @@ void PlayerShip::Update(void)
     if (puAddBullet.IsActive())
     {
         Float alfa = 2 * GE_PI * puAddBullet.duration.elapsed;
-        Float sina = sin(alfa); sina *= sina;
-        Float cosa = cos(alfa); cosa *= cosa;
-        Color cl1(GE_BONUS_ADD_BULLETS_COLOR); cl1 = cl1 * sina;
-        Color cl2(m_clrTmp); cl2 = cl2 * cosa;
+        Float sina = sin(alfa);
+        sina *= sina;
+        Float cosa = cos(alfa);
+        cosa *= cosa;
+        Color cl1(GE_BONUS_ADD_BULLETS_COLOR);
+        cl1 = cl1 * sina;
+        Color cl2(m_clrTmp);
+        cl2 = cl2 * cosa;
         m_clrTmp.r = std::min(1.0, cl1.r + cl2.r);
         m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
         m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
@@ -147,10 +153,14 @@ void PlayerShip::Update(void)
     if (puBulletSpeed.IsActive())
     {
         Float alfa = 2 * GE_PI * puBulletSpeed.duration.elapsed;
-        Float sina = sin(alfa); sina *= sina;
-        Float cosa = cos(alfa); cosa *= cosa;
-        Color cl1(GE_BONUS_BULLET_SPEED_COLOR); cl1 = cl1 * sina;
-        Color cl2(m_clrTmp); cl2 = cl2 * cosa;
+        Float sina = sin(alfa);
+        sina *= sina;
+        Float cosa = cos(alfa);
+        cosa *= cosa;
+        Color cl1(GE_BONUS_BULLET_SPEED_COLOR);
+        cl1 = cl1 * sina;
+        Color cl2(m_clrTmp);
+        cl2 = cl2 * cosa;
         m_clrTmp.r = std::min(1.0, cl1.r + cl2.r);
         m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
         m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
@@ -159,7 +169,8 @@ void PlayerShip::Update(void)
 
 void PlayerShip::OnRender(void)
 {
-    if (faccelerated) {
+    if (faccelerated)
+    {
         glColor3d(m_RespBlinkColRatio * clEngine.r, m_RespBlinkColRatio * clEngine.g, m_RespBlinkColRatio * clEngine.b);
         glBegin(GL_LINE_STRIP);
         glVertex2d(-1.5, -1);
@@ -170,17 +181,20 @@ void PlayerShip::OnRender(void)
 
     glColor3d(m_RespBlinkColRatio * m_clrTmp.r, m_RespBlinkColRatio * m_clrTmp.g, m_RespBlinkColRatio * m_clrTmp.b);
     glBegin(GL_LINE_LOOP);
-    for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it) glVertex2d((*it).x, (*it).y);
+    for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it)
+        glVertex2d((*it).x, (*it).y);
     glEnd();
 }
 
 void PlayerShip::AccelerationOn()
 {
-    if (m_tiAccel.inc(dt)) m_tiAccel.elapsed = m_tiAccel.interval;
+    if (m_tiAccel.inc(dt))
+        m_tiAccel.elapsed = m_tiAccel.interval;
     SetA(Accel + (1.0 - m_tiAccel.ratio()) * AccelBurst);
     sndEngineGain = SND_VOL_SHIP_ENGINE * GetA() / AccelMax;
     sndEngine.SetPitch(float(GetA() / AccelMax));
-    if (!faccelerated) {
+    if (!faccelerated)
+    {
         sndEngine.SetVolume(float(sndEngineGain));
         sndEngine.Play();
         EngSndStopped = false;
@@ -191,7 +205,8 @@ void PlayerShip::AccelerationOn()
 
 void PlayerShip::AccelerationOff()
 {
-    if (faccelerated) {
+    if (faccelerated)
+    {
         sndEngine.SlideVol(0.0f, 100);
     }
 
@@ -212,14 +227,14 @@ void PlayerShip::RotateRight()
     SetAlfa(GetAlfa() - std::min(0.5 * (1.0 + m_tiRotateRight.ratio()), 1.0) * m_RotSpeed * dt);
 }
 
-TBullet* PlayerShip::FireBullet()
+TBullet *PlayerShip::FireBullet()
 {
     if (puAddBullet.IsActive() || puBulletSpeed.IsActive())
         sndFirePow.Play();
     else
         sndFire.Play();
 
-    TBullet* bullet = new TBullet;
+    TBullet *bullet = new TBullet;
     bullet->SetXY(GetX(), GetY());
     bullet->SetAlfa(GetAlfa());
     Float vx = GetVX() + BulletSpeed * cos(GetAlfa() * GE_PIover180);
@@ -229,13 +244,14 @@ TBullet* PlayerShip::FireBullet()
     return bullet;
 }
 
-void PlayerShip::Crash(TvecObiekt& vecObiekty)
+void PlayerShip::Crash(TvecObiekt &vecObiekty)
 {
     sndCrash.Play();
 
     int iDebCount = GE_SHIP_LIN_DEBR_COUNT;
-    for (int i = 0; i < iDebCount; ++i) {
-        TAsterDebris* pDeb = new TAsterDebris;
+    for (int i = 0; i < iDebCount; ++i)
+    {
+        TAsterDebris *pDeb = new TAsterDebris;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -247,8 +263,9 @@ void PlayerShip::Crash(TvecObiekt& vecObiekty)
     }
 
     iDebCount = GE_SHIP_DOT_DEBR_COUNT;
-    for (int i = 0; i < iDebCount; ++i) {
-        TShipDebris* pDeb = new TShipDebris;
+    for (int i = 0; i < iDebCount; ++i)
+    {
+        TShipDebris *pDeb = new TShipDebris;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -262,19 +279,26 @@ void PlayerShip::Crash(TvecObiekt& vecObiekty)
 
 void PlayerShip::Respawn(void)
 {
-    if (m_tiRespawn.inc(dt)) {
+    if (m_tiRespawn.inc(dt))
+    {
         m_tiRespawn.reset();
         Respawning = false;
     }
-    else {
+    else
+    {
         Respawning = true;
     }
 }
 
 void PlayerShip::AddBonus(BonusType in_Type)
 {
-    switch (in_Type) {
-    case btBullets: puAddBullet.Start(); break;
-    case btBulletSpeed: puBulletSpeed.Start(); break;
+    switch (in_Type)
+    {
+    case btBullets:
+        puAddBullet.Start();
+        break;
+    case btBulletSpeed:
+        puBulletSpeed.Start();
+        break;
     }
 }

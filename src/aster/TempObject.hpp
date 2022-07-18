@@ -7,8 +7,8 @@ public:
     TempObject();
     TempObject(Float in_LifeTime);
     ~TempObject() {}
-    bool Expired();
-    void SetExpired();
+    bool expired() override;
+    void setExpired();
 
     TimeInterval LifeTime;
 };

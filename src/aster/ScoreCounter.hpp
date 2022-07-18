@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ge
+namespace aster
 {
 class AsterGame;
 class ScoreCounter
@@ -18,4 +18,4 @@ private:
     int nextLife;
     int level;
 };
-}
+} // aster
