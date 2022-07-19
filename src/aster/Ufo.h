@@ -1,7 +1,8 @@
 #pragma once
+
 #include "Object.h"
-#include "Bullet.h"
 #include "ObjectSound.h"
+#include "aster/Bullet.hpp"
 
 class TUfo :public Object
 {

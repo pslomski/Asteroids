@@ -20,12 +20,12 @@ public:
         }
     }
 
-    friend Float geObDist(Object *pO1, Object *pO2);
-    static Float dt; // krok czasowy
-    GLint glList;    // lista wyswietlania OpenGL
+    Float distance(const Object* object) const;
+    static Float dt; // time step
+    GLint glList; // OpenGL display list
     TvecPointF Verts;
     ObjectGeom ObjGeom;
-    Float xp, yp, alphap; // poplozenie w poprzednim kroku czasowym, (x-xp, y-yp) daje wektor przesuniecia
+    Float xp, yp, alphap; // Position in the previous time step. (x-xp, y-yp) gives translation vector
     int ScoreValue;
 
     void Move();
@@ -124,7 +124,7 @@ protected:
     Float KDec; // wspolczynnik oporu. Powoduje hamowanie
     Color clr;
     Bounds Bounds;
-    virtual void OnRender() = 0; // rysuje obiekt we wsp. wlasnych obiektu
+    virtual void OnRender() {}; // Draws Object in its own coordinate system
     Float CorrectAlfa(Float alfa);
     void CalcBounds(TvecPointF &Verts);
 

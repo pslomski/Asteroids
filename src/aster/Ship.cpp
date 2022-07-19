@@ -1,53 +1,18 @@
-#include "Ship.h"
+#include "Ship.hpp"
 #include "World.h"
 #include "Sound.h"
 #include "Consts.h"
 #include "GameConsts.h"
 
-PowerUp::PowerUp(Float in_Duration) : isActive(false)
+#include "aster/ShipDebris.hpp"
+#include "aster/AsterShard.hpp"
+
+namespace aster
 {
-    duration.set(in_Duration);
-}
-
-void PowerUp::Start(void)
-{
-    Stop();
-    OnStart();
-    isActive = true;
-}
-
-void PowerUp::Stop(void)
-{
-    if (isActive)
-        OnStop();
-    duration.reset();
-    isActive = false;
-}
-
-void PowerUpAddBullet::OnStart(void)
-{
-    pShip->MaxBullets += GE_BULLETS_INCREMENT;
-}
-
-void PowerUpAddBullet::OnStop(void)
-{
-    pShip->MaxBullets -= GE_BULLETS_INCREMENT;
-}
-
-void PowerUpBulletSpeed::OnStart(void)
-{
-    pShip->BulletSpeed += GE_BULLET_SPEED_INC;
-}
-
-void PowerUpBulletSpeed::OnStop(void)
-{
-    pShip->BulletSpeed -= GE_BULLET_SPEED_INC;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-PlayerShip::PlayerShip(Float ax, Float ay, Float aangle)
-    : Object(), puAddBullet(GE_POWERUP_DURATION_TIME), puBulletSpeed(GE_POWERUP_DURATION_TIME)
+PlayerShip::PlayerShip(Float ax, Float ay, Float aangle):
+    Object(),
+    puAddBullet(*this, GE_POWERUP_DURATION_TIME),
+    puBulletSpeed(*this, GE_POWERUP_DURATION_TIME)
 {
     sndFire.Init(SND_SHIP_FIRE, SND_VOL_SHIP_FIRE);
     sndFirePow.Init(SND_SHIP_FIRE_POWER, SND_VOL_SHIP_FIRE_POWER);
@@ -63,8 +28,6 @@ PlayerShip::PlayerShip(Float ax, Float ay, Float aangle)
     m_tiRespawnBlink.interval = 0.3;
     m_RespBlinkColRatio = 1.0;
 
-    puAddBullet.pShip = this;
-    puBulletSpeed.pShip = this;
     BulletSpeed = GE_INITIAL_BULLET_SPEED;
     MaxBullets = GE_INITIAL_MAX_BULLETS;
     ObjGeom = ogPolyg;
@@ -97,13 +60,13 @@ PlayerShip::~PlayerShip()
     sndEngine.Stop();
 }
 
-void PlayerShip::Update(void)
+void PlayerShip::update()
 {
     Object::update();
     if (puAddBullet.duration.inc(dt))
-        puAddBullet.Stop();
+        puAddBullet.stop();
     if (puBulletSpeed.duration.inc(dt))
-        puBulletSpeed.Stop();
+        puBulletSpeed.stop();
 
     if (Respawning)
     {
@@ -135,7 +98,7 @@ void PlayerShip::Update(void)
 
     // compute color
     m_clrTmp = clr;
-    if (puAddBullet.IsActive())
+    if (puAddBullet.isActive())
     {
         Float alfa = 2 * GE_PI * puAddBullet.duration.elapsed;
         Float sina = sin(alfa);
@@ -150,7 +113,7 @@ void PlayerShip::Update(void)
         m_clrTmp.g = std::min(1.0, cl1.g + cl2.g);
         m_clrTmp.b = std::min(1.0, cl1.b + cl2.b);
     }
-    if (puBulletSpeed.IsActive())
+    if (puBulletSpeed.isActive())
     {
         Float alfa = 2 * GE_PI * puBulletSpeed.duration.elapsed;
         Float sina = sin(alfa);
@@ -229,11 +192,14 @@ void PlayerShip::RotateRight()
 
 TBullet *PlayerShip::FireBullet()
 {
-    if (puAddBullet.IsActive() || puBulletSpeed.IsActive())
+    if (puAddBullet.isActive() or puBulletSpeed.isActive())
+    {
         sndFirePow.Play();
+    }
     else
+    {
         sndFire.Play();
-
+    }
     TBullet *bullet = new TBullet;
     bullet->SetXY(GetX(), GetY());
     bullet->SetAlfa(GetAlfa());
@@ -251,7 +217,7 @@ void PlayerShip::Crash(TvecObiekt &vecObiekty)
     int iDebCount = GE_SHIP_LIN_DEBR_COUNT;
     for (int i = 0; i < iDebCount; ++i)
     {
-        TAsterDebris *pDeb = new TAsterDebris;
+        aster::AsterShard *pDeb = new aster::AsterShard;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -265,7 +231,7 @@ void PlayerShip::Crash(TvecObiekt &vecObiekty)
     iDebCount = GE_SHIP_DOT_DEBR_COUNT;
     for (int i = 0; i < iDebCount; ++i)
     {
-        TShipDebris *pDeb = new TShipDebris;
+        aster::ShipDebris *pDeb = new aster::ShipDebris;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -290,15 +256,16 @@ void PlayerShip::Respawn(void)
     }
 }
 
-void PlayerShip::AddBonus(BonusType in_Type)
+void PlayerShip::AddBonus(BonusType bonusType)
 {
-    switch (in_Type)
+    switch (bonusType)
     {
     case btBullets:
-        puAddBullet.Start();
+        puAddBullet.start();
         break;
     case btBulletSpeed:
-        puBulletSpeed.Start();
+        puBulletSpeed.start();
         break;
     }
 }
+} // namespace aster

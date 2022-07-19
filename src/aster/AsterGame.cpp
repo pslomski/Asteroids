@@ -7,6 +7,8 @@
 #include "Sound.h"
 #include "World.h"
 
+#include "aster/StarBlink.hpp"
+
 namespace aster
 {
 AsterGame::AsterGame():
@@ -405,7 +407,7 @@ void AsterGame::UpdateObjects()
     if (ship)
     {
         if (ship->Respawning) ship->Respawn();
-        ship->Update();
+        ship->update();
     }
 
     if (ufo)
@@ -414,17 +416,17 @@ void AsterGame::UpdateObjects()
         ufo->pAster = NULL;
     }
 
-    Float Rmin = 1e6;
+    Float rMin = 1e6;
     TvecAsterIt itAster;
     for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++)
     {
         (*itAster)->update();
         if (ufo)
         {
-            Float Dist = geObDist(ufo, (*itAster));
-            if (Dist < Rmin)
+            Float distance = ufo->distance(*itAster);
+            if (distance < rMin)
             {
-                Rmin = Dist;
+                rMin = distance;
                 ufo->pAster = (*itAster);
             }
         }

@@ -5,7 +5,7 @@ class TimeInterval
 {
 public:
     TimeInterval();
-    TimeInterval(Float interval_);
+    TimeInterval(Float timeSpan);
     Float get() const
     {
         return interval;

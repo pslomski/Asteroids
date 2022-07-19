@@ -4,8 +4,8 @@ TimeInterval::TimeInterval() :
     interval(1.0)
 {}
 
-TimeInterval::TimeInterval(Float interval_) :
-    interval(interval_)
+TimeInterval::TimeInterval(Float timeSpan) :
+    interval(timeSpan)
 {}
 
 void TimeInterval::set(Float newInterval)

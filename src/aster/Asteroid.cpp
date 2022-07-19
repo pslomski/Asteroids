@@ -1,10 +1,12 @@
 #include "Asteroid.h"
-#include "Bullet.h"
 #include "Bonuses.h"
 #include "Consts.h"
 #include "GameConsts.h"
 #include "Sound.h"
 #include "Tools.h"
+
+#include "aster/AsterShard.hpp"
+#include "aster/Bullet.hpp"
 
 namespace aster
 {
@@ -175,7 +177,7 @@ void Asteroid::Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecB
 
     for (int i = 0; i < iDebCount; ++i)
     {
-        TAsterDebris *pDeb = new TAsterDebris;
+        AsterShard *pDeb = new AsterShard;
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
         pDeb->LifeTime.set(LifeTime);

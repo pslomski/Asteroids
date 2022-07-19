@@ -6,28 +6,25 @@
 
 Float Object::dt = 0.0;
 
-Float geObDist(Object *pO1, Object *pO2)
+Object::Object():
+    ScoreValue(0),
+    ObjGeom(ogPoint),
+    glList(0),
+    falfa(0.0),
+    fomega(0.0),
+    KDec(0.0)
 {
-    Float dx = pO2->fx - pO1->fx;
-    Float dy = pO2->fy - pO1->fy;
-
-    return sqrt(dx * dx + dy * dy);
-}
-
-/////////////////////////////////////////////////////////////////
-
-Object::Object()
-{
-    ScoreValue = 0;
-    ObjGeom = ogPoint;
-    glList = 0;
     color();
-    falfa = 0.0;
-    fomega = 0.0;
     SetXY(0.0, 0.0);
     SetA(0.0);
-    SetV(0.0); // zeruje predkosc
-    KDec = 0.0;
+    SetV(0.0);
+}
+
+Float Object::distance(const Object* object) const
+{
+    const Float dx = object->fx - fx;
+    const Float dy = object->fy - fy;
+    return sqrt(dx * dx + dy * dy);
 }
 
 void Object::SetA(Float aa)

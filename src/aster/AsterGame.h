@@ -6,7 +6,7 @@
 #include "Object.h"
 #include "ObjectSound.h"
 #include "ScoreCounter.hpp"
-#include "Ship.h"
+#include "Ship.hpp"
 #include "Sound.h"
 #include "Types.h"
 #include "Ufo.h"
