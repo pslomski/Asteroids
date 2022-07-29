@@ -1,6 +1,6 @@
 #pragma once
 
-#include "aster/AsterGame.h"
+#include "aster/AsterGame.hpp"
 
 #include "ui/Font.hpp"
 #include "ui/TextControl.h"

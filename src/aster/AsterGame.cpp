@@ -2,7 +2,7 @@
 #include <time.h>
 #include <process.h>
 
-#include "AsterGame.h"
+#include "AsterGame.hpp"
 #include "GameConsts.h"
 #include "Sound.h"
 #include "World.h"
@@ -13,7 +13,7 @@ namespace aster
 {
 AsterGame::AsterGame():
     score(this),
-    m_FrameCount(0),
+    frameCount(0),
     FPS(0.0)
 {
     sndBroom.Init(SND_BROOM, SND_VOL_BROOM);
@@ -27,19 +27,125 @@ AsterGame::AsterGame():
     gameState = gsRun;
     gameLevel = 1;
     Lives = GE_INITIAL_LIVES;
-    m_AstersCount = GE_INITIAL_ASTER_COUNT;
+    astersCount = GE_INITIAL_ASTER_COUNT;
     m_ListBkg1 = 0;
     m_ListBkg2 = 0;
     tiPause.reset(GE_PAUSE_TIME);
     tiGameStart.reset(1.2);
     tiUfoRespawn.set(GE_BASE_UFO_TIME);
-    m_BeepCount = 0;
-    m_pitch = 0.5;
-    m_gain = 0.5;
+    beepCount = 0;
+    initialPitch = 0.5;
+    initialGain = 0.5;
 }
 
 AsterGame::~AsterGame()
 {
+}
+
+void AsterGame::reset()
+{
+    clear();
+    srand((unsigned)time(NULL));
+    astersCount = GE_INITIAL_ASTER_COUNT;
+    beepCount = 0;
+    gameState = gsStartGame;
+    gameLevel = 1;
+    score.reset();
+    Lives = GE_INITIAL_LIVES;
+    tiPause.reset(GE_PAUSE_TIME);
+
+    PointF pt = geWorld.GetCenter();
+    ship = new PlayerShip(pt.x, pt.y, 90.0);
+    generateBackground();
+    geSound.Unmute();
+    geMusic.Stop();
+    tiBroomSound.reset(5.0);
+    bPitchBroomSound = false;
+    tiChangeBroomSoundFreq.reset(GE_TI_CHANGE_BROOM_FREQ);
+    tiUfoRespawn.reset(GE_BASE_UFO_TIME + rand() % 4);
+    for (int i = 0; i < 20; ++i)
+    {
+        vecStarBlink.push_back(new TStarBlink());
+    }
+}
+
+void AsterGame::clear()
+{
+    geSound.Stop();
+    for (int i = 0; i < 256; ++i)
+    {
+        Key[i] = false;
+    }
+    for (int i = 0; i < 256; ++i)
+    {
+        Keypress[i] = false;
+    }
+    clearBackground();
+    if (ship)
+    {
+        delete ship;
+    }
+    ship = NULL;
+
+    if (ufo)
+    {
+    delete ufo;
+    }
+    ufo = NULL;
+
+    TvecBulletIt bullet;
+    for (bullet = vecBullets.begin(); bullet != vecBullets.end(); bullet++)
+    {
+        delete (*bullet);
+    }
+    vecBullets.clear();
+
+    for (bullet = vecUfoBullets.begin(); bullet != vecUfoBullets.end(); bullet++)
+    {
+        delete (*bullet);
+    }
+    vecUfoBullets.clear();
+
+    TvecAsterIt itAster;
+    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++)
+    {
+        delete (*itAster);
+    }
+    vecAsters.clear();
+
+    TvecObiektIt itOb;
+    for (itOb = vecDebris.begin(); itOb != vecDebris.end(); itOb++)
+    {
+        delete (*itOb);
+    }
+    vecDebris.clear();
+
+    TvecBonusIt itB;
+    for (itB = vecBonus.begin(); itB != vecBonus.end(); itB++)
+    {
+        delete (*itB);
+    }
+    vecBonus.clear();
+
+    for (itOb = vecStarBlink.begin(); itOb != vecStarBlink.end(); itOb++)
+    {
+        delete (*itOb);
+    }
+    vecStarBlink.clear();
+};
+
+void AsterGame::clearBackground()
+{
+    if (m_ListBkg1)
+    {
+        glDeleteLists(m_ListBkg1, 1);
+    }
+    m_ListBkg1 = 0;
+    if (m_ListBkg2)
+    {
+        glDeleteLists(m_ListBkg2, 1);
+    }
+    m_ListBkg2 = 0;
 }
 
 void AsterGame::generateBackground()
@@ -48,7 +154,7 @@ void AsterGame::generateBackground()
     int h = int(geWorld.GetHeight());
     Float col;
 
-    if (!m_ListBkg1)
+    if (m_ListBkg1 == 0)
     {
         m_ListBkg1 = glGenLists(1);
         glNewList(m_ListBkg1, GL_COMPILE);
@@ -62,7 +168,7 @@ void AsterGame::generateBackground()
         glEnd();
         glEndList();
     }
-    if (!m_ListBkg2)
+    if (m_ListBkg2 == 0)
     {
         m_ListBkg2 = glGenLists(1);
         glNewList(m_ListBkg2, GL_COMPILE);
@@ -78,13 +184,39 @@ void AsterGame::generateBackground()
     }
 }
 
-void AsterGame::ClearBackground()
+void AsterGame::generateAsters(const int count, const int gameLevel)
 {
-    if (m_ListBkg1) glDeleteLists(m_ListBkg1, 1);
-    m_ListBkg1 = 0;
-    if (m_ListBkg2) glDeleteLists(m_ListBkg2, 1);
-    m_ListBkg2 = 0;
-}
+    for (int i = 0; i < count; ++i)
+    {
+        Asteroid* pAster = new Asteroid(1);
+        int iSide = i % 4;
+        int iPart = rand() % 4;
+        int iAngle = std::min(170, 110 + 10 * gameLevel);
+        iAngle = rand() % iAngle - iAngle / 2;
+        if (0 == iSide) 
+        {
+            pAster->SetXY(geWorld.clipLeft, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
+            pAster->SetAlfa(iAngle);
+        }
+        else if (1 == iSide)
+        {
+            pAster->SetXY(geWorld.clipRight, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
+            pAster->SetAlfa(iAngle + 180.0);
+        }
+        else if (2 == iSide)
+        {
+            pAster->SetXY(iPart / 4.0 * (geWorld.clipLeft + geWorld.clipRight), geWorld.clipBottom);
+            pAster->SetAlfa(iAngle + 90);
+        }
+        else if (3 == iSide)
+        {
+            pAster->SetXY(iPart / 4.0 * (geWorld.clipLeft + geWorld.clipRight), geWorld.clipTop);
+            pAster->SetAlfa(iAngle - 90);
+        }
+        pAster->SetV(3.0 + rand() % 5 + gameLevel * 0.25);
+        vecAsters.push_back(pAster);
+    }
+};
 
 bool  AsterGame::isGameOver() const
 {
@@ -108,155 +240,62 @@ void AsterGame::LeaveState()
     }
 }
 
-void AsterGame::Update()
+void AsterGame::update()
 {
     Object::dt = geWorld.dt;
-    ++m_FrameCount;
+    ++frameCount;
     if (tiFPS.inc(Object::dt))
     {
-        FPS = m_FrameCount / tiFPS.elapsed;
+        FPS = frameCount / tiFPS.elapsed;
         tiFPS.reset();
-        m_FrameCount = 0;
+        frameCount = 0;
     }
-    ProcessUserInput();
+    processUserInput();
     analyzeGameState();
-    CheckCollisions();
-    UpdateObjects();
+    checkCollisions();
+    updateObjects();
 }
 
-void AsterGame::Clear()
-{
-    geSound.Stop();
-    for (int i = 0; i < 256; ++i) Key[i] = false;
-    for (int i = 0; i < 256; ++i) Keypress[i] = false;
-
-    ClearBackground();
-
-    if (ship) delete ship;
-    ship = NULL;
-
-    if (ufo) delete ufo;
-    ufo = NULL;
-
-    TvecBulletIt bullet;
-    for (bullet = vecBullets.begin(); bullet != vecBullets.end(); bullet++) {
-        delete (*bullet);
-    }
-    vecBullets.clear();
-
-    for (bullet = vecUfoBullets.begin(); bullet != vecUfoBullets.end(); bullet++) {
-        delete (*bullet);
-    }
-    vecUfoBullets.clear();
-
-    TvecAsterIt itAster;
-    for (itAster = vecAsters.begin(); itAster != vecAsters.end(); itAster++) {
-        delete (*itAster);
-    }
-    vecAsters.clear();
-
-    TvecObiektIt itOb;
-    for (itOb = vecDebris.begin(); itOb != vecDebris.end(); itOb++) {
-        delete (*itOb);
-    }
-    vecDebris.clear();
-
-    TvecBonusIt itB;
-    for (itB = vecBonus.begin(); itB != vecBonus.end(); itB++) delete (*itB);
-    vecBonus.clear();
-
-    for (itOb = vecStarBlink.begin(); itOb != vecStarBlink.end(); itOb++) {
-        delete (*itOb);
-    }
-    vecStarBlink.clear();
-};
-
-void AsterGame::GenerateAsters(int iCount, int iGameLevel)
-{
-    for (int i = 0; i < iCount; ++i) {
-        Asteroid* pAster = new Asteroid(1);
-        //if(i<4) pAster->HasBonus=true;
-        int iSide = i % 4;
-        int iPart = rand() % 4;
-        int iAngle = std::min(170, 110 + 10 * iGameLevel);
-        iAngle = rand() % iAngle - iAngle / 2;
-        if (0 == iSide) {
-            pAster->SetXY(geWorld.clipLeft, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
-            pAster->SetAlfa(iAngle);
-        }
-        else if (1 == iSide) {
-            pAster->SetXY(geWorld.clipRight, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
-            pAster->SetAlfa(iAngle + 180.0);
-        }
-        else if (2 == iSide) {
-            pAster->SetXY(iPart / 4.0 * (geWorld.clipLeft + geWorld.clipRight), geWorld.clipBottom);
-            pAster->SetAlfa(iAngle + 90);
-        }
-        else if (3 == iSide) {
-            pAster->SetXY(iPart / 4.0 * (geWorld.clipLeft + geWorld.clipRight), geWorld.clipTop);
-            pAster->SetAlfa(iAngle - 90);
-        }
-        pAster->SetV(3.0 + rand() % 5 + iGameLevel * 0.25);
-        vecAsters.push_back(pAster);
-    }
-};
-
-void AsterGame::PlayStartBeep(float pitch, float gain)
+void AsterGame::playStartBeep(const float pitch, const float gain)
 {
     sndStartBeep.SetVolume(gain);
     sndStartBeep.SetPitch(pitch);
     sndStartBeep.Play();
 }
 
-bool AsterGame::Reset()
+void AsterGame::processUserInput()
 {
-    Clear();
-    srand((unsigned)time(NULL));
-    m_AstersCount = GE_INITIAL_ASTER_COUNT;//(4) poczatkowa liczba asteroidow. wzrasta o 1 z kazdym poziomem do max 6
-    m_BeepCount = 0;
-    gameState = gsStartGame;
-    gameLevel = 1;
-    score.reset();
-    Lives = GE_INITIAL_LIVES;
-    tiPause.reset(GE_PAUSE_TIME);
-
-    PointF pt = geWorld.GetCenter();
-    ship = new PlayerShip(pt.x, pt.y, 90.0);
-    generateBackground();
-    geSound.Unmute();
-    geMusic.Stop();
-    tiBroomSound.reset(5.0);
-    bPitchBroomSound = false;
-    tiChangeBroomSoundFreq.reset(GE_TI_CHANGE_BROOM_FREQ);
-    tiUfoRespawn.reset(GE_BASE_UFO_TIME + rand() % 4);
-    for (int i = 0; i < 20; ++i) vecStarBlink.push_back(new TStarBlink());
-    return true;
-};
-
-void AsterGame::ProcessUserInput()
-{
-    if (Key[SDL_SCANCODE_UP]) {
+    if (Key[SDL_SCANCODE_UP])
+    {
         if (ship) ship->AccelerationOn();
     }
-    if (!Key[SDL_SCANCODE_UP]) {
+    if (!Key[SDL_SCANCODE_UP])
+    {
         if (ship) ship->AccelerationOff();
     }
-    if (Key[SDL_SCANCODE_LEFT]) {
+    if (Key[SDL_SCANCODE_LEFT])
+    {
         if (ship) ship->RotateLeft();
     }
-    else {
+    else
+    {
         if (ship) ship->RotateLeftStop();
     }
-    if (Key[SDL_SCANCODE_RIGHT]) {
+    if (Key[SDL_SCANCODE_RIGHT])
+    {
         if (ship) ship->RotateRight();
     }
-    else {
+    else
+    {
         if (ship) ship->RotateRightStop();
     }
-    if (Key[SDL_SCANCODE_SPACE] && !Keypress[SDL_SCANCODE_SPACE]) {
+    if (Key[SDL_SCANCODE_SPACE] && !Keypress[SDL_SCANCODE_SPACE])
+    {
         Keypress[SDL_SCANCODE_SPACE] = true;
-        if (ship) {
-            if (vecBullets.size() < ship->MaxBullets) {
+        if (ship)
+        {
+            if (vecBullets.size() < ship->MaxBullets)
+            {
                 TBullet* pB = ship->FireBullet();
                 if (pB) vecBullets.push_back(pB);
             }
@@ -284,21 +323,21 @@ void AsterGame::analyzeGameState()
         {
             tiGameStart.reset();
             float pitch, gain;
-            if (m_BeepCount > 2)
+            if (beepCount > 2)
             {
-                pitch = m_pitch * 2.0f;
-                gain = m_gain * 1.5f;
+                pitch = initialPitch * 2.0f;
+                gain = initialGain * 1.5f;
                 gameState = gsRun;
-                GenerateAsters(m_AstersCount, gameLevel);
+                generateAsters(astersCount, gameLevel);
                 _beginthread(threadStartMusic, 0, NULL);
             }
             else
             {
-                pitch = m_pitch;
-                gain = m_gain;
+                pitch = initialPitch;
+                gain = initialGain;
             }
-            PlayStartBeep(pitch, gain);
-            ++m_BeepCount;
+            playStartBeep(pitch, gain);
+            ++beepCount;
         }
     }
     break;
@@ -373,9 +412,9 @@ void AsterGame::analyzeGameState()
             gameState = gsRun;
             if (vecAsters.empty())
             {
-                ++m_AstersCount;
-                m_AstersCount = std::min(m_AstersCount, GE_MAX_ASTER_COUNT);
-                GenerateAsters(m_AstersCount, gameLevel++);
+                ++astersCount;
+                astersCount = std::min(astersCount, GE_MAX_ASTER_COUNT);
+                generateAsters(astersCount, gameLevel++);
                 tiBroomSound.reset(5.0);
                 tiChangeBroomSoundFreq.inc(2.0);
             }
@@ -402,7 +441,7 @@ void AsterGame::analyzeGameState()
     }
 }
 
-void AsterGame::UpdateObjects()
+void AsterGame::updateObjects()
 {
     if (ship)
     {
@@ -502,7 +541,7 @@ void AsterGame::UpdateObjects()
     }
 }
 
-void AsterGame::CheckCollisions()
+void AsterGame::checkCollisions()
 {
     TvecAster vecAstersTmp;
 
@@ -690,7 +729,7 @@ void AsterGame::CheckCollisions()
     }
 }
 
-void AsterGame::Draw()
+void AsterGame::draw()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

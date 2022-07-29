@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "aster/AsterGame.h"
+#include "aster/AsterGame.hpp"
 #include "aster/ScoreCounter.hpp"
 
 TEST(ScoreCounter, shouldCreate)

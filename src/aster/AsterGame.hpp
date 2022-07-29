@@ -19,32 +19,31 @@ public:
     AsterGame();
     ~AsterGame();
 
+    void reset();
+    void clear();
+    void update();
+    void draw();
+    bool isGameOver() const;
+    void EnterState();
+    void LeaveState();
+
     int gameLevel;
     ScoreCounter score;
     int Lives;
     bool IsMusic;
     Float FPS;
-
     bool Key[256]; // Array Used For The Keyboard Routine
     bool Keypress[256]; // Array Used For The Keyboard Routine
 
-    void Clear();
-    bool Reset();
-    void Update();
-    void Draw();
-    bool isGameOver() const;
-    void EnterState();
-    void LeaveState();
-
 private:
-    void PlayStartBeep(float pitch, float gain);
-    void GenerateAsters(int iCount, int iGameLevel);
-    void ClearBackground();
+    void clearBackground();
     void generateBackground();
-    void ProcessUserInput();
+    void generateAsters(const int count, const int gameLevel);
+    void playStartBeep(const float pitch, const float gain);
+    void processUserInput();
     void analyzeGameState();
-    void UpdateObjects();
-    void CheckCollisions();
+    void updateObjects();
+    void checkCollisions();
 
     TGEObjectSound sndBroom;
     TGEObjectSound sndStartBeep;
@@ -59,7 +58,7 @@ private:
     PlayerShip* ship;
     TUfo* ufo;
     GameState gameState;
-    unsigned int m_AstersCount; //(4) poczatkowa ilosc asteroidow. wzrasta o 1 z kazdym poziomem do max 6
+    unsigned int astersCount;
     GLuint m_ListBkg1;
     GLuint m_ListBkg2;
 
@@ -67,10 +66,10 @@ private:
     TimeInterval tiGameStart;
     TimeInterval tiUfoRespawn;
     TimeInterval tiFPS;
-    int m_FrameCount;
-    int m_BeepCount;
-    float m_pitch;
-    float m_gain;
+    int frameCount;
+    int beepCount;
+    float initialPitch;
+    float initialGain;
     TimeInterval tiBroomSound;
     bool bPitchBroomSound;
     TimeInterval tiChangeBroomSoundFreq;

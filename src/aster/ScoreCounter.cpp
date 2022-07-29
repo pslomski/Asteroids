@@ -1,6 +1,6 @@
 #include "ScoreCounter.hpp"
 
-#include "AsterGame.h"
+#include "AsterGame.hpp"
 #include "GameConsts.h"
 
 namespace aster

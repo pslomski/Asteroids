@@ -74,7 +74,7 @@ void PlayState::leaveState()
 
 void PlayState::reset()
 {
-    asterGame.Reset();
+    asterGame.reset();
 }
 
 bool PlayState::isGameOver()
@@ -94,7 +94,7 @@ void PlayState::onKeyDown(SDL_KeyboardEvent& e)
         {
             HighScoreState* pHighScores = HighScoreState::getInstance(stateManager);
             pHighScores->SetNewHighScore(asterGame.score.get());
-            asterGame.Clear();
+            asterGame.clear();
             changeState(pHighScores);
         }
         else
@@ -119,12 +119,12 @@ void PlayState::onResize(int cx, int cy)
 
 void PlayState::update(double timeStep)
 {
-    asterGame.Update();
+    asterGame.update();
 }
 
 void PlayState::draw()
 {
-    asterGame.Draw();
+    asterGame.draw();
 
     const auto dm = gl::DrawMode2DText(geWorld.scrWidth, geWorld.scrHeight);
     GLColor color(1.0, 1.0, 1.0);

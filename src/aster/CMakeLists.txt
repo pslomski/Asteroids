@@ -1,6 +1,6 @@
 target_sources(${ASTER_LIB}
     PRIVATE
-        AsterGame.cpp AsterGame.h
+        AsterGame.cpp AsterGame.hpp
         Asteroid.cpp Asteroid.h
         AsterShard.cpp AsterShard.hpp
         BonusAddBullets.cpp BonusAddBullets.hpp
