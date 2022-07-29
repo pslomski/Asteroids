@@ -3,6 +3,7 @@ target_sources(${ASTER_LIB}
         AsterGame.cpp AsterGame.hpp
         Asteroid.cpp Asteroid.h
         AsterShard.cpp AsterShard.hpp
+        Background.cpp Background.hpp
         BonusAddBullets.cpp BonusAddBullets.hpp
         BonusBulletSpeed.cpp BonusBulletSpeed.hpp
         BonusObject.cpp BonusObject.hpp
