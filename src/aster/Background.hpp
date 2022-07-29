@@ -7,8 +7,12 @@ namespace aster
 class Background
 {
 public:
+    void generate();
+    void clear();
+    void draw() const;
+
 private:
-    GLuint m_ListBkg1;
-    GLuint m_ListBkg2;
+    GLuint list1{0};
+    GLuint list2{0};
 };
-}
+} // namespace aster

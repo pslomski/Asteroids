@@ -11,6 +11,8 @@
 #include "Types.h"
 #include "Ufo.h"
 
+#include "aster/Background.hpp"
+
 namespace aster
 {
 class AsterGame
@@ -36,8 +38,6 @@ public:
     bool Keypress[256]; // Array Used For The Keyboard Routine
 
 private:
-    void clearBackground();
-    void generateBackground();
     void generateAsters(const int count, const int gameLevel);
     void playStartBeep(const float pitch, const float gain);
     void processUserInput();
@@ -59,8 +59,7 @@ private:
     TUfo* ufo;
     GameState gameState;
     unsigned int astersCount;
-    GLuint m_ListBkg1;
-    GLuint m_ListBkg2;
+    Background background;
 
     TimeInterval tiPause;
     TimeInterval tiGameStart;

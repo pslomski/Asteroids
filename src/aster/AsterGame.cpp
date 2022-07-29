@@ -28,8 +28,6 @@ AsterGame::AsterGame():
     gameLevel = 1;
     Lives = GE_INITIAL_LIVES;
     astersCount = GE_INITIAL_ASTER_COUNT;
-    m_ListBkg1 = 0;
-    m_ListBkg2 = 0;
     tiPause.reset(GE_PAUSE_TIME);
     tiGameStart.reset(1.2);
     tiUfoRespawn.set(GE_BASE_UFO_TIME);
@@ -56,7 +54,7 @@ void AsterGame::reset()
 
     PointF pt = geWorld.GetCenter();
     ship = new PlayerShip(pt.x, pt.y, 90.0);
-    generateBackground();
+    background.generate();
     geSound.Unmute();
     geMusic.Stop();
     tiBroomSound.reset(5.0);
@@ -80,7 +78,7 @@ void AsterGame::clear()
     {
         Keypress[i] = false;
     }
-    clearBackground();
+    background.clear();
     if (ship)
     {
         delete ship;
@@ -89,7 +87,7 @@ void AsterGame::clear()
 
     if (ufo)
     {
-    delete ufo;
+        delete ufo;
     }
     ufo = NULL;
 
@@ -133,56 +131,6 @@ void AsterGame::clear()
     }
     vecStarBlink.clear();
 };
-
-void AsterGame::clearBackground()
-{
-    if (m_ListBkg1)
-    {
-        glDeleteLists(m_ListBkg1, 1);
-    }
-    m_ListBkg1 = 0;
-    if (m_ListBkg2)
-    {
-        glDeleteLists(m_ListBkg2, 1);
-    }
-    m_ListBkg2 = 0;
-}
-
-void AsterGame::generateBackground()
-{
-    int w = int(geWorld.getWidth());
-    int h = int(geWorld.GetHeight());
-    Float col;
-
-    if (m_ListBkg1 == 0)
-    {
-        m_ListBkg1 = glGenLists(1);
-        glNewList(m_ListBkg1, GL_COMPILE);
-        col = 0.4 + RAND(21) / 20;
-        glColor3d(col, col, col);
-        glBegin(GL_POINTS);
-        for (int i = 0; i < 50; ++i)
-        {
-            glVertex2d(rand() % w, rand() % h);
-        }
-        glEnd();
-        glEndList();
-    }
-    if (m_ListBkg2 == 0)
-    {
-        m_ListBkg2 = glGenLists(1);
-        glNewList(m_ListBkg2, GL_COMPILE);
-        glBegin(GL_POINTS);
-        col = 0.6 + RAND(21) / 20;
-        glColor3d(col, col, col);
-        for (int i = 0; i < 50; ++i)
-        {
-            glVertex2d(rand() % w, rand() % h);
-        }
-        glEnd();
-        glEndList();
-    }
-}
 
 void AsterGame::generateAsters(const int count, const int gameLevel)
 {
@@ -737,10 +685,7 @@ void AsterGame::draw()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glPointSize(1);
-    glCallList(m_ListBkg1);
-    glPointSize(2);
-    glCallList(m_ListBkg2);
+    background.draw();
 
     if (ship)
     {
