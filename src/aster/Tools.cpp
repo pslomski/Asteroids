@@ -89,7 +89,7 @@ PointF geRotate(PointF &pt, Float alfa)
 
 typedef BOOL (APIENTRY *PFNWGLSWAPINTERVALFARPROC)( int );
 PFNWGLSWAPINTERVALFARPROC wglSwapIntervalEXT = 0;
-typedef int (*PFNWGLEXTGETSWAPINTERVALPROC) (void);
+typedef int (*PFNWGLEXTGETSWAPINTERVALPROC) ();
 PFNWGLEXTGETSWAPINTERVALPROC wglGetSwapIntervalEXT = NULL;
 
 //true jezeli jest ustawione
@@ -119,7 +119,7 @@ std::string FloatToStr(double val)
     return std::string(buf);
 }
 
-std::string getAppDir(void)
+std::string getAppDir()
 {
     char buf[MAX_PATH];
     GetModuleFileName(NULL, buf, MAX_PATH);

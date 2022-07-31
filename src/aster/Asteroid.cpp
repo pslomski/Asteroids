@@ -21,10 +21,6 @@ Asteroid::Asteroid(int in_iLevel) : Object()
     Create();
 }
 
-Asteroid::~Asteroid()
-{
-}
-
 void Asteroid::Create()
 {
     float Volume = 1.0f;
@@ -81,7 +77,7 @@ void Asteroid::Create()
     glEndList();
 }
 
-void Asteroid::OnRender(void)
+void Asteroid::OnRender()
 {
     glCallList(glList);
 }

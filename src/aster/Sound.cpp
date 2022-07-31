@@ -7,27 +7,27 @@ TGEMusicEngineBASS geMusic;
 
 #define MAX_CHANNEL_COUNT 5
 
-SoundEngineBASS::SoundEngineBASS(void):
+SoundEngineBASS::SoundEngineBASS():
     SoundEngine()
 {
     m_bSamplesLoaded=false;
     for(int i=0; i<NUM_BUFFERS; ++i) Sample[i]=0;
 }
 
-bool SoundEngineBASS::Open(void)
+bool SoundEngineBASS::Open()
 {
     // Initialize the default output device with 3D support
     BASS_Init(-1,44100,BASS_DEVICE_3D,NULL,NULL);
     return InitSound();
 }
 
-void SoundEngineBASS::Close(void)
+void SoundEngineBASS::Close()
 {
     FreeSound();
     BASS_Free();
 }
 
-bool SoundEngineBASS::InitSound(void)
+bool SoundEngineBASS::InitSound()
 {
     if(m_bSamplesLoaded) return true;
     
@@ -49,7 +49,7 @@ bool SoundEngineBASS::InitSound(void)
     return true;
 }
 
-void SoundEngineBASS::FreeSound(void)
+void SoundEngineBASS::FreeSound()
 {
     if(!m_bSamplesLoaded) return;
     for(int i=0; i<NUM_BUFFERS; ++i){
@@ -59,7 +59,7 @@ void SoundEngineBASS::FreeSound(void)
     m_bSamplesLoaded=false;
 }
 
-void SoundEngineBASS::SoundTest(void)
+void SoundEngineBASS::SoundTest()
 {
     m_sndTest.Play();
 }
@@ -117,7 +117,7 @@ void SoundEngineBASS::Unmute()
 /////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef USE_OPENAL
 
-TGESoundEngineOAL::TGESoundEngineOAL(void):
+TGESoundEngineOAL::TGESoundEngineOAL():
     TGESoundEngineBase()
 {
     m_bSamplesLoaded=false;
@@ -125,24 +125,24 @@ TGESoundEngineOAL::TGESoundEngineOAL(void):
     for(int i=0; i<NUM_SOURCES; ++i) Src[i]=0;
 }
 
-bool TGESoundEngineOAL::Open(void)
+bool TGESoundEngineOAL::Open()
 {
     alutInit(NULL, 0);
     return InitSound();
 }
 
-void TGESoundEngineOAL::Close(void)
+void TGESoundEngineOAL::Close()
 {
     FreeSound();
     alutExit();
 }
 
-void TGESoundEngineOAL::StopAllSounds(void)
+void TGESoundEngineOAL::StopAllSounds()
 {
     for(int i=0; i<NUM_SOURCES; ++i) alSourceStop(Src[i]);
 }
 
-bool TGESoundEngineOAL::InitSound(void)
+bool TGESoundEngineOAL::InitSound()
 {
     if(m_bSamplesLoaded) return true;
     Buf[SND_SHIP_ENGINE]=alutCreateBufferFromFile("sound/ShipEngine.wav");
@@ -223,7 +223,7 @@ bool TGESoundEngineOAL::InitSound(void)
     return true;
 }
 
-void TGESoundEngineOAL::FreeSound(void)
+void TGESoundEngineOAL::FreeSound()
 {
     if(!m_bSamplesLoaded) return;
     alDeleteBuffers(NUM_BUFFERS, &Buf[0]);
@@ -249,37 +249,36 @@ void TGESoundEngineOAL::Unmute()
 #endif //USE_OPENAL
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-TGEMusicEngineBASS::TGEMusicEngineBASS(void):
+TGEMusicEngineBASS::TGEMusicEngineBASS():
     SoundEngine()
 {
     m_Channel = 0;
     m_hMus = 0;
 }
 
-bool TGEMusicEngineBASS::Open(void)
+bool TGEMusicEngineBASS::Open()
 {
     // Initialize the default output device with 3D support
     BASS_Init(-1,44100,BASS_DEVICE_3D,NULL,NULL);
     return InitSound();
 }
 
-void TGEMusicEngineBASS::Close(void)
+void TGEMusicEngineBASS::Close()
 {
     FreeSound();
     BASS_Free();
 }
 
-bool TGEMusicEngineBASS::InitSound(void)
+bool TGEMusicEngineBASS::InitSound()
 {
     if(m_hMus) return true;
 
-    //m_hMus=BASS_MusicLoad(false, "sound/bwv1052a.it", 0, 0, BASS_SAMPLE_LOOP, 0);
     m_hMus=BASS_StreamCreateFile(false, "sound/BWV1052.ogg", 0, 0, BASS_SAMPLE_LOOP);
     if (m_hMus) BASS_ChannelSetAttribute(m_hMus, BASS_ATTRIB_VOL, 0.4f);
     return true;
 }
 
-void TGEMusicEngineBASS::FreeSound(void)
+void TGEMusicEngineBASS::FreeSound()
 {
     if(!m_hMus) return;
 
@@ -332,10 +331,8 @@ void TGEMusicEngineBASS::SlideVol(float in_NewVol, DWORD in_Time)
     BASS_ChannelSlideAttribute(m_Channel, BASS_ATTRIB_VOL, in_NewVol, in_Time);
 }
 
-bool TGEMusicEngineBASS::IsStarted(void)
+bool TGEMusicEngineBASS::IsStarted()
 {
     DWORD r=BASS_ChannelIsActive(m_hMus);
     return r!=BASS_ACTIVE_STOPPED;
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////

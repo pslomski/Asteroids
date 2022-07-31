@@ -2,11 +2,10 @@
 
 #include "Types.h"
 
-class World 
+class World final
 {
 public:
     World();
-    virtual ~World(void);
 
     int MusicVol;
     int SoundVol;
@@ -18,14 +17,17 @@ public:
     // Game area bounds
     Float clipLeft, clipRight;
     Float clipBottom, clipTop;
+
     Float getWidth()
     {
         return clipRight - clipLeft;
     }
-    Float GetHeight()
+    
+    Float getHeight()
     {
         return clipTop - clipBottom;
     }
+    
     PointF GetCenter()
     {
         return PointF(
@@ -33,17 +35,20 @@ public:
             (clipTop + clipBottom) / 2.0
         );
     }
+    
     PointF GetRandomPosAtEdge();
+    
     DWORD GetTicks()
     {
         return time_;
     }
-    Float GetCurrentTime();
+    
+    Float getCurrentTime();
     void readSettings();
     void saveSettings();
 
 private:
-    void SetTime(DWORD in_Time)
+    void setTime(DWORD in_Time)
     {
         timePrev_ = time_;
         time_ = in_Time;

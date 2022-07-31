@@ -45,9 +45,9 @@ void Application::init(Window *window)
     this->window = window;
 }
 
-int GetVRefersh()
+int getVRefersh()
 {
-    constexpr int DEFAULT_VREFRESH = 60;
+    constexpr int defaultVRefresh{60};
     SDL_DisplayMode mode;
     if (SDL_GetCurrentDisplayMode(0, &mode) == 0)
     {
@@ -55,42 +55,40 @@ int GetVRefersh()
     }
     else
     {
-        return DEFAULT_VREFRESH;
+        return defaultVRefresh;
     }
 }
 
 void Application::run()
 {
-    int VRefresh = GetVRefersh();
-    Float FRAME_TIME = (1000.0 / VRefresh);
-    DWORD Sleep = int(FRAME_TIME) - 1;
-    Float dt = 0.0; // last update time
-    Float lastUpdateTime = geWorld.GetCurrentTime();
-    Float accumulator = 0.0;
-    const Float TIME_STEP = 1.0 / VRefresh; // Time span of physics frame and screen refresh.
-    const Float MAX_ACCUMULATED_TIME = 1.0;
-
-    SDL_Event e;
+    constexpr Float accumulatedTimeMax{1.0};
+    const int vRefresh{getVRefersh()};
+    const Float timeStep{1.0 / vRefresh}; // Time span of physics frame and screen refresh.
+    const Float frameTime{1000.0 / vRefresh};
+    Float lastUpdateTime{geWorld.getCurrentTime()};
+    Float accumulator{0.0};
+    Float dt; // last update time
     while (!canQuit)
     {
+        SDL_Event e;
         while (SDL_PollEvent(&e))
         {
             onEvent(&e);
         }
-        dt = geWorld.GetCurrentTime() - lastUpdateTime; // Time elapsed since the last frame
+        dt = geWorld.getCurrentTime() - lastUpdateTime; // Time elapsed since the last frame
         lastUpdateTime += dt;
-        dt = std::max((Float)0, dt);
+        dt = std::max(static_cast<Float>(0.0), dt);
         accumulator += dt;
-        accumulator = std::ranges::clamp(accumulator, 0.0, MAX_ACCUMULATED_TIME);
-        bool bUpdate = false;
-        while (accumulator > TIME_STEP)
+        accumulator = std::ranges::clamp(accumulator, 0.0, accumulatedTimeMax);
+        bool isUpdate{false};
+        while (accumulator > timeStep)
         {
-            geWorld.dt = TIME_STEP;
-            window->update(TIME_STEP);
-            accumulator -= TIME_STEP;
-            bUpdate = true;
+            geWorld.dt = timeStep;
+            window->update(timeStep);
+            accumulator -= timeStep;
+            isUpdate = true;
         }
-        geWorld.interp = accumulator / TIME_STEP;
+        geWorld.interp = accumulator / timeStep;
         window->draw();
     }
 }

@@ -18,11 +18,11 @@ BonusObject::BonusObject(BonusType in_Type) :
     CalcBounds(Verts);
 }
 
-BonusObject::~BonusObject(void)
+BonusObject::~BonusObject()
 {
 }
 
-void BonusObject::Update(void)
+void BonusObject::update()
 {
     Object::update();
     Float d{0.75};
@@ -41,7 +41,7 @@ void BonusObject::Update(void)
     }
 }
 
-void BonusObject::OnRender(void)
+void BonusObject::OnRender()
 {
     glRotated(tiRot.ratio() * 360.0, 0.0, 1.0, 0.0);
     glColor3d(m_ColRatio * clr.r, m_ColRatio * clr.g, m_ColRatio * clr.b);

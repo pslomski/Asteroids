@@ -130,7 +130,7 @@ void PlayerShip::update()
     }
 }
 
-void PlayerShip::OnRender(void)
+void PlayerShip::OnRender()
 {
     if (faccelerated)
     {
@@ -243,7 +243,7 @@ void PlayerShip::Crash(TvecObiekt &vecObiekty)
     }
 }
 
-void PlayerShip::Respawn(void)
+void PlayerShip::Respawn()
 {
     if (m_tiRespawn.inc(dt))
     {

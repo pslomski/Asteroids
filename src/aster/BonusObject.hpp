@@ -4,13 +4,18 @@
 
 class BonusObject: public TempObject
 {
+public:
+    BonusObject(BonusType in_Type);
+    ~BonusObject();
+
+    void update() override;
+
+    BonusType Type;
+
+protected:
+    void OnRender() override;
+
 private:
     TimeInterval tiRot;
     Float m_ColRatio;
-public:
-    BonusType Type;
-    BonusObject(BonusType in_Type);
-    ~BonusObject();
-    void Update();
-    void OnRender();
 };

@@ -11,7 +11,7 @@ public:
     TBullet();
 
 protected:
-    void OnRender();
+    void OnRender() override;
 };
 
 typedef std::list<TBullet *> TvecBullet;

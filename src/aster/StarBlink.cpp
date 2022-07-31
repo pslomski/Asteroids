@@ -19,7 +19,7 @@ void TStarBlink::Init()
 {
     size = RAND(2) + 1;
     LifeTime.reset(2.0 + RAND(30) * 0.1);
-    SetXY(RAND(int(geWorld.getWidth())), RAND(int(geWorld.GetHeight())));
+    SetXY(RAND(int(geWorld.getWidth())), RAND(int(geWorld.getHeight())));
 }
 
 void TStarBlink::update()

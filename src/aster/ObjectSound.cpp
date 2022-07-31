@@ -2,18 +2,19 @@
 #include "ObjectSound.h"
 #include "Sound.h"
 
-ObjectSound::ObjectSound(void)
+ObjectSound::ObjectSound()
 {
     m_SoundID=-1;
     m_Volume=1.0;
 }
 
-ObjectSoundBASS::ObjectSoundBASS(void):ObjectSound()
+ObjectSoundBASS::ObjectSoundBASS() :
+    ObjectSound()
 {
     m_Channel = 0;
 }
 
-void ObjectSoundBASS::Play(void)
+void ObjectSoundBASS::Play()
 {
     assert(m_SoundID!=-1);
     if(m_SoundID==-1) return;
@@ -24,14 +25,14 @@ void ObjectSoundBASS::Play(void)
     assert(bRes==TRUE);
 }
 
-void ObjectSoundBASS::Pause(void)
+void ObjectSoundBASS::Pause()
 {
     assert(m_SoundID!=-1);
     if(m_SoundID==-1) return;
     BASS_ChannelPause(m_Channel);
 }
 
-void ObjectSoundBASS::Stop(void)
+void ObjectSoundBASS::Stop()
 {	
     assert(m_SoundID!=-1);
     if(m_SoundID==-1) return;

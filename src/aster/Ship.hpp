@@ -28,14 +28,14 @@ public:
         m_tiRotateLeft.reset();
     }
 
-    void RotateRightStop(void)
+    void RotateRightStop()
     {
         m_tiRotateRight.reset();
     }
 
     TBullet* FireBullet();
     void Crash(TvecObiekt&);
-    void Respawn(void);
+    void Respawn();
     void AddBonus(BonusType);
 
     PowerUpAddBullet puAddBullet; 
@@ -49,7 +49,7 @@ public:
     unsigned int MaxBullets;
 
 protected:
-    void OnRender(void);
+    void OnRender() override;
 
 private:
     Color m_clrTmp;

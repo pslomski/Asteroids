@@ -6,6 +6,22 @@
 
 class TUfo :public Object
 {
+public:
+    TUfo();
+    ~TUfo();
+
+    void update() override;
+    Object *pShip;
+    Object *pAster;
+    void Action(TvecBullet& vecBullet);
+    TBullet* FireBullet(const PointF &pt);
+    void Crash(TvecObiekt &vecObiekty);
+    TGEObjectSound sndEngine;
+    TGEObjectSound sndCrash;
+
+protected:
+    void OnRender() override;
+
 private:
     Float CheckTime;
     Float CheckTimeElapsed;
@@ -13,18 +29,4 @@ private:
     Float MoveTimeElapsed;
     Float FireTime;
     Float FireTimeElapsed;
-    
-protected:
-    void OnRender(void);
-public:
-    TUfo(void);
-    virtual ~TUfo(void);
-    void Update(void);
-    Object *pShip;//wskaznik na statek gracza (ustawiane przy okazji poruszania obiektow)
-    Object *pAster;//wskaznik na najblizsza asteroide (ustawiane przy okazji poruszania obiektow)
-    void Action(TvecBullet& vecBullet);
-    TBullet* FireBullet(const PointF &pt);
-    void Crash(TvecObiekt &vecObiekty);
-    TGEObjectSound sndEngine;
-    TGEObjectSound sndCrash;
 };
