@@ -2,10 +2,11 @@
 
 #include "aster/BonusObject.hpp"
 
-class TGEBonusAddBullets:public BonusObject
+class TGEBonusAddBullets : public BonusObject
 {
 public:
-    TGEBonusAddBullets(void);
+    TGEBonusAddBullets();
+    
 private:
-    void Create(void);
+    void Create();
 };

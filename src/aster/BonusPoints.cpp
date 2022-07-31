@@ -2,7 +2,7 @@
 #include "aster/GameConsts.h"
 #include "aster/Tools.h"
 
-TGEBonusPoints::TGEBonusPoints(void) : BonusObject(btPoints)
+TGEBonusPoints::TGEBonusPoints() : BonusObject(btPoints)
 {
     ScoreValue = GE_SCRVAL_BONUS;
     Create();

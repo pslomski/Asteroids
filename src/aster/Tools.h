@@ -11,4 +11,4 @@ int LinesIntersection(const BoxF& o1, const BoxF& o2, Float& x, Float& y);
 PointF geRotate(PointF& pt, Float alfa);
 bool setVSync(int interval = 1);
 std::string FloatToStr(double val);
-std::string getAppDir(void);
+std::string getAppDir();

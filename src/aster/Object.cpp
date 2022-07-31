@@ -222,7 +222,7 @@ bool Object::CheckCollision(Object *pObiekt)
     }
 }
 
-void Object::Draw(void)
+void Object::Draw()
 {
     Float minterp = 1.0 - geWorld.interp;
     Float x = fx * geWorld.interp + xp * minterp;
@@ -233,15 +233,12 @@ void Object::Draw(void)
     glTranslated(x, y, 0.0);
     glRotated(alfa, 0.0, 0.0, 1.0);
 
-    //	glTranslated(GetX(), GetY(), 0.0);
-    //	glRotated(GetAlfa(), 0.0, 0.0, 1.0);
-
     OnRender();
 
     glPopMatrix();
 }
 
-void Object::Render(void)
+void Object::Render()
 {
     OnRender();
 }

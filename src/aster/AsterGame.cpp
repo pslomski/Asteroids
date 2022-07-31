@@ -399,8 +399,8 @@ void AsterGame::updateObjects()
 
     if (ufo)
     {
-        ufo->Update();
-        ufo->pAster = NULL;
+        ufo->update();
+        ufo->pAster = nullptr;
     }
 
     Float rMin = 1e6;
@@ -472,7 +472,7 @@ void AsterGame::updateObjects()
         }
         else
         {
-            (*it)->Update();
+            (*it)->update();
             ++it;
         }
     }
@@ -681,7 +681,7 @@ void AsterGame::draw()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, geWorld.getWidth(), 0, geWorld.GetHeight(), -1, 1);
+    glOrtho(0, geWorld.getWidth(), 0, geWorld.getHeight(), -1, 1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 

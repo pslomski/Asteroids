@@ -2,11 +2,10 @@
 
 #include "Types.h"
 
-class World 
+class World final
 {
 public:
     World();
-    virtual ~World(void);
 
     int MusicVol;
     int SoundVol;
@@ -22,7 +21,7 @@ public:
     {
         return clipRight - clipLeft;
     }
-    Float GetHeight()
+    Float getHeight()
     {
         return clipTop - clipBottom;
     }

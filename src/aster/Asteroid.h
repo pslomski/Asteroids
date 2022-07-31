@@ -21,7 +21,7 @@ private:
 
 public:
     Asteroid(int in_iLevel);
-    virtual ~Asteroid(void);
+
     void Create();
     void Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecBonus);
     static bool CreateBonus;
@@ -30,6 +30,6 @@ public:
     ObjectSoundBASS sndCrash;
 
 protected:
-    void OnRender();
+    void OnRender() override;
 };
 } // namespace aster

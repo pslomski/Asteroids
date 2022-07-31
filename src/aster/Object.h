@@ -91,7 +91,7 @@ public:
     {
         return falfa;
     }
-    Float GetRotSpeed(void)
+    Float GetRotSpeed()
     {
         return fomega;
     }

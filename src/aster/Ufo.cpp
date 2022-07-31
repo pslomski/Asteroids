@@ -5,7 +5,8 @@
 
 #include "aster/AsterShard.hpp"
 
-TUfo::TUfo(void) : Object()
+TUfo::TUfo() :
+    Object()
 {
     sndEngine.Init(SND_UFO_ENGINE, SND_VOL_UFO_ENGINE);
     sndCrash.Init(SND_ASTER_CRASH2, SND_VOL_ASTER_CRASH2);
@@ -34,27 +35,25 @@ TUfo::TUfo(void) : Object()
     sndEngine.Play();
 }
 
-TUfo::~TUfo(void)
+TUfo::~TUfo()
 {
     sndEngine.Stop();
 }
 
-void TUfo::Update(void)
+void TUfo::update()
 {
     Object::update();
-    /*ALfloat Pos[]={ALfloat(GetX()), ALfloat(GetY()), 0.0f};
-    ALfloat Vel[]={ALfloat(GetV()), ALfloat(GetV()), 0.0f};
-    alSourcefv(geSound.Src[SND_UFO_ENGINE], AL_POSITION, Pos);
-    alSourcefv(geSound.Src[SND_UFO_ENGINE], AL_VELOCITY, Vel);*/
 }
 
-void TUfo::OnRender(void)
+void TUfo::OnRender()
 {
     glColor3d(clr.r, clr.g, clr.b);
 
     glBegin(GL_LINE_LOOP);
     for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it)
+    {
         glVertex2d((*it).x, (*it).y);
+    }
     glEnd();
 }
 

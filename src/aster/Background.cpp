@@ -23,7 +23,7 @@ void Background::clear()
 void Background::generate()
 {
     int w = int(geWorld.getWidth());
-    int h = int(geWorld.GetHeight());
+    int h = int(geWorld.getHeight());
     if (list1 == 0)
     {
         list1 = glGenLists(1);

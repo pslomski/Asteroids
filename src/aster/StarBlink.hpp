@@ -13,7 +13,7 @@ public:
     void update() override;
 
 protected:
-    void OnRender();
+    void OnRender() override;
 
 private:
     Float ratio;
