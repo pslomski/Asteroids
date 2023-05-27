@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include <SDL_ttf.h>
 
-namespace
+namespace testing
 {
-class SDL_ttfTest: public ::testing::Test
+class SDL_ttfTest: public Test
 { 
 public: 
    void SetUp( )
@@ -28,7 +28,7 @@ protected:
     TTF_Font* font{nullptr};
 };
 
-TEST_F(SDL_ttfTest, shouldLoadFont)
+TEST_F(SDL_ttfTest, testTTF_OpenFont)
 {
     font = TTF_OpenFont("vectorb.ttf", 32);
     ASSERT_TRUE(font != nullptr);
