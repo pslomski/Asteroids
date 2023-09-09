@@ -24,17 +24,24 @@ Space - fire weapon
 ## 3. Dependencies
 
 ### 3.1
-SDL2
+OpenGL
+Linux:
+  sudo apt-get install libgl1-mesa-dev
 
 ### 3.2
+SDL2
+Linux:
+  sudo apt-get install libsdl2-dev
+
+### 3.3
 SDL TTF
 Linux:
   sudo apt-get install libsdl2-ttf-dev
 
-### 3.3
+### 3.4
 Bass
 
-### 3.4
+### 3.5
 vectorb.ttf font
 
 ## 4. Building
@@ -47,7 +54,7 @@ In root dir:
 output is
   Asteroids(.exe)
   Test(.exe)
-  
+
 ## 5. UT
 ./Test.exe --gtest_color=yes --gtest_filter=Rectangle.shouldInit
 
