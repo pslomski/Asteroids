@@ -38,7 +38,7 @@ public:
     
     PointF GetRandomPosAtEdge();
     
-    DWORD GetTicks()
+    uint32_t GetTicks()
     {
         return time_;
     }
@@ -48,16 +48,14 @@ public:
     void saveSettings();
 
 private:
-    void setTime(DWORD in_Time)
+    void setTime(uint32_t in_Time)
     {
         timePrev_ = time_;
         time_ = in_Time;
     };
 
-    bool usePerfCounter_;
-    double frequency_;
-    DWORD timePrev_;
-    DWORD time_;
+    uint32_t timePrev_;
+    uint32_t time_;
 };
 
 extern World geWorld;

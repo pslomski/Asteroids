@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <time.h>
-#include <process.h>
 
 #include "AsterGame.hpp"
 #include "GameConsts.h"
@@ -255,10 +254,11 @@ void AsterGame::processUserInput()
     }
 }
 
-void threadStartMusic(void* p)
+int threadStartMusic(void* p)
 {
-    Sleep(1000);
+    SDL_Delay(1000);
     geMusic.Play(TRUE);
+    return 0;
 }
 
 void AsterGame::analyzeGameState()
@@ -277,7 +277,7 @@ void AsterGame::analyzeGameState()
                 gain = initialGain * 1.5f;
                 gameState = gsRun;
                 generateAsters(astersCount, gameLevel);
-                _beginthread(threadStartMusic, 0, NULL);
+                SDL_CreateThread(threadStartMusic, "threadMusic", nullptr);
             }
             else
             {
@@ -384,7 +384,7 @@ void AsterGame::analyzeGameState()
         break;
     case gsGameOver:
         if (tiPause.inc(Object::dt))
-            geSound.Stop();//SetSoundVol(ALfloat(1.0-tiPause.Ratio()));
+            geSound.Stop();
         break;
     }
 }

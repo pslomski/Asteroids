@@ -146,7 +146,7 @@ bool _CheckPolygWithPoint(Object *pObjPoint, Object *pObjPolyg)
                     pObjPolyg->Verts[i1].x,
                     pObjPolyg->Verts[i1].y));
         }
-        if (LinesIntersection(o1, o2, x, y) == 0)
+        if (linesIntersection(o1, o2, x, y) == 0)
         {
             return true;
         }
@@ -164,10 +164,10 @@ bool Object::CheckCollision(Object *pObiekt)
 {
     assert(NULL != pObiekt);
 
-    if (((GetX() + Bounds.x0) > (pObiekt->GetX() + pObiekt->Bounds.x1)) ||
-        ((GetX() + Bounds.x1) < (pObiekt->GetX() + pObiekt->Bounds.x0)) ||
-        ((GetY() + Bounds.y0) > (pObiekt->GetY() + pObiekt->Bounds.y1)) ||
-        ((GetY() + Bounds.y1) < (pObiekt->GetY() + pObiekt->Bounds.y0)))
+    if (((GetX() + bounds.x0) > (pObiekt->GetX() + pObiekt->bounds.x1)) ||
+        ((GetX() + bounds.x1) < (pObiekt->GetX() + pObiekt->bounds.x0)) ||
+        ((GetY() + bounds.y0) > (pObiekt->GetY() + pObiekt->bounds.y1)) ||
+        ((GetY() + bounds.y1) < (pObiekt->GetY() + pObiekt->bounds.y0)))
         return false;
     else
     {
@@ -189,7 +189,7 @@ bool Object::CheckCollision(Object *pObiekt)
                             o2 = pObiekt->Transform(BoxF(pObiekt->Verts[0].x, pObiekt->Verts[0].y, pObiekt->Verts[pObiekt->Verts.size() - 1].x, pObiekt->Verts[pObiekt->Verts.size() - 1].y));
                         else
                             o2 = pObiekt->Transform(BoxF(pObiekt->Verts[i2 - 1].x, pObiekt->Verts[i2 - 1].y, pObiekt->Verts[i2].x, pObiekt->Verts[i2].y));
-                        if (LinesIntersection(o1, o2, _x, _y) == 0)
+                        if (linesIntersection(o1, o2, _x, _y) == 0)
                             return true;
                     }
                 }
@@ -251,8 +251,8 @@ void Object::CalcBounds(TvecPointF &Verts)
         Max = std::max(Max, abs((*it).x));
         Max = std::max(Max, abs((*it).y));
     }
-    Bounds.x0 = -Max;
-    Bounds.x1 = Max;
-    Bounds.y0 = -Max;
-    Bounds.y1 = Max;
+    bounds.x0 = -Max;
+    bounds.x1 = Max;
+    bounds.y0 = -Max;
+    bounds.y1 = Max;
 }

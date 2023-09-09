@@ -88,7 +88,7 @@ void HighScoreState::enterState()
         if (idx == -1)
             continue;
         newScore.strPlayer = line.substr(0, idx);
-        newScore.ulScore = atoi(line.substr(idx + 1).c_str());
+        newScore.score = atoi(line.substr(idx + 1).c_str());
         mHighScores.push_back(newScore);
     }
     while (mHighScores.size() < 10)
@@ -100,10 +100,10 @@ void HighScoreState::enterState()
 
     // Check if we have a new high-score that should be
     // added in the table. If yes, m_bEnterName is set to true.
-    ULONG lastScore = 0;
+    uint32_t lastScore = 0;
     if (mHighScores.size())
     {
-        lastScore = mHighScores[mHighScores.size() - 1].ulScore;
+        lastScore = mHighScores[mHighScores.size() - 1].score;
     }
     if (mNewHighScore && mNewHighScore > lastScore)
     {
@@ -185,15 +185,16 @@ void HighScoreState::draw()
     rcNum.right = mEntriesRect.left + 40;
     ui::Rectangle rcTxt = mEntriesRect;
     rcTxt.left=mEntriesRect.left + 60;
-    int iCount = 1;
+    int count = 1;
     char buf[256];
     THighScoreTable::iterator iter = mHighScores.begin();
     for (iter; iter!=mHighScores.end(); iter++)
     {
-        _itoa_s(iCount, buf, 10);
+        // itoa(cout, buf, 10);
+        const auto entryN{std::to_string(count)};
         TextControl txtEntryN(mFont, rcNum);
         txtEntryN.setAlignement(TextControl::taRight);
-        txtEntryN.setText(buf);
+        txtEntryN.setText(entryN);
         txtEntryN.draw();
 
         TextControl txtEntry(mFont, rcTxt);
@@ -202,14 +203,14 @@ void HighScoreState::draw()
         txtEntry.draw();
 
         std::stringstream ssScore;
-        ssScore << iter->ulScore;
+        ssScore << iter->score;
         txtEntry.setAlignement(TextControl::taRight);
         txtEntry.setText(ssScore.str());
         txtEntry.draw();
 
         rcNum.offset(0, 35);
         rcTxt.offset(0, 35);
-        ++iCount;
+        ++count;
     }
 
     // If the player should enter its name, we draw something additional.
@@ -254,15 +255,15 @@ void HighScoreState::saveScores()
     THighScoreTable::iterator iter = mHighScores.begin();
     for (iter; iter != mHighScores.end(); iter++)
     {
-        outputFile << iter->strPlayer << ";" << iter->ulScore<<'\n';
+        outputFile << iter->strPlayer << ";" << iter->score<<'\n';
     }
 }
 
-void HighScoreState::addNewScore(const std::string& strName, ULONG ulScore)
+void HighScoreState::addNewScore(const std::string& strName, uint32_t score)
 {
     HighScoreData newData;
     newData.strPlayer = strName;
-    newData.ulScore = ulScore;
+    newData.score = score;
     mHighScores.push_back(newData);
     
     sort(mHighScores.begin(), mHighScores.end());

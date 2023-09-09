@@ -47,7 +47,7 @@ bool isPointInPolygon(size_t nvert, TvecPointF &verts, Float testx, Float testy)
 //2 - przeciecie lezy na o2 ale poza o1; x, y zawieraja punkt przeciecia
 //3 - proste sie przecinaja ale poza odcinkami; x, y zawieraja punkt przeciecia
 //4 - odcinki sa rownolegle
-int LinesIntersection(const BoxF &o1, const BoxF &o2, Float &x, Float &y)
+int linesIntersection(const BoxF &o1, const BoxF &o2, Float &x, Float &y)
 {
   Float ua, ub;
   Float la, lb, m;//licznik i mianownik
@@ -73,8 +73,6 @@ int LinesIntersection(const BoxF &o1, const BoxF &o2, Float &x, Float &y)
     return 3;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-
 PointF geRotate(PointF &pt, Float alfa)
 {
     PointF res;
@@ -83,46 +81,4 @@ PointF geRotate(PointF &pt, Float alfa)
     res.x=pt.x*cosalfa+pt.y*sinalfa;
     res.y=pt.x*sinalfa+pt.y*cosalfa;
     return res;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-typedef BOOL (APIENTRY *PFNWGLSWAPINTERVALFARPROC)( int );
-PFNWGLSWAPINTERVALFARPROC wglSwapIntervalEXT = 0;
-typedef int (*PFNWGLEXTGETSWAPINTERVALPROC) ();
-PFNWGLEXTGETSWAPINTERVALPROC wglGetSwapIntervalEXT = NULL;
-
-//true jezeli jest ustawione
-//false jezeli nie jest ustawione
-bool setVSync(int interval)
-{
-    const char *extensions = (char *)glGetString( GL_EXTENSIONS );
-
-    if( strstr( extensions, "WGL_EXT_swap_control" ) == 0 )
-        return false; // Error: WGL_EXT_swap_control extension not supported on your computer.\n");
-    else{
-        wglGetSwapIntervalEXT=(PFNWGLEXTGETSWAPINTERVALPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
-        wglSwapIntervalEXT=(PFNWGLSWAPINTERVALFARPROC)wglGetProcAddress("wglSwapIntervalEXT");
-        if(wglSwapIntervalEXT)wglSwapIntervalEXT(interval);
-        if(wglGetSwapIntervalEXT)
-            return wglGetSwapIntervalEXT()>0;
-        else
-            return false;
-    }
-}
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-std::string FloatToStr(double val)
-{
-    char buf[1024];
-    sprintf_s(buf, "%f", val);
-    return std::string(buf);
-}
-
-std::string getAppDir()
-{
-    char buf[MAX_PATH];
-    GetModuleFileName(NULL, buf, MAX_PATH);
-    std::filesystem::path path(buf);
-    return path.root_path().string() + path.relative_path().string();
 }

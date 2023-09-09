@@ -1,4 +1,7 @@
 #include <fstream>
+
+#include<SDL.h>
+
 #include "World.h"
 #include "Sound.h"
 #include "GameConsts.h"
@@ -7,9 +10,6 @@ World geWorld;
 
 World::World()
 {
-    LARGE_INTEGER f;
-    usePerfCounter_ = QueryPerformanceFrequency(&f) != 0;
-    frequency_ = double(f.QuadPart);
     MusicVol = 5;
     SoundVol = 5;
     IsGameRunning = false;
@@ -76,14 +76,5 @@ void World::saveSettings()
 
 Float World::getCurrentTime()
 {
-    if (usePerfCounter_)
-    {
-        LARGE_INTEGER t;
-        QueryPerformanceCounter(&t);
-        return t.QuadPart / frequency_;
-    }
-    else
-    {
-        return GetTickCount() / 1000.0;
-    }
+    return SDL_GetTicks64() / 1000.0;
 }

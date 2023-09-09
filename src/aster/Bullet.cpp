@@ -6,10 +6,10 @@ TBullet::TBullet() :
     TempObject()
 {
     LifeTime.set(1.0);
-    Bounds.x0 = -0.1;
-    Bounds.x1 = 0.1;
-    Bounds.y0 = -0.1;
-    Bounds.y1 = 0.1;
+    bounds.x0 = -0.1;
+    bounds.x1 = 0.1;
+    bounds.y0 = -0.1;
+    bounds.y1 = 0.1;
 }
 
 void TBullet::OnRender()

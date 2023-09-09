@@ -93,7 +93,7 @@ void PlayState::onKeyDown(SDL_KeyboardEvent& e)
         if (asterGame.isGameOver())
         {
             HighScoreState* pHighScores = HighScoreState::getInstance(stateManager);
-            pHighScores->SetNewHighScore(asterGame.score.get());
+            pHighScores->setNewHighScore(asterGame.score.get());
             asterGame.clear();
             changeState(pHighScores);
         }

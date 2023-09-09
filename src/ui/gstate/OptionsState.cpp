@@ -105,10 +105,10 @@ void OptionsState::draw()
 
     int musicVol = int(ceil(10 * geMusic.GetVolume()));
     int soundVol = int(ceil(10 * geSound.GetVolume()));
-    sprintf_s(buf, BUF_SIZE, "Music volume: %d", musicVol);
+    sprintf(buf, "Music volume: %d", musicVol);
     musicVolText->setText(std::string(buf));
     musicVolText->draw();
-    sprintf_s(buf, BUF_SIZE, "Sound volume: %d", soundVol);
+    sprintf(buf, "Sound volume: %d", soundVol);
     soundVolText->setText(buf);
     soundVolText->draw();
 }

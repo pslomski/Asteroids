@@ -9,7 +9,6 @@
 namespace ui
 {
 const std::string fontFileName = "vectorb.ttf";
-// const std::string fontFileName = "Hyperspace-JvEM.ttf";
 
 Font::Font(const std::string& fontFace, const int height)
 {
@@ -84,7 +83,7 @@ void Font::drawFmtText(const int x, const int y, const GLColor& color, const cha
     char text[256];
     va_list	ap;
     va_start(ap, fmt);
-    int len = vsprintf_s(text, fmt, ap);
+    int len = vsprintf(text, fmt, ap);
     va_end(ap);
     drawText(text, x, y, color);
 }

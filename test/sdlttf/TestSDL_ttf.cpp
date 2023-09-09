@@ -58,7 +58,7 @@ TEST_F(SDL_ttfTest, DISABLED_shouldRenderFont)
     SDL_FreeSurface(surf);
 
     // Create a rectangle to draw on
-    SDL_Rect rectangle;
+    SDL_Rect rectangle{.x=10, .y=10, .w=400, .h=100};
     rectangle.x = 10;
     rectangle.y = 10;
     rectangle.w = 400;
