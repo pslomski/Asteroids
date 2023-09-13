@@ -3,7 +3,7 @@
 #include "gl/Renderer.hpp"
 #include "log/Log.hpp"
 
-#include "Exception.h"
+#include "sdl/Exception.hpp"
 #include "Font.hpp"
 
 namespace ui

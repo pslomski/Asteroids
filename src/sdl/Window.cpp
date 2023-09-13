@@ -1,6 +1,6 @@
-#include "Exception.h"
 #include "aster/World.h"
 #include "gl/Renderer.hpp"
+#include "sdl/Exception.hpp"
 #include "sdl/SDLTools.h"
 #include "sdl/Window.hpp"
 

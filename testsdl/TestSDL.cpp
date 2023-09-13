@@ -1,10 +1,9 @@
 #include <exception>
-#include "Exception.h"
 #include "aster/World.h"
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"
+#include "sdl/Exception.hpp"
 #include "sdl/SDLTools.h"
-
 #include "TestState.hpp"
 
 int main(int argc, char* argv[])

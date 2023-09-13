@@ -35,12 +35,6 @@ add_library(${ASTER_LIB})
 set(ASTER_EXE Asteroids)
 add_executable(${ASTER_EXE})
 
-set(TEST_EXE TestAsteroids)
-add_executable(${TEST_EXE})
-
-set(TESTSDL_EXE TestSdl)
-add_executable(${TESTSDL_EXE})
-
 include_directories(src)
 add_subdirectory(src)
 add_subdirectory(gtest)

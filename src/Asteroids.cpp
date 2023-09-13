@@ -1,5 +1,5 @@
 #include <exception>
-#include "Exception.h"
+#include "sdl/Exception.hpp"
 #include "aster/World.h"
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"

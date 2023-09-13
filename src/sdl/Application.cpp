@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <SDL_ttf.h>
-#include "Exception.h"
+#include "sdl/Exception.hpp"
 #include "aster/Tools.h"
 #include "aster/World.h"
 #include "aster/Sound.h"

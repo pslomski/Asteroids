@@ -1,7 +1,8 @@
+set(TEST_EXE TestAsteroids)
+add_executable(${TEST_EXE})
 target_link_libraries(${TEST_EXE}
     gtest_main ${ASTER_LIB}
 )
-
 add_subdirectory(aster)
 add_subdirectory(sdl)
 add_subdirectory(sdlttf)
