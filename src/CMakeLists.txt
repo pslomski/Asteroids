@@ -9,6 +9,7 @@ add_subdirectory(aster)
 add_subdirectory(gl)
 add_subdirectory(log)
 add_subdirectory(sdl)
+add_subdirectory(sound)
 add_subdirectory(ui)
 
 target_sources(${ASTER_EXE}

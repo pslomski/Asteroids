@@ -1,12 +1,11 @@
 #include "Asteroid.h"
+#include "AsterShard.hpp"
 #include "Bonuses.h"
+#include "Bullet.hpp"
 #include "Consts.h"
 #include "GameConsts.h"
-#include "Sound.h"
 #include "Tools.h"
-
-#include "aster/AsterShard.hpp"
-#include "aster/Bullet.hpp"
+#include "sound/Sound.hpp"
 
 namespace aster
 {

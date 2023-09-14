@@ -5,7 +5,7 @@
 #endif // USE_OPENAL
 
 #include <bass.h>
-#include "ObjectSound.h"
+#include "ObjectSound.hpp"
 
 #define NUM_BUFFERS 12
 #define NUM_SOURCES 12

@@ -1,11 +1,12 @@
 #include "Ship.hpp"
-#include "World.h"
-#include "Sound.h"
+
+#include "AsterShard.hpp"
 #include "Consts.h"
 #include "GameConsts.h"
+#include "ShipDebris.hpp"
+#include "World.h"
+#include "sound/Sound.hpp"
 
-#include "aster/ShipDebris.hpp"
-#include "aster/AsterShard.hpp"
 
 namespace aster
 {

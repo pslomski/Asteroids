@@ -1,10 +1,10 @@
 #include <fstream>
 
-#include<SDL.h>
+#include <SDL.h>
 
-#include "World.h"
-#include "Sound.h"
 #include "GameConsts.h"
+#include "World.h"
+#include "sound/Sound.hpp"
 
 World geWorld;
 

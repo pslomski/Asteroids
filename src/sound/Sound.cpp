@@ -1,6 +1,6 @@
-#include "Sound.h"
+#include "Sound.hpp"
+
 #include <stdlib.h>
-#include "World.h"
 
 SoundEngineBASS geSound;
 TGEMusicEngineBASS geMusic;

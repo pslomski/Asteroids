@@ -1,9 +1,9 @@
 #include "Ufo.h"
-#include "Sound.h"
+
+#include "AsterShard.hpp"
 #include "Consts.h"
 #include "GameConsts.h"
-
-#include "aster/AsterShard.hpp"
+#include "sound/Sound.hpp"
 
 TUfo::TUfo() :
     Object()

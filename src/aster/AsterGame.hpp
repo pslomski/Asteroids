@@ -1,17 +1,17 @@
 #pragma once
 
 #include <SDL.h>
+
 #include "Asteroid.h"
+#include "Background.hpp"
 #include "GameConsts.h"
 #include "Object.h"
-#include "ObjectSound.h"
 #include "ScoreCounter.hpp"
 #include "Ship.hpp"
-#include "Sound.h"
 #include "Types.h"
 #include "Ufo.h"
-
-#include "aster/Background.hpp"
+#include "sound/ObjectSound.hpp"
+#include "sound/Sound.hpp"
 
 namespace aster
 {

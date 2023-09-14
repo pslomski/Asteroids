@@ -3,7 +3,7 @@
 
 #include "AsterGame.hpp"
 #include "GameConsts.h"
-#include "Sound.h"
+#include "sound/Sound.hpp"
 #include "World.h"
 
 #include "aster/StarBlink.hpp"

@@ -3,7 +3,7 @@
 #include "sdl/Exception.hpp"
 #include "aster/Tools.h"
 #include "aster/World.h"
-#include "aster/Sound.h"
+#include "sound/Sound.hpp"
 #include "sdl/Application.hpp"
 #include "sdl/Window.hpp"
 #include "ui/gstate/MenuState.h"

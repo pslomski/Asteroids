@@ -5,10 +5,10 @@
 
 #include "Tools.h"
 #include "Object.h"
-#include "ObjectSound.h"
 #include "aster/Bullet.hpp"
 #include "aster/PowerUpAddBullet.hpp"
 #include "aster/PowerUpBulletSpeed.hpp"
+#include "sound/ObjectSound.hpp"
 
 namespace aster
 {

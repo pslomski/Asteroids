@@ -1,5 +1,6 @@
 #include <assert.h>
-#include "ObjectSound.h"
+
+#include "ObjectSound.hpp"
 #include "Sound.h"
 
 ObjectSound::ObjectSound()

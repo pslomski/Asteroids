@@ -3,7 +3,7 @@
 #include <list>
 #include "Bonuses.h"
 #include "Object.h"
-#include "ObjectSound.h"
+#include "sound/ObjectSound.hpp"
 
 namespace aster
 {
