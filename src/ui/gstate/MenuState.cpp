@@ -8,7 +8,7 @@
 
 #include "aster/Consts.h"
 #include "aster/World.h"
-#include "gl/renderer.hpp"
+#include "gl/Renderer.hpp"
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"
 #include "sdl/SDLTools.h"

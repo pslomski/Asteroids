@@ -7,7 +7,7 @@
 #include "aster/Consts.h"
 #include "aster/World.h"
 #include "log/Log.hpp"
-#include "gl/renderer.hpp"
+#include "gl/Renderer.hpp"
 #include "sdl/SDLTools.h"
 
 namespace ui

@@ -6,8 +6,9 @@ set(CMAKE_CXX_FLAGS_DEBUG_INIT "-O0")
 set(CMAKE_CXX_FLAGS "-m64")
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-include(CMakePrintHelpers)
+enable_testing()
 
+include(CMakePrintHelpers)
 cmake_print_variables(CMAKE_MODULE_PATH)
 
 find_package(OpenGL REQUIRED)
@@ -37,6 +38,6 @@ add_executable(${ASTER_EXE})
 
 include_directories(src)
 add_subdirectory(src)
-add_subdirectory(gtest)
+#add_subdirectory(gtest)
 add_subdirectory(test)
 add_subdirectory(testsdl)

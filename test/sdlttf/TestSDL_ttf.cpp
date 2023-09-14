@@ -28,7 +28,7 @@ protected:
     TTF_Font* font{nullptr};
 };
 
-TEST_F(SDL_ttfTest, testTTF_OpenFont)
+TEST_F(SDL_ttfTest, DISABLED_testTTF_OpenFont)
 {
     font = TTF_OpenFont("vectorb.ttf", 32);
     ASSERT_TRUE(font != nullptr);

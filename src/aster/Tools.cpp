@@ -27,7 +27,7 @@ bool isPointInPolygon2(size_t npol, TvecPointF &points, Float x, Float y)
     return result;
 }
 
-bool isPointInPolygon(size_t nvert, TvecPointF &verts, Float testx, Float testy)
+bool isPointInPolygon(const size_t nvert, const TvecPointF &verts, const Float testx, const Float testy)
 {
     bool c=false;
     size_t i, j = 0;

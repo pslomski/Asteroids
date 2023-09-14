@@ -3,4 +3,5 @@ target_sources(${TEST_EXE}
         TestObject.cpp
         TestScoreCounter.cpp
         TestTimeInterval.cpp
+        TestTools.cpp
 )
