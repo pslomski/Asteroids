@@ -1,12 +1,12 @@
+#include "AsterGame.hpp"
+
 #include <assert.h>
 #include <time.h>
 
-#include "AsterGame.hpp"
 #include "GameConsts.h"
-#include "sound/Sound.hpp"
+#include "StarBlink.hpp"
 #include "World.h"
-
-#include "aster/StarBlink.hpp"
+#include "sound/Sound.hpp"
 
 namespace aster
 {

@@ -1,11 +1,13 @@
+#include "Application.hpp"
+
 #include <algorithm>
 #include <SDL_ttf.h>
-#include "sdl/Exception.hpp"
+
+#include "Exception.hpp"
+#include "Window.hpp"
 #include "aster/Tools.h"
 #include "aster/World.h"
 #include "sound/Sound.hpp"
-#include "sdl/Application.hpp"
-#include "sdl/Window.hpp"
 #include "ui/gstate/MenuState.h"
 
 namespace sdl

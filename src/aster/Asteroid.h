@@ -3,7 +3,7 @@
 #include <list>
 #include "Bonuses.h"
 #include "Object.h"
-#include "sound/ObjectSound.hpp"
+#include "sound/Sound.hpp"
 
 namespace aster
 {
@@ -27,7 +27,7 @@ public:
     static bool CreateBonus;
     int Level;
     bool HasBonus;
-    ObjectSoundBASS sndCrash;
+    TGEObjectSound sndCrash;
 
 protected:
     void OnRender() override;

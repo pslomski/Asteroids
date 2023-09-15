@@ -1,7 +1,5 @@
 #pragma once
 
-#include <bass.h>
-
 class ObjectSound
 {
 public:
@@ -19,19 +17,3 @@ protected:
     int m_SoundID;
     float m_Volume;
 };
-
-class ObjectSoundBASS :public ObjectSound
-{
-public:
-    ObjectSoundBASS();
-    void Play();
-    void Pause();
-    void Stop();
-    void SetVolume(float in_Volume);
-    void SetPitch(float in_Pitch) {}
-    void SlideVol(float in_NewVol, DWORD in_Time);
-private:
-    HCHANNEL m_Channel;
-};
-
-typedef ObjectSoundBASS TGEObjectSound;

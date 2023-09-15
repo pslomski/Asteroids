@@ -8,7 +8,7 @@
 #include "aster/Bullet.hpp"
 #include "aster/PowerUpAddBullet.hpp"
 #include "aster/PowerUpBulletSpeed.hpp"
-#include "sound/ObjectSound.hpp"
+#include "sound/Sound.hpp"
 
 namespace aster
 {

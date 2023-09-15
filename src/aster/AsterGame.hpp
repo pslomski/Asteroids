@@ -10,7 +10,6 @@
 #include "Ship.hpp"
 #include "Types.h"
 #include "Ufo.h"
-#include "sound/ObjectSound.hpp"
 #include "sound/Sound.hpp"
 
 namespace aster

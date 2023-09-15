@@ -2,7 +2,7 @@
 
 #include "Bullet.hpp"
 #include "Object.h"
-#include "sound/ObjectSound.hpp"
+#include "sound/Sound.hpp"
 
 class TUfo :public Object
 {
