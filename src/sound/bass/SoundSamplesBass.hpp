@@ -13,11 +13,11 @@ public:
     ~SoundSamplesBass();
     void init() override;
     void free() override;
+    void addSample(const SampleId sampleId, const char* name, const Flags flags = 0) override;
+    void playSample(const SampleId sampleId) override;
 
 private:
     using Samples = std::map<SampleId, HSAMPLE>;
-    void addSample(const SampleId sampleId, const char* name);
     Samples samples;
-    bool isLoaded{false};
 };
 } // namespace sound

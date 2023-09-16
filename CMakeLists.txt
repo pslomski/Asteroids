@@ -30,14 +30,24 @@ find_package(BASS REQUIRED)
 cmake_print_variables(BASS_INCLUDE_DIRS)
 include_directories(${BASS_INCLUDE_DIRS})
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.14.0
+)
+FetchContent_MakeAvailable(googletest)
+
+include_directories(src)
+
 set(ASTER_LIB aster)
 add_library(${ASTER_LIB})
 
 set(ASTER_EXE Asteroids)
 add_executable(${ASTER_EXE})
 
-include_directories(src)
 add_subdirectory(src)
-#add_subdirectory(gtest)
 add_subdirectory(test)
 add_subdirectory(testsdl)
+
+include(GoogleTest)

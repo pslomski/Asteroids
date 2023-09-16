@@ -4,6 +4,11 @@
 
 namespace sound
 {
+using Flags = uint32_t;
+
+constexpr Flags FLAG_SAMPLE_LOOP     = 0x00000001;
+constexpr Flags FLAG_SAMPLE_OVER_VOL = 0x00000002;
+
 enum class SampleId
 {
     shipEngine,
@@ -27,5 +32,7 @@ public:
     virtual ~SoundSamples() = 0;
     virtual void init() = 0;
     virtual void free() = 0;
+    virtual void addSample(const SampleId sampleId, const char* name, const Flags flags = 0) = 0;
+    virtual void playSample(const SampleId sampleId) = 0;
 };
 } // namespace sound
