@@ -48,6 +48,5 @@ add_executable(${ASTER_EXE})
 
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(testsdl)
 
 include(GoogleTest)
