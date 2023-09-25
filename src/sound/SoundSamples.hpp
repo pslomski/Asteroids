@@ -29,7 +29,7 @@ enum class SampleId
 class SoundSamples
 {
 public:
-    virtual ~SoundSamples() = 0;
+    virtual ~SoundSamples() {};
     virtual void init() = 0;
     virtual void free() = 0;
     virtual void addSample(const SampleId sampleId, const char* name, const Flags flags = 0) = 0;

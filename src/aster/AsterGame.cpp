@@ -54,8 +54,8 @@ void AsterGame::reset()
     PointF pt = geWorld.GetCenter();
     ship = new PlayerShip(pt.x, pt.y, 90.0);
     background.generate();
-    geSound.Unmute();
-    geMusic.Stop();
+    sound::geSound.Unmute();
+    sound::geMusic.Stop();
     tiBroomSound.reset(5.0);
     bPitchBroomSound = false;
     tiChangeBroomSoundFreq.reset(GE_TI_CHANGE_BROOM_FREQ);
@@ -68,7 +68,7 @@ void AsterGame::reset()
 
 void AsterGame::clear()
 {
-    geSound.Stop();
+    sound::geSound.Stop();
     for (int i = 0; i < 256; ++i)
     {
         Key[i] = false;
@@ -257,7 +257,7 @@ void AsterGame::processUserInput()
 int threadStartMusic(void* p)
 {
     SDL_Delay(1000);
-    geMusic.Play(TRUE);
+    sound::geMusic.Play(TRUE);
     return 0;
 }
 
@@ -384,7 +384,7 @@ void AsterGame::analyzeGameState()
         break;
     case gsGameOver:
         if (tiPause.inc(Object::dt))
-            geSound.Stop();
+            sound::geSound.Stop();
         break;
     }
 }

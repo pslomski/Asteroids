@@ -4,17 +4,19 @@
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"
 #include "sdl/SDLTools.h"
+#include "sound/bass/SoundEngineBass.hpp"
 #include "ui/gstate/MenuState.h"
 
 int main(int argc, char* argv[])
 {
-    using App = sdl::Application;
-    using Window = sdl::Window;
+    using sdl::Application;
+    using sdl::Window;
 
     int res = 0;
     try
     {
-        App app;
+        sound::SoundEngineBass soundEngine;
+        Application app(soundEngine);
         geWorld.scrHeight = std::min(geWorld.scrHeight, int(0.80 * SDLTools::getScreenSize().height));
         geWorld.scrWidth = geWorld.scrHeight;
         ui::StateManager stateManager;
@@ -29,7 +31,7 @@ int main(int argc, char* argv[])
     }
     catch(std::exception & e)
     {
-        // LOG_ERR(e.what());
+        LOG_ERR("exception: %s", e.what());
         res = -1;
     }
     catch(...)

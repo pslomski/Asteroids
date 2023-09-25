@@ -1,5 +1,7 @@
 #include "MusicEngineBass.hpp"
 
+namespace sound
+{
 MusicEngineBass::MusicEngineBass():
     SoundEngine()
 {
@@ -9,8 +11,7 @@ MusicEngineBass::MusicEngineBass():
 
 bool MusicEngineBass::Open()
 {
-    // Initialize the default output device with 3D support
-    BASS_Init(-1,44100,BASS_DEVICE_3D,nullptr,nullptr);
+    BASS_Init(-1,44100,0,nullptr,nullptr);
     return InitSound();
 }
 
@@ -89,3 +90,4 @@ bool MusicEngineBass::IsStarted()
     DWORD r = BASS_ChannelIsActive(m_hMus);
     return r != BASS_ACTIVE_STOPPED;
 }
+} // namespace sound

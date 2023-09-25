@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+namespace sound
+{
 #define MAX_CHANNEL_COUNT 5
 
 SoundEngineBass::SoundEngineBass():
@@ -13,8 +15,7 @@ SoundEngineBass::SoundEngineBass():
 
 bool SoundEngineBass::Open()
 {
-    // Initialize the default output device with 3D support
-    BASS_Init(-1,44100,BASS_DEVICE_3D,NULL,NULL);
+    BASS_Init(-1,44100, 0,nullptr,nullptr);
     return InitSound();
 }
 
@@ -61,22 +62,8 @@ void SoundEngineBass::SoundTest()
     m_sndTest.Play();
 }
 
-void SoundEngineBass::Play()
-{
-    HCHANNEL ch[MAX_CHANNEL_COUNT];
-    DWORD iCount;
-    for(int i=0; i<NUM_SOURCES; ++i){
-        iCount=BASS_SampleGetChannels(Sample[i], ch);
-        for(DWORD j=0; j<iCount; ++j){
-            BASS_ChannelPlay(ch[j], !m_bPause);
-        }
-    }
-    m_bPause=false;
-}
-
 void SoundEngineBass::Pause()
 {
-
     HCHANNEL ch[MAX_CHANNEL_COUNT];
     DWORD iCount;
     for(int i=0; i<NUM_SOURCES; ++i){
@@ -110,3 +97,4 @@ void SoundEngineBass::Unmute()
 {
     BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, DWORD(m_Volume*10000));
 }
+} // namespace sound

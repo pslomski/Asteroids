@@ -7,15 +7,19 @@
 #include "Window.hpp"
 #include "aster/Tools.h"
 #include "aster/World.h"
+#include "log/Log.hpp"
 #include "sound/Sound.hpp"
+#include "sound/SoundEngine.hpp"
 #include "ui/gstate/MenuState.h"
 
 namespace sdl
 {
 bool Application::canQuit = false;
 
-Application::Application()
+Application::Application(sound::SoundEngine& soundEngine) :
+    soundEngine{soundEngine}
 {
+    LOG_INF("Application::Application window: %p", window);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         throw SDLException("SDL library initialization failed");
@@ -24,19 +28,20 @@ Application::Application()
     {
         throw SDLException("Could not initialize SDL2_ttf");
     }
-    geSound.Open();
-    geMusic.Open();
+    sound::geSound.Open();
+    sound::geMusic.Open();
 }
 
 Application::~Application()
 {
+    LOG_INF("Application::~Application window: %p", window);
     cleanup();
 }
 
 void Application::cleanup()
 {
-    geMusic.Close();
-    geSound.Close();
+    sound::geMusic.Close();
+    sound::geSound.Close();
     TTF_Quit();
     SDL_Quit();
     Window::destroy(window);

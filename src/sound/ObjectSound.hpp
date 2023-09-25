@@ -1,9 +1,12 @@
 #pragma once
 
+namespace sound
+{
 class ObjectSound
 {
 public:
     ObjectSound();
+    virtual ~ObjectSound() {};
     void Init(int in_ID, float in_Volume) {
         m_SoundID = in_ID;
         m_Volume = in_Volume;
@@ -17,3 +20,4 @@ protected:
     int m_SoundID;
     float m_Volume;
 };
+} // namespace sound

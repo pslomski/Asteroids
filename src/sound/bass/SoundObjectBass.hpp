@@ -4,6 +4,8 @@
 
 #include <bass.h>
 
+namespace sound
+{
 class ObjectSoundBASS :public ObjectSound
 {
 public:
@@ -17,3 +19,4 @@ public:
 private:
     HCHANNEL m_Channel;
 };
+} // namespace sound

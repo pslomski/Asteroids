@@ -4,8 +4,11 @@
 #include "bass/SoundEngineBass.hpp"
 #include "bass/SoundObjectBass.hpp"
 
-using TGEObjectSound = ObjectSoundBASS;
+namespace sound
+{
 
 extern MusicEngineBass geMusic;
 extern SoundEngineBass geSound;
+} // namespace sound
 
+using TGEObjectSound = sound::ObjectSoundBASS;

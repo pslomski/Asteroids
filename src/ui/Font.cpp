@@ -36,7 +36,7 @@ Font::Size Font::getTextSize(const std::string& strText)
 {
     int width, height;
     TTF_SizeText(font, strText.c_str(), &width, &height);
-    return Size{width: width, height: height};
+    return Size{.width = width, .height = height};
 }
 
 void Font::drawText(const std::string& text, const int x, const int y, const GLColor& color)

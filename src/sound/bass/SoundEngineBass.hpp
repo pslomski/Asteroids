@@ -5,6 +5,8 @@
 
 #include <bass.h>
 
+namespace sound
+{
 #define NUM_BUFFERS 12
 #define NUM_SOURCES 12
 
@@ -34,10 +36,10 @@
 #define SND_VOL_POWERUP 0.5f
 #define SND_VOL_SHIP_FIRE_POWER 0.4f
 
+
 class SoundEngineBass : public SoundEngine
 {
 private:
-    // Buffers hold sound data.
     HSAMPLE Sample[NUM_BUFFERS];
     bool m_bSamplesLoaded;
     ObjectSoundBASS m_sndTest; // setting sound volume in Options menu
@@ -52,9 +54,9 @@ public:
     void SetVolume(float in_Vol);
     void Mute();
     void Unmute();
-    void Play();
     void Pause();
     void Stop();
     void SoundTest();
     HSAMPLE GetSample(int ID) { return Sample[ID]; }
 };
+} // namespace sound

@@ -1,5 +1,7 @@
 #pragma once
 
+namespace sound
+{
 class SoundEngine
 {
 public:
@@ -15,9 +17,6 @@ public:
     virtual float GetVolume() { return m_Volume; }          // gloscnosc dzwiekow w skali 0-1. 0 oznacza wylaczona
     virtual void Mute() = 0;
     virtual void Unmute() = 0;
-    virtual void Play(){};
-    virtual void Pause(){};
-    virtual void Stop(){};
 
 protected:
     bool m_bPause;
@@ -25,3 +24,4 @@ protected:
     virtual bool InitSound() = 0;
     virtual void FreeSound() = 0;
 };
+} // namespace sound

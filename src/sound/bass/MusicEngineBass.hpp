@@ -4,6 +4,8 @@
 
 #include <bass.h>
 
+namespace sound
+{
 class MusicEngineBass : public SoundEngine
 {
 private:
@@ -27,3 +29,4 @@ public:
     void SlideVol(float in_NewVol, DWORD in_Time);
     bool IsStarted();
 };
+} // namespace sound

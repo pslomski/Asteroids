@@ -9,6 +9,6 @@ TEST(TestSoundSamplesBass, example)
 {
     sound::SoundSamplesBass samples;
     samples.addSample(sound::SampleId::broom, "broom");
-    ASSERT_EQ(samples.);
+    // ASSERT_EQ(samples.);
 }
 }

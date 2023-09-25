@@ -60,8 +60,8 @@ void World::readSettings()
     {
         inputFile >> MusicVol >> SoundVol;
     }
-    geMusic.SetVolume(0.1f * MusicVol);
-    geSound.SetVolume(0.1f * SoundVol);
+    sound::geMusic.SetVolume(0.1f * MusicVol);
+    sound::geSound.SetVolume(0.1f * SoundVol);
 }
 
 void World::saveSettings()

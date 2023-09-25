@@ -51,11 +51,11 @@ void PlayState::enterState()
     init();
     asterGame.EnterState();
     geWorld.IsGameRunning = true;
-    asterGame.IsMusic = geMusic.GetVolume() > 0.001;
-    geSound.Unmute();
-    if (geMusic.IsStarted())
+    asterGame.IsMusic = sound::geMusic.GetVolume() > 0.001;
+    sound::geSound.Unmute();
+    if (sound::geMusic.IsStarted())
     {
-        geMusic.Play();
+        sound::geMusic.Play();
     }
 }
 
@@ -63,11 +63,11 @@ void PlayState::leaveState()
 {
     geWorld.IsGameRunning = false;
     asterGame.LeaveState();
-    geSound.Mute();
+    sound::geSound.Mute();
     if (asterGame.isGameOver())
-        geMusic.Stop();
+        sound::geMusic.Stop();
     else
-        geMusic.Pause();
+        sound::geMusic.Pause();
     cleanup();
     LOG_INF("PlayState::leaveState");
 }
