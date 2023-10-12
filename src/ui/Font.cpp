@@ -8,7 +8,7 @@
 
 namespace ui
 {
-const std::string fontFileName = "vectorb.ttf";
+const std::string fontFileName = "Vectorb.ttf";
 
 Font::Font(const std::string& fontFace, const int height)
 {
