@@ -11,4 +11,4 @@ TEST(TestSoundSamplesBass, example)
     samples.addSample(sound::SampleId::broom, "broom");
     // ASSERT_EQ(samples.);
 }
-}
+} // namespace testing

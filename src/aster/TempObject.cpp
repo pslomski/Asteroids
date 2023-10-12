@@ -1,14 +1,8 @@
 #include "TempObject.hpp"
 
-TempObject::TempObject()
-    :Object()
-{
-}
+TempObject::TempObject() : Object() {}
 
-TempObject::TempObject(Float in_LifeTime) :
-    LifeTime(in_LifeTime)
-{
-}
+TempObject::TempObject(Float in_LifeTime) : LifeTime(in_LifeTime) {}
 
 bool TempObject::expired()
 {

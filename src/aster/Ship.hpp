@@ -3,8 +3,8 @@
 #include <GL/gl.h>
 #include <math.h>
 
-#include "Tools.h"
 #include "Object.h"
+#include "Tools.h"
 #include "aster/Bullet.hpp"
 #include "aster/PowerUpAddBullet.hpp"
 #include "aster/PowerUpBulletSpeed.hpp"
@@ -12,7 +12,7 @@
 
 namespace aster
 {
-class PlayerShip: public Object
+class PlayerShip : public Object
 {
 public:
     PlayerShip(Float ax, Float ay, Float aangle);
@@ -23,22 +23,16 @@ public:
     void AccelerationOff();
     void RotateLeft();
     void RotateRight();
-    void RotateLeftStop()
-    {
-        m_tiRotateLeft.reset();
-    }
+    void RotateLeftStop() { m_tiRotateLeft.reset(); }
 
-    void RotateRightStop()
-    {
-        m_tiRotateRight.reset();
-    }
+    void RotateRightStop() { m_tiRotateRight.reset(); }
 
     TBullet* FireBullet();
     void Crash(TvecObiekt&);
     void Respawn();
     void AddBonus(BonusType);
 
-    PowerUpAddBullet puAddBullet; 
+    PowerUpAddBullet puAddBullet;
     PowerUpBulletSpeed puBulletSpeed;
     TGEObjectSound sndFire;
     TGEObjectSound sndFirePow;

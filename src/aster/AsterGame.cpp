@@ -10,10 +10,7 @@
 
 namespace aster
 {
-AsterGame::AsterGame():
-    score(this),
-    frameCount(0),
-    FPS(0.0)
+AsterGame::AsterGame() : score(this), frameCount(0), FPS(0.0)
 {
     sndBroom.Init(SND_BROOM, SND_VOL_BROOM);
     sndStartBeep.Init(SND_START_BEEP, SND_VOL_START_BEEP);
@@ -35,9 +32,7 @@ AsterGame::AsterGame():
     initialGain = 0.5;
 }
 
-AsterGame::~AsterGame()
-{
-}
+AsterGame::~AsterGame() {}
 
 void AsterGame::reset()
 {
@@ -140,7 +135,7 @@ void AsterGame::generateAsters(const int count, const int gameLevel)
         int iPart = rand() % 4;
         int iAngle = std::min(170, 110 + 10 * gameLevel);
         iAngle = rand() % iAngle - iAngle / 2;
-        if (0 == iSide) 
+        if (0 == iSide)
         {
             pAster->SetXY(geWorld.clipLeft, iPart / 4.0 * (geWorld.clipTop + geWorld.clipBottom));
             pAster->SetAlfa(iAngle);
@@ -165,24 +160,27 @@ void AsterGame::generateAsters(const int count, const int gameLevel)
     }
 };
 
-bool  AsterGame::isGameOver() const
+bool AsterGame::isGameOver() const
 {
     return gsGameOver == gameState;
 }
 
 void AsterGame::EnterState()
 {
-    if (ufo) {
+    if (ufo)
+    {
         ufo->sndEngine.Play();
     }
-    if (ship) {
+    if (ship)
+    {
         ship->sndEngine.Stop();
     }
 }
 
 void AsterGame::LeaveState()
 {
-    if (ufo) {
+    if (ufo)
+    {
         ufo->sndEngine.Pause();
     }
 }
@@ -265,127 +263,126 @@ void AsterGame::analyzeGameState()
 {
     switch (gameState)
     {
-    case gsStartGame:
-    {
-        if (tiGameStart.inc(Object::dt))
+        case gsStartGame:
         {
-            tiGameStart.reset();
-            float pitch, gain;
-            if (beepCount > 2)
+            if (tiGameStart.inc(Object::dt))
             {
-                pitch = initialPitch * 2.0f;
-                gain = initialGain * 1.5f;
-                gameState = gsRun;
-                generateAsters(astersCount, gameLevel);
-                SDL_CreateThread(threadStartMusic, "threadMusic", nullptr);
-            }
-            else
-            {
-                pitch = initialPitch;
-                gain = initialGain;
-            }
-            playStartBeep(pitch, gain);
-            ++beepCount;
-        }
-    }
-    break;
-    case gsRun:
-    {
-        if (tiChangeBroomSoundFreq.inc(Object::dt))
-        {
-            tiChangeBroomSoundFreq.reset();
-            tiBroomSound.interval -= 1;
-            tiBroomSound.interval = std::max(tiBroomSound.interval, 0.7);
-        }
-
-        if (tiBroomSound.inc(Object::dt))
-        {
-            tiBroomSound.reset();
-            if (bPitchBroomSound)
-            {
-                sndBroom.SetPitch(1.05f);
-            }
-            else
-            {
-                sndBroom.SetPitch(1.0f);
-            }
-            if (not IsMusic)
-            {
-                sndBroom.Play();
-            }
-            bPitchBroomSound = not bPitchBroomSound;
-        }
-
-        if (NULL == ship)
-        {
-            // Ship destroyed
-            --Lives;
-            if (Lives > 0)
-            {
-                gameState = gsShipDestroyed;
-                tiPause.reset(GE_PAUSE_TIME);
-            }
-            else
-            {
-                gameState = gsGameOver;
-                tiPause.reset(GE_GAMEOVER_PAUSE_TIME);
-            }
-        }
-        else if (vecAsters.empty() && !ufo)
-        {
-            // Level up
-            gameState = gsNextLevelPause;
-            tiPause.reset(GE_PAUSE_TIME);
-            tiUfoRespawn.reset(GE_BASE_UFO_TIME + RAND(4) - 2);
-        }
-        else
-        {
-            if (!ufo) 
-            {
-                // Handle Ufo
-                if (tiUfoRespawn.inc(Object::dt))
+                tiGameStart.reset();
+                float pitch, gain;
+                if (beepCount > 2)
                 {
-                    tiUfoRespawn.reset(std::max(15.0, tiUfoRespawn.interval - 1));
-                    ufo = new TUfo;
-                    ufo->SetXY(geWorld.GetRandomPosAtEdge());
+                    pitch = initialPitch * 2.0f;
+                    gain = initialGain * 1.5f;
+                    gameState = gsRun;
+                    generateAsters(astersCount, gameLevel);
+                    SDL_CreateThread(threadStartMusic, "threadMusic", nullptr);
+                }
+                else
+                {
+                    pitch = initialPitch;
+                    gain = initialGain;
+                }
+                playStartBeep(pitch, gain);
+                ++beepCount;
+            }
+        }
+        break;
+        case gsRun:
+        {
+            if (tiChangeBroomSoundFreq.inc(Object::dt))
+            {
+                tiChangeBroomSoundFreq.reset();
+                tiBroomSound.interval -= 1;
+                tiBroomSound.interval = std::max(tiBroomSound.interval, 0.7);
+            }
+
+            if (tiBroomSound.inc(Object::dt))
+            {
+                tiBroomSound.reset();
+                if (bPitchBroomSound)
+                {
+                    sndBroom.SetPitch(1.05f);
+                }
+                else
+                {
+                    sndBroom.SetPitch(1.0f);
+                }
+                if (not IsMusic)
+                {
+                    sndBroom.Play();
+                }
+                bPitchBroomSound = not bPitchBroomSound;
+            }
+
+            if (NULL == ship)
+            {
+                // Ship destroyed
+                --Lives;
+                if (Lives > 0)
+                {
+                    gameState = gsShipDestroyed;
+                    tiPause.reset(GE_PAUSE_TIME);
+                }
+                else
+                {
+                    gameState = gsGameOver;
+                    tiPause.reset(GE_GAMEOVER_PAUSE_TIME);
+                }
+            }
+            else if (vecAsters.empty() && !ufo)
+            {
+                // Level up
+                gameState = gsNextLevelPause;
+                tiPause.reset(GE_PAUSE_TIME);
+                tiUfoRespawn.reset(GE_BASE_UFO_TIME + RAND(4) - 2);
+            }
+            else
+            {
+                if (!ufo)
+                {
+                    // Handle Ufo
+                    if (tiUfoRespawn.inc(Object::dt))
+                    {
+                        tiUfoRespawn.reset(std::max(15.0, tiUfoRespawn.interval - 1));
+                        ufo = new TUfo;
+                        ufo->SetXY(geWorld.GetRandomPosAtEdge());
+                    }
                 }
             }
         }
-    }
-    break;
-    case gsNextLevelPause:
-        if (tiPause.inc(Object::dt))
-        {
-            tiPause.reset();
-            gameState = gsRun;
-            if (vecAsters.empty())
-            {
-                ++astersCount;
-                astersCount = std::min(astersCount, GE_MAX_ASTER_COUNT);
-                generateAsters(astersCount, gameLevel++);
-                tiBroomSound.reset(5.0);
-                tiChangeBroomSoundFreq.inc(2.0);
-            }
-        }
         break;
-    case gsShipDestroyed:
-        if (tiPause.inc(Object::dt))
-        {
-            tiPause.reset();
-            assert(nullptr == ship);
-            if (nullptr == ship)
+        case gsNextLevelPause:
+            if (tiPause.inc(Object::dt))
             {
+                tiPause.reset();
                 gameState = gsRun;
-                PointF pt = geWorld.GetCenter();
-                ship = new PlayerShip(pt.x, pt.y, 90.0);
-                ship->Respawning = true;
+                if (vecAsters.empty())
+                {
+                    ++astersCount;
+                    astersCount = std::min(astersCount, GE_MAX_ASTER_COUNT);
+                    generateAsters(astersCount, gameLevel++);
+                    tiBroomSound.reset(5.0);
+                    tiChangeBroomSoundFreq.inc(2.0);
+                }
             }
-        }
-        break;
-    case gsGameOver:
-        if (tiPause.inc(Object::dt))
-            sound::geSound.Stop();
-        break;
+            break;
+        case gsShipDestroyed:
+            if (tiPause.inc(Object::dt))
+            {
+                tiPause.reset();
+                assert(nullptr == ship);
+                if (nullptr == ship)
+                {
+                    gameState = gsRun;
+                    PointF pt = geWorld.GetCenter();
+                    ship = new PlayerShip(pt.x, pt.y, 90.0);
+                    ship->Respawning = true;
+                }
+            }
+            break;
+        case gsGameOver:
+            if (tiPause.inc(Object::dt)) sound::geSound.Stop();
+            break;
     }
 }
 
@@ -493,7 +490,7 @@ void AsterGame::checkCollisions()
 {
     TvecAster vecAstersTmp;
 
-    //kolizja Statek-Ufo
+    // kolizja Statek-Ufo
     if (ufo)
     {
         if (ship && !ship->Respawning && ship->CheckCollision(ufo))
@@ -508,8 +505,9 @@ void AsterGame::checkCollisions()
         }
     }
 
-    //kolizja Strzal_nasz-Ufo
-    if (ufo) {
+    // kolizja Strzal_nasz-Ufo
+    if (ufo)
+    {
         TvecBulletIt itBullet;
         for (itBullet = vecBullets.begin(); itBullet != vecBullets.end();)
         {
@@ -530,7 +528,7 @@ void AsterGame::checkCollisions()
         }
     }
 
-    //kolizja Strzal_Ufo-Statek
+    // kolizja Strzal_Ufo-Statek
     if (ship && !ship->Respawning)
     {
         for (TvecBulletIt itBullet = vecUfoBullets.begin(); itBullet != vecUfoBullets.end();)
@@ -551,7 +549,7 @@ void AsterGame::checkCollisions()
         }
     }
 
-    //tutaj sprawdzanie kolizji z asteroidami i ew. strzalami przeciwnika
+    // tutaj sprawdzanie kolizji z asteroidami i ew. strzalami przeciwnika
     TvecAsterIt itAster;
     for (itAster = vecAsters.begin(); itAster != vecAsters.end();)
     {
@@ -603,8 +601,7 @@ void AsterGame::checkCollisions()
                 delete (*itAster);
                 itAster = vecAsters.erase(itAster);
                 bIncrement = false;
-                if (itAster == vecAsters.end())
-                    break;
+                if (itAster == vecAsters.end()) break;
             }
             else
             {

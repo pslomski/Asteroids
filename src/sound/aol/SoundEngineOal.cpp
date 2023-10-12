@@ -2,12 +2,13 @@
 
 #include "SoundEngineOal.hpp"
 
-TGESoundEngineOAL::TGESoundEngineOAL():
-    TGESoundEngineBase()
+TGESoundEngineOAL::TGESoundEngineOAL() : TGESoundEngineBase()
 {
-    m_bSamplesLoaded=false;
-    for(int i=0; i<NUM_BUFFERS; ++i) Buf[i]=0;
-    for(int i=0; i<NUM_SOURCES; ++i) Src[i]=0;
+    m_bSamplesLoaded = false;
+    for (int i = 0; i < NUM_BUFFERS; ++i)
+        Buf[i] = 0;
+    for (int i = 0; i < NUM_SOURCES; ++i)
+        Src[i] = 0;
 }
 
 bool TGESoundEngineOAL::Open()
@@ -24,31 +25,32 @@ void TGESoundEngineOAL::Close()
 
 void TGESoundEngineOAL::StopAllSounds()
 {
-    for(int i=0; i<NUM_SOURCES; ++i) alSourceStop(Src[i]);
+    for (int i = 0; i < NUM_SOURCES; ++i)
+        alSourceStop(Src[i]);
 }
 
 bool TGESoundEngineOAL::InitSound()
 {
-    if(m_bSamplesLoaded) return true;
-    Buf[SND_SHIP_ENGINE]=alutCreateBufferFromFile("sound/ShipEngine.wav");
-    Buf[SND_SHIP_FIRE]=alutCreateBufferFromFile("sound/ShipFire.wav");
-    Buf[SND_SHIP_CRASH]=alutCreateBufferFromFile("sound/ShipCrash.wav");
-    Buf[SND_ASTER_CRASH1]=alutCreateBufferFromFile("sound/AsterCrash1.wav");
-    Buf[SND_ASTER_CRASH2]=alutCreateBufferFromFile("sound/AsterCrash2.wav");
-    Buf[SND_ASTER_CRASH3]=alutCreateBufferFromFile("sound/AsterCrash3.wav");
-    Buf[SND_UFO_ENGINE]=alutCreateBufferFromFile("sound/UfoEngine.wav");
-    Buf[SND_START_BEEP]=alutCreateBufferFromFile("sound/StartBeep.wav");
-    Buf[SND_BONUS_BEEP]=alutCreateBufferFromFile("sound/BonusBeep.wav");
-    Buf[SND_BROOM]=alutCreateBufferFromFile("sound/Broom.wav");
-    Buf[SND_POWERUP]=alutCreateBufferFromFile("sound/PowerUp.wav");
-    Buf[SND_SHIP_FIRE_POWER]=alutCreateBufferFromFile("sound/ShipFirePower.wav");
-    
-// Bind the buffer with the source.
-    alGenSources(NUM_SOURCES, Src);
-    if(alGetError()!=AL_NO_ERROR) return false;
+    if (m_bSamplesLoaded) return true;
+    Buf[SND_SHIP_ENGINE] = alutCreateBufferFromFile("sound/ShipEngine.wav");
+    Buf[SND_SHIP_FIRE] = alutCreateBufferFromFile("sound/ShipFire.wav");
+    Buf[SND_SHIP_CRASH] = alutCreateBufferFromFile("sound/ShipCrash.wav");
+    Buf[SND_ASTER_CRASH1] = alutCreateBufferFromFile("sound/AsterCrash1.wav");
+    Buf[SND_ASTER_CRASH2] = alutCreateBufferFromFile("sound/AsterCrash2.wav");
+    Buf[SND_ASTER_CRASH3] = alutCreateBufferFromFile("sound/AsterCrash3.wav");
+    Buf[SND_UFO_ENGINE] = alutCreateBufferFromFile("sound/UfoEngine.wav");
+    Buf[SND_START_BEEP] = alutCreateBufferFromFile("sound/StartBeep.wav");
+    Buf[SND_BONUS_BEEP] = alutCreateBufferFromFile("sound/BonusBeep.wav");
+    Buf[SND_BROOM] = alutCreateBufferFromFile("sound/Broom.wav");
+    Buf[SND_POWERUP] = alutCreateBufferFromFile("sound/PowerUp.wav");
+    Buf[SND_SHIP_FIRE_POWER] = alutCreateBufferFromFile("sound/ShipFirePower.wav");
 
-    ALfloat RefDist=ALfloat(geWorld.GetWidth()/8.0);
-    ALfloat MaxDist=ALfloat(2.0*RefDist);
+    // Bind the buffer with the source.
+    alGenSources(NUM_SOURCES, Src);
+    if (alGetError() != AL_NO_ERROR) return false;
+
+    ALfloat RefDist = ALfloat(geWorld.GetWidth() / 8.0);
+    ALfloat MaxDist = ALfloat(2.0 * RefDist);
     alSourcei(Src[SND_SHIP_ENGINE], AL_BUFFER, Buf[SND_SHIP_ENGINE]);
     alSourcei(Src[SND_SHIP_ENGINE], AL_LOOPING, AL_TRUE);
     alSourcef(Src[SND_SHIP_ENGINE], AL_REFERENCE_DISTANCE, RefDist);
@@ -102,23 +104,23 @@ bool TGESoundEngineOAL::InitSound()
     alSourcef(Src[SND_SHIP_FIRE_POWER], AL_MAX_DISTANCE, MaxDist);
     alSourcef(Src[SND_SHIP_FIRE_POWER], AL_GAIN, SND_VOL_SHIP_FIRE_POWER);
 
-    m_bSamplesLoaded=true;
-    if(alGetError()!=AL_NO_ERROR) return false;
+    m_bSamplesLoaded = true;
+    if (alGetError() != AL_NO_ERROR) return false;
 
     return true;
 }
 
 void TGESoundEngineOAL::FreeSound()
 {
-    if(!m_bSamplesLoaded) return;
+    if (!m_bSamplesLoaded) return;
     alDeleteBuffers(NUM_BUFFERS, &Buf[0]);
     alDeleteSources(NUM_SOURCES, &Src[0]);
-    m_bSamplesLoaded=false;
+    m_bSamplesLoaded = false;
 }
 
 void TGESoundEngineOAL::SetVolume(float in_Vol)
 {
-    m_Volume=in_Vol;
+    m_Volume = in_Vol;
     alListenerf(AL_GAIN, m_Volume);
 }
 
@@ -131,4 +133,4 @@ void TGESoundEngineOAL::Unmute()
 {
     alListenerf(AL_GAIN, m_Volume);
 }
-#endif //USE_OPENAL
+#endif // USE_OPENAL

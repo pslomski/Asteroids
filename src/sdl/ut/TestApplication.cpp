@@ -10,4 +10,4 @@ TEST(TestApplication, shouldCreateApplication)
     sound::MockSoundEngine soundEngine;
     sdl::Application app{soundEngine};
 }
-}
+} // namespace testing

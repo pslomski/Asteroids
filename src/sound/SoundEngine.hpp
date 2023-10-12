@@ -14,7 +14,7 @@ public:
     virtual bool Open() = 0;
     virtual void Close() {}
     virtual void SetVolume(float in_Vol) { m_Volume = in_Vol; } // ustawia glosnosc dzwiekow w skali 0-1.
-    virtual float GetVolume() { return m_Volume; }          // gloscnosc dzwiekow w skali 0-1. 0 oznacza wylaczona
+    virtual float GetVolume() { return m_Volume; } // gloscnosc dzwiekow w skali 0-1. 0 oznacza wylaczona
     virtual void Mute() = 0;
     virtual void Unmute() = 0;
 

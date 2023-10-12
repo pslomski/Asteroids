@@ -2,12 +2,13 @@
 
 namespace ui
 {
-class Rectangle {
+class Rectangle
+{
 public:
     using T = int;
     Rectangle();
     Rectangle(const T aLeft, const T aTop, const T aRight, const T aBottom);
-    ~Rectangle() { }
+    ~Rectangle() {}
 
     T getWidth() const;
     T getHeight() const;

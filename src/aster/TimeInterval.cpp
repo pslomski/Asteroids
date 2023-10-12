@@ -1,12 +1,8 @@
 #include "TimeInterval.hpp"
 
-TimeInterval::TimeInterval() :
-    interval(1.0)
-{}
+TimeInterval::TimeInterval() : interval(1.0) {}
 
-TimeInterval::TimeInterval(Float timeSpan) :
-    interval(timeSpan)
-{}
+TimeInterval::TimeInterval(Float timeSpan) : interval(timeSpan) {}
 
 void TimeInterval::set(Float newInterval)
 {

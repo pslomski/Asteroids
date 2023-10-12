@@ -14,5 +14,5 @@ protected:
     void OnRender() override;
 };
 
-typedef std::list<TBullet *> TvecBullet;
-typedef std::list<TBullet *>::iterator TvecBulletIt;
+typedef std::list<TBullet*> TvecBullet;
+typedef std::list<TBullet*>::iterator TvecBulletIt;

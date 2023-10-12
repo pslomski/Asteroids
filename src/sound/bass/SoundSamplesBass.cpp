@@ -1,7 +1,7 @@
 #include "SoundSamplesBass.hpp"
+#include <sstream>
 #include "bass.h"
 #include "sound/SoundSamples.hpp"
-#include <sstream>
 
 namespace sound
 {
@@ -12,7 +12,7 @@ SoundSamplesBass::~SoundSamplesBass()
 
 void SoundSamplesBass::init()
 {
-    if(samples.size() == 0)
+    if (samples.size() == 0)
     {
         addSample(SampleId::shipEngine, "ShipEngine", FLAG_SAMPLE_LOOP);
         addSample(SampleId::shipFire, "ShipFire");
@@ -53,14 +53,11 @@ void SoundSamplesBass::addSample(const SampleId sampleId, const char* name, cons
     samples[sampleId] = BASS_SampleLoad(FALSE, ss.str().c_str(), 0, 0, maxChannelCount, getBassFlags(flags));
 }
 
-void SoundSamplesBass::playSample(const SampleId sampleId)
-{
-
-}
+void SoundSamplesBass::playSample(const SampleId sampleId) {}
 
 void SoundSamplesBass::free()
 {
-    for(auto sample : samples)
+    for (auto sample : samples)
     {
         BASS_SampleFree(sample.second);
     }

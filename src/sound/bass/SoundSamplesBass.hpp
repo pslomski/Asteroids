@@ -1,13 +1,13 @@
 #pragma once
 
-#include <map>
 #include <bass.h>
+#include <map>
 
 #include "sound/SoundSamples.hpp"
 
 namespace sound
 {
-class SoundSamplesBass: public SoundSamples
+class SoundSamplesBass : public SoundSamples
 {
 public:
     ~SoundSamplesBass();

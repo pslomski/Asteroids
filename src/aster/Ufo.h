@@ -4,18 +4,18 @@
 #include "Object.h"
 #include "sound/Sound.hpp"
 
-class TUfo :public Object
+class TUfo : public Object
 {
 public:
     TUfo();
     ~TUfo();
 
     void update() override;
-    Object *pShip;
-    Object *pAster;
+    Object* pShip;
+    Object* pAster;
     void Action(TvecBullet& vecBullet);
-    TBullet* FireBullet(const PointF &pt);
-    void Crash(TvecObiekt &vecObiekty);
+    TBullet* FireBullet(const PointF& pt);
+    void Crash(TvecObiekt& vecObiekty);
     TGEObjectSound sndEngine;
     TGEObjectSound sndCrash;
 

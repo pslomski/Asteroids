@@ -36,7 +36,6 @@ namespace sound
 #define SND_VOL_POWERUP 0.5f
 #define SND_VOL_SHIP_FIRE_POWER 0.4f
 
-
 class SoundEngineBass : public SoundEngine
 {
 private:

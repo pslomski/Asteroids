@@ -4,18 +4,18 @@
 
 typedef double Float;
 
-template<class T>
+template <class T>
 class Point
 {
 public:
     Point() {}
-    
+
     Point(const Point& p)
     {
         x = p.x;
         y = p.y;
     }
-    
+
     Point(T in_x, T in_y)
     {
         x = in_x;
@@ -27,17 +27,20 @@ public:
 
 typedef Point<Float> PointF;
 
-template<class T>
-class Box {
+template <class T>
+class Box
+{
 public:
     Box() {}
-    Box(const Box& b) {
+    Box(const Box& b)
+    {
         x0 = b.x0;
         y0 = b.y0;
         x1 = b.x1;
         y1 = b.y1;
     }
-    Box(const T in_x0, const T in_y0, const T in_x1, const T in_y1) {
+    Box(const T in_x0, const T in_y0, const T in_x1, const T in_y1)
+    {
         x0 = in_x0;
         y0 = in_y0;
         x1 = in_x1;
@@ -48,22 +51,17 @@ public:
 
 typedef Box<Float> BoxF;
 
-struct Bounds {
+struct Bounds
+{
     Float x0, x1, y0, y1;
 };
 
 class Color
 {
 public:
-    Color()
-    {
-        Set();
-    }
+    Color() { Set(); }
 
-    Color(Float in_red, Float in_green, Float in_blue)
-    {
-        Set(in_red, in_green, in_blue);
-    }
+    Color(Float in_red, Float in_green, Float in_blue) { Set(in_red, in_green, in_blue); }
 
     Color(const Color& col)
     {
@@ -128,10 +126,7 @@ public:
         color_[2] = b;
         color_[3] = a;
     }
-    operator const float* () const
-    {
-        return (float*)color_;
-    }
+    operator const float*() const { return (float*)color_; }
 
 private:
     GLfloat color_[4];

@@ -6,7 +6,7 @@ namespace aster
 {
 class PlayerShip;
 
-class PowerUpAddBullet: public PowerUp
+class PowerUpAddBullet : public PowerUp
 {
 public:
     PowerUpAddBullet(PlayerShip& playerShip, const Float dt);

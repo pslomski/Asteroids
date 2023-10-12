@@ -22,7 +22,7 @@ protected:
 private:
     static constexpr int MusicVolume{0};
     static constexpr int SoundVolume{1};
-    
+
     void init();
     void cleanup();
     void selectionUp();

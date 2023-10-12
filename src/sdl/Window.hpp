@@ -12,7 +12,7 @@ public:
     {
         return new Window(stateManager, width, height);
     }
-    static void destroy(Window* &ptrWindow)
+    static void destroy(Window*& ptrWindow)
     {
         delete ptrWindow;
         ptrWindow = nullptr;
@@ -32,4 +32,4 @@ private:
     SDL_Window* window{nullptr};
     SDL_GLContext context{nullptr};
 };
-}
+} // namespace sdl

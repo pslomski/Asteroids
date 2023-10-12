@@ -2,7 +2,7 @@
 
 #include "aster/TempObject.hpp"
 
-class BonusObject: public TempObject
+class BonusObject : public TempObject
 {
 public:
     BonusObject(BonusType in_Type);

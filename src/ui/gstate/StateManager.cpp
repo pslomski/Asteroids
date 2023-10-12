@@ -2,11 +2,9 @@
 
 namespace ui
 {
-StateManager::StateManager()
-{}
+StateManager::StateManager() {}
 
-StateManager::~StateManager()
-{}
+StateManager::~StateManager() {}
 
 void StateManager::changeState(GameState* const newState)
 {

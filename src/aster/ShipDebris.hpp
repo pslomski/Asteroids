@@ -19,4 +19,4 @@ protected:
 private:
     Float ratio;
 };
-}
+} // namespace aster

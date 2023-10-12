@@ -18,4 +18,4 @@ private:
     int nextLife;
     int level;
 };
-} // aster
+} // namespace aster

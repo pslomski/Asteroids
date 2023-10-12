@@ -11,8 +11,8 @@ namespace aster
 
 class Asteroid;
 
-typedef std::list<Asteroid *> TvecAster;
-typedef std::list<Asteroid *>::iterator TvecAsterIt;
+typedef std::list<Asteroid*> TvecAster;
+typedef std::list<Asteroid*>::iterator TvecAsterIt;
 
 class Asteroid : public Object
 {
@@ -23,7 +23,7 @@ public:
     Asteroid(int in_iLevel);
 
     void Create();
-    void Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecBonus);
+    void Crash(TvecAster& vecAster, TvecObiekt& vecDebris, TvecBonus& vecBonus);
     static bool CreateBonus;
     int Level;
     bool HasBonus;

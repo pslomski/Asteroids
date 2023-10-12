@@ -2,8 +2,7 @@
 
 namespace aster
 {
-PowerUp::PowerUp(const Float timeSpanSec) :
-    active(false)
+PowerUp::PowerUp(const Float timeSpanSec) : active(false)
 {
     duration.set(timeSpanSec);
 }

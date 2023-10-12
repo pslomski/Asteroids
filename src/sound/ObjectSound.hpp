@@ -6,8 +6,9 @@ class ObjectSound
 {
 public:
     ObjectSound();
-    virtual ~ObjectSound() {};
-    void Init(int in_ID, float in_Volume) {
+    virtual ~ObjectSound(){};
+    void Init(int in_ID, float in_Volume)
+    {
         m_SoundID = in_ID;
         m_Volume = in_Volume;
     }
@@ -16,6 +17,7 @@ public:
     virtual void Stop() = 0;
     virtual void SetVolume(float in_Volume) = 0;
     virtual void SetPitch(float in_Pitch) = 0;
+
 protected:
     int m_SoundID;
     float m_Volume;

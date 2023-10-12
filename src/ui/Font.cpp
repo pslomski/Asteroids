@@ -3,8 +3,8 @@
 #include "gl/Renderer.hpp"
 #include "log/Log.hpp"
 
-#include "sdl/Exception.hpp"
 #include "Font.hpp"
+#include "sdl/Exception.hpp"
 
 namespace ui
 {
@@ -48,7 +48,7 @@ void Font::drawText(const std::string& text, const int x, const int y, const GLC
     // LOG_INF("Font::drawText text:%s x:%d y:%d", text.c_str(), x, y);
     glColor4fv(color);
     constexpr SDL_Color colorWhite{0xFF, 0xFF, 0xFF, 0xFF};
-    //TTF_SetFontStyle(font, TTF_STYLE_BOLD);
+    // TTF_SetFontStyle(font, TTF_STYLE_BOLD);
     SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), colorWhite);
     if (surface == nullptr)
     {
@@ -66,10 +66,14 @@ void Font::drawText(const std::string& text, const int x, const int y, const GLC
     SDL_FreeSurface(surface);
 
     glBegin(GL_TRIANGLE_STRIP);
-    glTexCoord2f(0, 0); glVertex2i(x, y);
-    glTexCoord2f(1, 0); glVertex2i(x + w, y);
-    glTexCoord2f(0, 1); glVertex2i(x, y + h);
-    glTexCoord2f(1, 1); glVertex2i(x + w, y + h);
+    glTexCoord2f(0, 0);
+    glVertex2i(x, y);
+    glTexCoord2f(1, 0);
+    glVertex2i(x + w, y);
+    glTexCoord2f(0, 1);
+    glVertex2i(x, y + h);
+    glTexCoord2f(1, 1);
+    glVertex2i(x + w, y + h);
     glEnd();
     glDeleteTextures(1, &texture);
 }
@@ -81,7 +85,7 @@ void Font::drawFmtText(const int x, const int y, const GLColor& color, const cha
         return;
     }
     char text[256];
-    va_list	ap;
+    va_list ap;
     va_start(ap, fmt);
     int len = vsprintf(text, fmt, ap);
     va_end(ap);

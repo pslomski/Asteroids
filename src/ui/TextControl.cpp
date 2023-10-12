@@ -7,21 +7,20 @@
 
 namespace ui
 {
-TextControl::TextControl(Font* pFont, const Rect& rectPosition):
-    font(pFont),
-    rect(rectPosition),
-    text(""),
-    red_(1.0),
-    green_(1.0),
-    blue_(1.0),
-    blinkInterval(0.5),
-    isBlink_(false),
-    alignment(taRight)
-{}
-
-TextControl::~TextControl()
+TextControl::TextControl(Font* pFont, const Rect& rectPosition)
+    : font(pFont)
+    , rect(rectPosition)
+    , text("")
+    , red_(1.0)
+    , green_(1.0)
+    , blue_(1.0)
+    , blinkInterval(0.5)
+    , isBlink_(false)
+    , alignment(taRight)
 {
 }
+
+TextControl::~TextControl() {}
 
 void TextControl::update(const double TimeStep)
 {
@@ -38,14 +37,14 @@ void TextControl::draw()
     int xOffset = 0;
     switch (alignment)
     {
-    case taLeft:
-        break;
-    case taCenter:
-        xOffset = (rect.getWidth() - textSize.width) / 2;
-        break;
-    case taRight:
-        xOffset = rect.getWidth() - textSize.width;
-        break;
+        case taLeft:
+            break;
+        case taCenter:
+            xOffset = (rect.getWidth() - textSize.width) / 2;
+            break;
+        case taRight:
+            xOffset = rect.getWidth() - textSize.width;
+            break;
     }
 
     int x = rect.left + xOffset;

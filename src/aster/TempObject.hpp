@@ -2,7 +2,7 @@
 
 #include "Object.h"
 
-class TempObject: public Object
+class TempObject : public Object
 {
 public:
     TempObject();

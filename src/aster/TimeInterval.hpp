@@ -6,10 +6,7 @@ class TimeInterval
 public:
     TimeInterval();
     TimeInterval(Float timeSpan);
-    Float get() const
-    {
-        return interval;
-    }
+    Float get() const { return interval; }
     void set(Float newInterval);
     void reset();
     void reset(Float newInterval);

@@ -7,13 +7,10 @@
 #include "World.h"
 #include "sound/Sound.hpp"
 
-
 namespace aster
 {
-PlayerShip::PlayerShip(Float ax, Float ay, Float aangle):
-    Object(),
-    puAddBullet(*this, GE_POWERUP_DURATION_TIME),
-    puBulletSpeed(*this, GE_POWERUP_DURATION_TIME)
+PlayerShip::PlayerShip(Float ax, Float ay, Float aangle)
+    : Object(), puAddBullet(*this, GE_POWERUP_DURATION_TIME), puBulletSpeed(*this, GE_POWERUP_DURATION_TIME)
 {
     sndFire.Init(SND_SHIP_FIRE, SND_VOL_SHIP_FIRE);
     sndFirePow.Init(SND_SHIP_FIRE_POWER, SND_VOL_SHIP_FIRE_POWER);
@@ -64,10 +61,8 @@ PlayerShip::~PlayerShip()
 void PlayerShip::update()
 {
     Object::update();
-    if (puAddBullet.duration.inc(dt))
-        puAddBullet.stop();
-    if (puBulletSpeed.duration.inc(dt))
-        puBulletSpeed.stop();
+    if (puAddBullet.duration.inc(dt)) puAddBullet.stop();
+    if (puBulletSpeed.duration.inc(dt)) puBulletSpeed.stop();
 
     if (Respawning)
     {
@@ -152,8 +147,7 @@ void PlayerShip::OnRender()
 
 void PlayerShip::AccelerationOn()
 {
-    if (m_tiAccel.inc(dt))
-        m_tiAccel.elapsed = m_tiAccel.interval;
+    if (m_tiAccel.inc(dt)) m_tiAccel.elapsed = m_tiAccel.interval;
     SetA(Accel + (1.0 - m_tiAccel.ratio()) * AccelBurst);
     sndEngineGain = SND_VOL_SHIP_ENGINE * GetA() / AccelMax;
     sndEngine.SetPitch(float(GetA() / AccelMax));
@@ -191,7 +185,7 @@ void PlayerShip::RotateRight()
     SetAlfa(GetAlfa() - std::min(0.5 * (1.0 + m_tiRotateRight.ratio()), 1.0) * m_RotSpeed * dt);
 }
 
-TBullet *PlayerShip::FireBullet()
+TBullet* PlayerShip::FireBullet()
 {
     if (puAddBullet.isActive() or puBulletSpeed.isActive())
     {
@@ -201,7 +195,7 @@ TBullet *PlayerShip::FireBullet()
     {
         sndFire.Play();
     }
-    TBullet *bullet = new TBullet;
+    TBullet* bullet = new TBullet;
     bullet->SetXY(GetX(), GetY());
     bullet->SetAlfa(GetAlfa());
     Float vx = GetVX() + BulletSpeed * cos(GetAlfa() * GE_PIover180);
@@ -211,14 +205,14 @@ TBullet *PlayerShip::FireBullet()
     return bullet;
 }
 
-void PlayerShip::Crash(TvecObiekt &vecObiekty)
+void PlayerShip::Crash(TvecObiekt& vecObiekty)
 {
     sndCrash.Play();
 
     int iDebCount = GE_SHIP_LIN_DEBR_COUNT;
     for (int i = 0; i < iDebCount; ++i)
     {
-        aster::AsterShard *pDeb = new aster::AsterShard;
+        aster::AsterShard* pDeb = new aster::AsterShard;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -232,7 +226,7 @@ void PlayerShip::Crash(TvecObiekt &vecObiekty)
     iDebCount = GE_SHIP_DOT_DEBR_COUNT;
     for (int i = 0; i < iDebCount; ++i)
     {
-        aster::ShipDebris *pDeb = new aster::ShipDebris;
+        aster::ShipDebris* pDeb = new aster::ShipDebris;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
@@ -261,12 +255,12 @@ void PlayerShip::AddBonus(BonusType bonusType)
 {
     switch (bonusType)
     {
-    case btBullets:
-        puAddBullet.start();
-        break;
-    case btBulletSpeed:
-        puBulletSpeed.start();
-        break;
+        case btBullets:
+            puAddBullet.start();
+            break;
+        case btBulletSpeed:
+            puBulletSpeed.start();
+            break;
     }
 }
 } // namespace aster

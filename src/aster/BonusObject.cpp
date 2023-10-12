@@ -1,9 +1,7 @@
 #include "aster/BonusObject.hpp"
 #include "aster/GameConsts.h"
 
-BonusObject::BonusObject(BonusType in_Type) :
-    TempObject(GE_BONUS_LIFETIME),
-    Type(in_Type)
+BonusObject::BonusObject(BonusType in_Type) : TempObject(GE_BONUS_LIFETIME), Type(in_Type)
 {
     ScoreValue = GE_SCRVAL_BONUS;
     tiRot.set(1.5);
@@ -18,9 +16,7 @@ BonusObject::BonusObject(BonusType in_Type) :
     CalcBounds(Verts);
 }
 
-BonusObject::~BonusObject()
-{
-}
+BonusObject::~BonusObject() {}
 
 void BonusObject::update()
 {

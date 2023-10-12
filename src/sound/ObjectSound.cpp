@@ -7,7 +7,7 @@ namespace sound
 {
 ObjectSound::ObjectSound()
 {
-    m_SoundID=-1;
-    m_Volume=1.0;
+    m_SoundID = -1;
+    m_Volume = 1.0;
 }
 } // namespace sound

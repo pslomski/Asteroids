@@ -3,12 +3,9 @@
 
 namespace ui
 {
-GameState::GameState(StateManager* const manager):
-    stateManager(manager)
-{}
+GameState::GameState(StateManager* const manager) : stateManager(manager) {}
 
-GameState::~GameState()
-{}
+GameState::~GameState() {}
 
 void GameState::changeState(GameState* const newState) const
 {

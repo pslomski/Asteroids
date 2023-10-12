@@ -1,13 +1,10 @@
-#include "aster/GameConsts.h"
 #include "aster/PowerUpAddBullet.hpp"
+#include "aster/GameConsts.h"
 #include "aster/Ship.hpp"
 
 namespace aster
 {
-PowerUpAddBullet::PowerUpAddBullet(PlayerShip& playerShip, const Float dt) :
-    ship(playerShip),
-    PowerUp(dt)
-{}
+PowerUpAddBullet::PowerUpAddBullet(PlayerShip& playerShip, const Float dt) : ship(playerShip), PowerUp(dt) {}
 
 void PowerUpAddBullet::onStart()
 {

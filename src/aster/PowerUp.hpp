@@ -8,7 +8,7 @@ class PowerUp
 {
 public:
     PowerUp(const Float timeSpanSec);
-    virtual ~PowerUp() {};
+    virtual ~PowerUp(){};
 
     void start();
     void stop();

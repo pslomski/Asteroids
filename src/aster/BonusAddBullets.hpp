@@ -6,7 +6,7 @@ class TGEBonusAddBullets : public BonusObject
 {
 public:
     TGEBonusAddBullets();
-    
+
 private:
     void Create();
 };

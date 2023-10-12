@@ -101,12 +101,12 @@ BonusType GetBonusType()
         {
             switch (btLast)
             {
-            case btBullets:
-                bt = btBulletSpeed;
-                break;
-            case btBulletSpeed:
-                bt = btBullets;
-                break;
+                case btBullets:
+                    bt = btBulletSpeed;
+                    break;
+                case btBulletSpeed:
+                    bt = btBullets;
+                    break;
             }
         }
         btLast = bt;
@@ -119,7 +119,7 @@ BonusType GetBonusType()
     return btNone;
 }
 
-void Asteroid::Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecBonus)
+void Asteroid::Crash(TvecAster& vecAster, TvecObiekt& vecDebris, TvecBonus& vecBonus)
 {
     sndCrash.Play();
 
@@ -149,7 +149,7 @@ void Asteroid::Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecB
 
     if (CreateBonus && BonusType != btNone)
     {
-        BonusObject *bonus = createBonusObject(BonusType);
+        BonusObject* bonus = createBonusObject(BonusType);
         bonus->SetXY(GetX(), GetY());
         bonus->SetRandV(2.0, 3.0);
         vecBonus.push_back(bonus);
@@ -157,7 +157,7 @@ void Asteroid::Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecB
 
     for (int i = 0; i < iAsterCount; ++i)
     {
-        Asteroid *pAster = new Asteroid(Level + 1);
+        Asteroid* pAster = new Asteroid(Level + 1);
         if (i == 0)
         {
             pAster->HasBonus = HasBonus; // jeden fragment przejmuje bonus
@@ -172,7 +172,7 @@ void Asteroid::Crash(TvecAster &vecAster, TvecObiekt &vecDebris, TvecBonus &vecB
 
     for (int i = 0; i < iDebCount; ++i)
     {
-        AsterShard *pDeb = new AsterShard;
+        AsterShard* pDeb = new AsterShard;
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());
         pDeb->LifeTime.set(LifeTime);

@@ -12,11 +12,8 @@ public:
     Application(sound::SoundEngine& soundEngine);
     ~Application();
 
-    static void quitApp()
-    {
-        canQuit = true;
-    }
-    void init(Window *window);
+    static void quitApp() { canQuit = true; }
+    void init(Window* window);
     void run();
 
 private:
@@ -25,6 +22,6 @@ private:
 
     sound::SoundEngine& soundEngine;
     static bool canQuit;
-    Window *window{nullptr};
+    Window* window{nullptr};
 };
-}
+} // namespace sdl

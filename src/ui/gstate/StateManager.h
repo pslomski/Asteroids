@@ -20,6 +20,7 @@ public:
 
     void changeState(GameState* const newState);
     GameState* getActiveState() const;
+
 private:
     GameState* activeState{nullptr};
 };

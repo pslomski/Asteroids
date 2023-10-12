@@ -1,5 +1,5 @@
-#include <GL/gl.h>
 #include "gl/Renderer.hpp"
+#include <GL/gl.h>
 
 namespace
 {
@@ -12,7 +12,7 @@ int power_of_two(int input)
     }
     return value;
 }
-}
+} // namespace
 
 namespace gl
 {

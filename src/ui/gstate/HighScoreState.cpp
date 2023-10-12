@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 
 #include "HighScoreState.h"
 #include "MenuState.h"
@@ -13,14 +13,10 @@
 
 namespace ui
 {
-HighScoreState::HighScoreState(StateManager* const manager):
-    GameState(manager),
-    mNewHighScore(0),
-    mEnterName(false), 
-    mFont(nullptr),
-    mNameIndex(0),
-    mHighScores(10)
-{}
+HighScoreState::HighScoreState(StateManager* const manager)
+    : GameState(manager), mNewHighScore(0), mEnterName(false), mFont(nullptr), mNameIndex(0), mHighScores(10)
+{
+}
 
 void HighScoreState::init()
 {
@@ -54,7 +50,7 @@ void HighScoreState::cleanup()
     delete mHighScore;
     delete mFont;
     delete mFontSmall;
-    
+
     mHighScore = NULL;
     mFont = NULL;
     mFontSmall = NULL;
@@ -78,15 +74,13 @@ void HighScoreState::enterState()
     // Read all entries from the file
     std::string line;
     HighScoreData newScore;
-    std::basic_string <char>::size_type idx;
-    while (!inputFile.eof()) 
+    std::basic_string<char>::size_type idx;
+    while (!inputFile.eof())
     {
         getline(inputFile, line);
-        if (line.empty())
-            continue;
+        if (line.empty()) continue;
         idx = line.find(";");
-        if (idx == -1)
-            continue;
+        if (idx == -1) continue;
         newScore.strPlayer = line.substr(0, idx);
         newScore.score = atoi(line.substr(idx + 1).c_str());
         mHighScores.push_back(newScore);
@@ -124,51 +118,51 @@ HighScoreState* HighScoreState::getInstance(StateManager* const manager)
 }
 
 void HighScoreState::onKeyDown(SDL_KeyboardEvent& e)
-{ 
+{
     if (mEnterName)
     {
-        switch(SDLTools::GetKeycode(e))
+        switch (SDLTools::GetKeycode(e))
         {
-            // In case of a return, the new score should be added.
-        case SDLK_RETURN:
-            if(!std::string(mCurrentName).empty()){
-                addNewScore(mCurrentName, mNewHighScore);
-                mNewHighScore = 0;
-                mEnterName = false;
-                mNameIndex = 0;
-                mCurrentName[0] = '\0';
-            }
-            break;
-        case SDLK_BACKSPACE:
-            // Remove one character
-            if (mNameIndex>0)
-            {
-                mNameIndex--;
-                mCurrentName[mNameIndex] = '\0';
-            }
-            break;
+                // In case of a return, the new score should be added.
+            case SDLK_RETURN:
+                if (!std::string(mCurrentName).empty())
+                {
+                    addNewScore(mCurrentName, mNewHighScore);
+                    mNewHighScore = 0;
+                    mEnterName = false;
+                    mNameIndex = 0;
+                    mCurrentName[0] = '\0';
+                }
+                break;
+            case SDLK_BACKSPACE:
+                // Remove one character
+                if (mNameIndex > 0)
+                {
+                    mNameIndex--;
+                    mCurrentName[mNameIndex] = '\0';
+                }
+                break;
         }
     }
     else
     {
-        switch(SDLTools::GetKeycode(e))
+        switch (SDLTools::GetKeycode(e))
         {
-        case SDLK_ESCAPE:
-        case SDLK_RETURN:
-            changeState(MenuState::getInstance(stateManager));
-            break;
+            case SDLK_ESCAPE:
+            case SDLK_RETURN:
+                changeState(MenuState::getInstance(stateManager));
+                break;
         }
     }
 }
 
-void HighScoreState::onChar(char* c) 
-{ 
-    if (mEnterName && (mNameIndex<25))
+void HighScoreState::onChar(char* c)
+{
+    if (mEnterName && (mNameIndex < 25))
     {
         // Filter the characters for only alphabetical
         // characters.
-        if ( (*c>=64 && *c<=91) ||
-             (*c>=97 && *c<=122))
+        if ((*c >= 64 && *c <= 91) || (*c >= 97 && *c <= 122))
         {
             mCurrentName[mNameIndex] = *c;
             mNameIndex++;
@@ -177,18 +171,18 @@ void HighScoreState::onChar(char* c)
     }
 }
 
-void HighScoreState::draw()  
+void HighScoreState::draw()
 {
     auto dm = gl::DrawMode2DText(geWorld.scrWidth, geWorld.scrHeight);
     mHighScore->draw();
     ui::Rectangle rcNum = mEntriesRect;
     rcNum.right = mEntriesRect.left + 40;
     ui::Rectangle rcTxt = mEntriesRect;
-    rcTxt.left=mEntriesRect.left + 60;
+    rcTxt.left = mEntriesRect.left + 60;
     int count = 1;
     char buf[256];
     THighScoreTable::iterator iter = mHighScores.begin();
-    for (iter; iter!=mHighScores.end(); iter++)
+    for (iter; iter != mHighScores.end(); iter++)
     {
         // itoa(cout, buf, 10);
         const auto entryN{std::to_string(count)};
@@ -249,13 +243,12 @@ void HighScoreState::draw()
 void HighScoreState::saveScores()
 {
     std::ofstream outputFile("HighScores.txt");
-    if (outputFile.fail())
-        return;
+    if (outputFile.fail()) return;
 
     THighScoreTable::iterator iter = mHighScores.begin();
     for (iter; iter != mHighScores.end(); iter++)
     {
-        outputFile << iter->strPlayer << ";" << iter->score<<'\n';
+        outputFile << iter->strPlayer << ";" << iter->score << '\n';
     }
 }
 
@@ -265,7 +258,7 @@ void HighScoreState::addNewScore(const std::string& strName, uint32_t score)
     newData.strPlayer = strName;
     newData.score = score;
     mHighScores.push_back(newData);
-    
+
     sort(mHighScores.begin(), mHighScores.end());
 
     while (mHighScores.size() > 10)

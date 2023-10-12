@@ -20,31 +20,16 @@ public:
     Float clipLeft, clipRight;
     Float clipBottom, clipTop;
 
-    Float getWidth()
-    {
-        return clipRight - clipLeft;
-    }
-    
-    Float getHeight()
-    {
-        return clipTop - clipBottom;
-    }
-    
-    PointF GetCenter()
-    {
-        return PointF(
-            (clipRight + clipLeft) / 2.0,
-            (clipTop + clipBottom) / 2.0
-        );
-    }
-    
+    Float getWidth() { return clipRight - clipLeft; }
+
+    Float getHeight() { return clipTop - clipBottom; }
+
+    PointF GetCenter() { return PointF((clipRight + clipLeft) / 2.0, (clipTop + clipBottom) / 2.0); }
+
     PointF GetRandomPosAtEdge();
-    
-    uint32_t GetTicks()
-    {
-        return time_;
-    }
-    
+
+    uint32_t GetTicks() { return time_; }
+
     Float getCurrentTime();
     void readSettings();
     void saveSettings();

@@ -28,4 +28,4 @@ void ShipDebris::OnRender()
     glVertex2d(bounds.x1, 0.0);
     glEnd();
 }
-}
+} // namespace aster

@@ -8,9 +8,7 @@
 
 namespace ui
 {
-OptionsState::OptionsState(StateManager* const manager):
-    GameState(manager)
-{}
+OptionsState::OptionsState(StateManager* const manager) : GameState(manager) {}
 
 OptionsState* OptionsState::getInstance(StateManager* const manager)
 {
@@ -70,30 +68,30 @@ void OptionsState::leaveState()
 
 void OptionsState::onKeyDown(SDL_KeyboardEvent& e)
 {
-    switch (e.keysym.sym) {
-    case SDLK_DOWN:
-        selectionDown();
-        break;
-    case SDLK_UP:
-        selectionUp();
-        break;
-    case SDLK_LEFT:
-        leftArrow();
-        break;
-    case SDLK_RIGHT:
-        rightArrow();
-        break;
-    case SDLK_ESCAPE:
-        changeState(MenuState::getInstance(stateManager));
-        break;
+    switch (e.keysym.sym)
+    {
+        case SDLK_DOWN:
+            selectionDown();
+            break;
+        case SDLK_UP:
+            selectionUp();
+            break;
+        case SDLK_LEFT:
+            leftArrow();
+            break;
+        case SDLK_RIGHT:
+            rightArrow();
+            break;
+        case SDLK_ESCAPE:
+            changeState(MenuState::getInstance(stateManager));
+            break;
     }
 }
 
 void OptionsState::update(double TimeStep)
 {
     TextControl* txtCtrl = getTextControl(currentSelection);
-    if (txtCtrl)
-        txtCtrl->update(TimeStep);
+    if (txtCtrl) txtCtrl->update(TimeStep);
 }
 
 void OptionsState::draw()
@@ -115,9 +113,14 @@ void OptionsState::draw()
 
 TextControl* OptionsState::getTextControl(int id)
 {
-    switch (id) {
-    case 0: return musicVolText; break;
-    case 1: return soundVolText; break;
+    switch (id)
+    {
+        case 0:
+            return musicVolText;
+            break;
+        case 1:
+            return soundVolText;
+            break;
     }
     assert(NULL);
     return nullptr;
@@ -155,30 +158,31 @@ void OptionsState::leftArrow()
 {
     switch (currentSelection)
     {
-    case MusicVolume:
-        geWorld.MusicVol = std::max(0, geWorld.MusicVol - 1);
-        sound::geMusic.SetVolume(0.1f * geWorld.MusicVol);
-        break;
-    case SoundVolume:
-        geWorld.SoundVol = std::max(0, geWorld.SoundVol - 1);
-        sound::geSound.SetVolume(0.1f * geWorld.SoundVol);
-        sound::geSound.SoundTest();
-        break;
+        case MusicVolume:
+            geWorld.MusicVol = std::max(0, geWorld.MusicVol - 1);
+            sound::geMusic.SetVolume(0.1f * geWorld.MusicVol);
+            break;
+        case SoundVolume:
+            geWorld.SoundVol = std::max(0, geWorld.SoundVol - 1);
+            sound::geSound.SetVolume(0.1f * geWorld.SoundVol);
+            sound::geSound.SoundTest();
+            break;
     }
 }
 
 void OptionsState::rightArrow()
 {
-    switch (currentSelection) {
-    case MusicVolume:
-        geWorld.MusicVol = std::min(10, geWorld.MusicVol + 1);
-        sound::geMusic.SetVolume(0.1f * geWorld.MusicVol);
-        break;
-    case SoundVolume:
-        geWorld.SoundVol = std::min(10, geWorld.SoundVol + 1);
-        sound::geSound.SetVolume(0.1f * geWorld.SoundVol);
-        sound::geSound.SoundTest();
-        break;
+    switch (currentSelection)
+    {
+        case MusicVolume:
+            geWorld.MusicVol = std::min(10, geWorld.MusicVol + 1);
+            sound::geMusic.SetVolume(0.1f * geWorld.MusicVol);
+            break;
+        case SoundVolume:
+            geWorld.SoundVol = std::min(10, geWorld.SoundVol + 1);
+            sound::geSound.SetVolume(0.1f * geWorld.SoundVol);
+            sound::geSound.SoundTest();
+            break;
     }
 }
 } // namespace ui

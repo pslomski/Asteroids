@@ -5,8 +5,7 @@
 #include "GameConsts.h"
 #include "sound/Sound.hpp"
 
-TUfo::TUfo() :
-    Object()
+TUfo::TUfo() : Object()
 {
     sndEngine.Init(SND_UFO_ENGINE, SND_VOL_UFO_ENGINE);
     sndCrash.Init(SND_ASTER_CRASH2, SND_VOL_ASTER_CRASH2);
@@ -57,7 +56,7 @@ void TUfo::OnRender()
     glEnd();
 }
 
-void TUfo::Action(TvecBullet &vecBullet)
+void TUfo::Action(TvecBullet& vecBullet)
 {
     const Float SafeDist = 12.0;
 
@@ -145,10 +144,10 @@ void TUfo::Action(TvecBullet &vecBullet)
     }
 }
 
-TBullet *TUfo::FireBullet(const PointF &pt)
+TBullet* TUfo::FireBullet(const PointF& pt)
 {
     Float Speed = 22.0;
-    TBullet *bullet = new TBullet;
+    TBullet* bullet = new TBullet;
     bullet->LifeTime.set(3.0);
     bullet->SetXY(GetX(), GetY());
     Float alfa = atan2(pt.y - GetY(), pt.x - GetX()) * GE_180overPI;
@@ -158,13 +157,13 @@ TBullet *TUfo::FireBullet(const PointF &pt)
     return bullet;
 }
 
-void TUfo::Crash(TvecObiekt &vecObiekty)
+void TUfo::Crash(TvecObiekt& vecObiekty)
 {
     sndCrash.Play();
     int iDebCount = GE_UFO_DEBR_COUNT;
     for (int i = 0; i < iDebCount; ++i)
     {
-        aster::AsterShard *pDeb = new aster::AsterShard;
+        aster::AsterShard* pDeb = new aster::AsterShard;
         pDeb->color(clr);
         pDeb->SetAlfa(GetAlfa() + i * 360.0 / iDebCount + rand() % 16 - 8.0);
         pDeb->SetXY(GetX(), GetY());

@@ -1,22 +1,15 @@
-#include <assert.h>
 #include "ui/Rectangle.h"
+#include <assert.h>
 
 namespace ui
 {
-Rectangle::Rectangle():
-    left(0),
-    top(0),
-    right(0),
-    bottom(0)
+Rectangle::Rectangle() : left(0), top(0), right(0), bottom(0)
 {
     assert(isValid());
 }
 
-Rectangle::Rectangle(const T aLeft, const T aTop, const T aRight, const T aBottom):
-    left(aLeft),
-    top(aTop),
-    right(aRight),
-    bottom(aBottom)
+Rectangle::Rectangle(const T aLeft, const T aTop, const T aRight, const T aBottom)
+    : left(aLeft), top(aTop), right(aRight), bottom(aBottom)
 {
     assert(isValid());
 }
@@ -35,11 +28,7 @@ Rectangle::T Rectangle::getHeight() const
 
 bool Rectangle::isIntersection(const Rectangle& rect) const
 {
-    return
-        (left <= rect.right) and
-        (right >= rect.left) and
-        (bottom <= rect.top) and
-        (top >= rect.bottom);
+    return (left <= rect.right) and (right >= rect.left) and (bottom <= rect.top) and (top >= rect.bottom);
 }
 
 bool Rectangle::isValid() const

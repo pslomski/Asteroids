@@ -1,13 +1,13 @@
 
+#include "PlayState.h"
 #include "HighScoreState.h"
 #include "MenuState.h"
-#include "PlayState.h"
 #include "StateManager.h"
 
 #include "aster/Consts.h"
 #include "aster/World.h"
-#include "log/Log.hpp"
 #include "gl/Renderer.hpp"
+#include "log/Log.hpp"
 #include "sdl/SDLTools.h"
 
 namespace ui
@@ -15,11 +15,7 @@ namespace ui
 #define FNTSIZESMALL 15
 #define FNTSIZELARGE 25
 
-PlayState::PlayState(StateManager* const manager):
-    GameState(manager),
-    fontSmall(nullptr),
-    fontLarge(nullptr)
-{}
+PlayState::PlayState(StateManager* const manager) : GameState(manager), fontSmall(nullptr), fontLarge(nullptr) {}
 
 void PlayState::init()
 {
@@ -86,25 +82,27 @@ void PlayState::onKeyDown(SDL_KeyboardEvent& e)
 {
     asterGame.Key[SDLTools::GetScancode(e)] = true;
     SDL_Keycode keycode = SDLTools::GetKeycode(e);
-    switch (keycode) {
-    case SDLK_f: isDispFps = not isDispFps;
-    case SDLK_ESCAPE:
-    case SDLK_RETURN:
-        if (asterGame.isGameOver())
-        {
-            HighScoreState* pHighScores = HighScoreState::getInstance(stateManager);
-            pHighScores->setNewHighScore(asterGame.score.get());
-            asterGame.clear();
-            changeState(pHighScores);
-        }
-        else
-        {
-            if (keycode == SDLK_ESCAPE)
+    switch (keycode)
+    {
+        case SDLK_f:
+            isDispFps = not isDispFps;
+        case SDLK_ESCAPE:
+        case SDLK_RETURN:
+            if (asterGame.isGameOver())
             {
-                changeState(MenuState::getInstance(stateManager));
+                HighScoreState* pHighScores = HighScoreState::getInstance(stateManager);
+                pHighScores->setNewHighScore(asterGame.score.get());
+                asterGame.clear();
+                changeState(pHighScores);
             }
-        }
-        break;
+            else
+            {
+                if (keycode == SDLK_ESCAPE)
+                {
+                    changeState(MenuState::getInstance(stateManager));
+                }
+            }
+            break;
     }
 }
 
@@ -113,9 +111,7 @@ void PlayState::onKeyUp(SDL_KeyboardEvent& e)
     asterGame.Key[SDLTools::GetScancode(e)] = false;
 }
 
-void PlayState::onResize(int cx, int cy)
-{
-}
+void PlayState::onResize(int cx, int cy) {}
 
 void PlayState::update(double timeStep)
 {

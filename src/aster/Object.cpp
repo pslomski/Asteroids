@@ -1,18 +1,12 @@
-#include <assert.h>
 #include "Object.h"
-#include "World.h"
-#include "Tools.h"
+#include <assert.h>
 #include "Consts.h"
+#include "Tools.h"
+#include "World.h"
 
 Float Object::dt = 0.0;
 
-Object::Object():
-    ScoreValue(0),
-    ObjGeom(ogPoint),
-    glList(0),
-    falfa(0.0),
-    fomega(0.0),
-    KDec(0.0)
+Object::Object() : ScoreValue(0), ObjGeom(ogPoint), glList(0), falfa(0.0), fomega(0.0), KDec(0.0)
 {
     color();
     SetXY(0.0, 0.0);
@@ -108,7 +102,7 @@ void Object::Move()
     }
 }
 
-BoxF Object::Transform(const BoxF &seg) const
+BoxF Object::Transform(const BoxF& seg) const
 {
     BoxF res;
     Float sinalfa = sin(-falfa * GE_PIover180);
@@ -120,7 +114,7 @@ BoxF Object::Transform(const BoxF &seg) const
     return res;
 }
 
-bool _CheckPolygWithPoint(Object *pObjPoint, Object *pObjPolyg)
+bool _CheckPolygWithPoint(Object* pObjPoint, Object* pObjPolyg)
 {
     BoxF o1;
     Float x, y;
@@ -130,21 +124,19 @@ bool _CheckPolygWithPoint(Object *pObjPoint, Object *pObjPolyg)
     {
         if (0 == i1)
         {
-            o1 = pObjPolyg->Transform(
-                BoxF(
-                    pObjPolyg->Verts[0].x,
-                    pObjPolyg->Verts[0].y,
-                    pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].x,
-                    pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].y));
+            o1 = pObjPolyg->Transform(BoxF(
+                pObjPolyg->Verts[0].x,
+                pObjPolyg->Verts[0].y,
+                pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].x,
+                pObjPolyg->Verts[pObjPolyg->Verts.size() - 1].y));
         }
         else
         {
-            o1 = pObjPolyg->Transform(
-                BoxF(
-                    pObjPolyg->Verts[i1 - 1].x,
-                    pObjPolyg->Verts[i1 - 1].y,
-                    pObjPolyg->Verts[i1].x,
-                    pObjPolyg->Verts[i1].y));
+            o1 = pObjPolyg->Transform(BoxF(
+                pObjPolyg->Verts[i1 - 1].x,
+                pObjPolyg->Verts[i1 - 1].y,
+                pObjPolyg->Verts[i1].x,
+                pObjPolyg->Verts[i1].y));
         }
         if (linesIntersection(o1, o2, x, y) == 0)
         {
@@ -160,7 +152,7 @@ bool _CheckPolygWithPoint(Object *pObjPoint, Object *pObjPolyg)
     return false;
 }
 
-bool Object::CheckCollision(Object *pObiekt)
+bool Object::CheckCollision(Object* pObiekt)
 {
     assert(NULL != pObiekt);
 
@@ -180,24 +172,31 @@ bool Object::CheckCollision(Object *pObiekt)
                 for (unsigned int i1 = 0; i1 < Verts.size(); ++i1)
                 {
                     if (0 == i1)
-                        o1 = Transform(BoxF(Verts[0].x, Verts[0].y, Verts[Verts.size() - 1].x, Verts[Verts.size() - 1].y));
+                        o1 = Transform(
+                            BoxF(Verts[0].x, Verts[0].y, Verts[Verts.size() - 1].x, Verts[Verts.size() - 1].y));
                     else
                         o1 = Transform(BoxF(Verts[i1 - 1].x, Verts[i1 - 1].y, Verts[i1].x, Verts[i1].y));
                     for (unsigned int i2 = 0; i2 < pObiekt->Verts.size(); ++i2)
                     {
                         if (0 == i2)
-                            o2 = pObiekt->Transform(BoxF(pObiekt->Verts[0].x, pObiekt->Verts[0].y, pObiekt->Verts[pObiekt->Verts.size() - 1].x, pObiekt->Verts[pObiekt->Verts.size() - 1].y));
+                            o2 = pObiekt->Transform(BoxF(
+                                pObiekt->Verts[0].x,
+                                pObiekt->Verts[0].y,
+                                pObiekt->Verts[pObiekt->Verts.size() - 1].x,
+                                pObiekt->Verts[pObiekt->Verts.size() - 1].y));
                         else
-                            o2 = pObiekt->Transform(BoxF(pObiekt->Verts[i2 - 1].x, pObiekt->Verts[i2 - 1].y, pObiekt->Verts[i2].x, pObiekt->Verts[i2].y));
-                        if (linesIntersection(o1, o2, _x, _y) == 0)
-                            return true;
+                            o2 = pObiekt->Transform(BoxF(
+                                pObiekt->Verts[i2 - 1].x,
+                                pObiekt->Verts[i2 - 1].y,
+                                pObiekt->Verts[i2].x,
+                                pObiekt->Verts[i2].y));
+                        if (linesIntersection(o1, o2, _x, _y) == 0) return true;
                     }
                 }
             }
             else if (ogPoint == pObiekt->ObjGeom)
             {
-                if (_CheckPolygWithPoint(pObiekt, this))
-                    return true;
+                if (_CheckPolygWithPoint(pObiekt, this)) return true;
             }
             else
             {
@@ -208,8 +207,7 @@ bool Object::CheckCollision(Object *pObiekt)
         {
             if (ogPolyg == pObiekt->ObjGeom)
             {
-                if (_CheckPolygWithPoint(this, pObiekt))
-                    return true;
+                if (_CheckPolygWithPoint(this, pObiekt)) return true;
             }
             else
                 return true; // w przypadku 2 punktow przyjmyjemy przeciecie Bounds za kolizje
@@ -243,7 +241,7 @@ void Object::Render()
     OnRender();
 }
 
-void Object::CalcBounds(TvecPointF &Verts)
+void Object::CalcBounds(TvecPointF& Verts)
 {
     Float Max = 0.0;
     for (TvecPointFIt it = Verts.begin(); it != Verts.end(); ++it)

@@ -1,7 +1,7 @@
 #include "Application.hpp"
 
-#include <algorithm>
 #include <SDL_ttf.h>
+#include <algorithm>
 
 #include "Exception.hpp"
 #include "Window.hpp"
@@ -16,8 +16,7 @@ namespace sdl
 {
 bool Application::canQuit = false;
 
-Application::Application(sound::SoundEngine& soundEngine) :
-    soundEngine{soundEngine}
+Application::Application(sound::SoundEngine& soundEngine) : soundEngine{soundEngine}
 {
     LOG_INF("Application::Application window: %p", window);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -47,7 +46,7 @@ void Application::cleanup()
     Window::destroy(window);
 }
 
-void Application::init(Window *window)
+void Application::init(Window* window)
 {
     this->window = window;
 }
@@ -104,11 +103,11 @@ void Application::onEvent(SDL_Event* e)
 {
     switch (e->type)
     {
-    case SDL_QUIT:
-        quitApp();
-        break;
-    default:
-        window->onEvent(e);
+        case SDL_QUIT:
+            quitApp();
+            break;
+        default:
+            window->onEvent(e);
     }
 }
-}
+} // namespace sdl

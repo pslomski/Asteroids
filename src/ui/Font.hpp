@@ -21,8 +21,9 @@ public:
     void drawText(const std::string& text, const int x, const int y, const GLColor& color);
     void drawFmtText(const int x, const int y, const GLColor& color, const char* fmt, ...);
     Size getTextSize(const std::string& text);
+
 private:
-    Font() {};
+    Font(){};
     void createFont(const std::string& fontFace, const int height);
     TTF_Font* font{nullptr};
 };

@@ -1,9 +1,8 @@
-#include "aster/Consts.h"
 #include "aster/Bullet.hpp"
+#include "aster/Consts.h"
 #include "aster/World.h"
 
-TBullet::TBullet() :
-    TempObject()
+TBullet::TBullet() : TempObject()
 {
     LifeTime.set(1.0);
     bounds.x0 = -0.1;

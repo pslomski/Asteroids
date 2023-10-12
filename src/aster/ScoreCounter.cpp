@@ -5,8 +5,7 @@
 
 namespace aster
 {
-ScoreCounter::ScoreCounter(AsterGame* asterGame):
-    game(asterGame)
+ScoreCounter::ScoreCounter(AsterGame* asterGame) : game(asterGame)
 {
     reset();
 }

@@ -36,13 +36,12 @@ private:
     {
         std::string strPlayer;
         uint32_t score;
-        HighScoreData():strPlayer(), score(0){}
-        bool operator< (const HighScoreData& other)
+        HighScoreData() : strPlayer(), score(0) {}
+        bool operator<(const HighScoreData& other)
         {
             // We have to sort in decreasing order, so the <
             // operator returns the opposite.
-            if  (this->score > other.score) 
-                return true;
+            if (this->score > other.score) return true;
             return false;
         }
     };

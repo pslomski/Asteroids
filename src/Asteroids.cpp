@@ -1,10 +1,10 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <exception>
-#include "sdl/Exception.hpp"
 #include "aster/World.h"
 #include "log/Log.hpp"
 #include "sdl/Application.hpp"
+#include "sdl/Exception.hpp"
 #include "sdl/SDLTools.h"
 #include "sound/bass/SoundEngineBass.hpp"
 #include "ui/gstate/MenuState.h"
@@ -31,12 +31,12 @@ int main(int argc, char* argv[])
         app.init(window);
         app.run();
     }
-    catch(std::exception & e)
+    catch (std::exception& e)
     {
         LOG_ERR("exception: %s", e.what());
         res = -1;
     }
-    catch(...)
+    catch (...)
     {
         LOG_ERR("unknown exception");
         res = -1;
