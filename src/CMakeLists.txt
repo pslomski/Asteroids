@@ -1,8 +1,9 @@
 target_link_libraries(${ASTER_LIB}
     PRIVATE
-        OpenGL::OpenGL
-        ${SDL2_LIBRARY}
-        ${SDL2TTF_LIBRARIES}
+        OpenGL::GL
+        SDL2::SDL2
+        ${SDL2_LIBRARIES}
+        SDL2_ttf::SDL2_ttf
         ${BASS_LIBRARIES}
 )
 add_subdirectory(aster)
@@ -16,4 +17,8 @@ target_sources(${ASTER_EXE}
     PRIVATE
         Asteroids.cpp
 )
-target_link_libraries(${ASTER_EXE} ${ASTER_LIB})
+target_link_libraries(${ASTER_EXE}
+    PRIVATE
+        ${ASTER_LIB}
+        SDL2::SDL2
+)

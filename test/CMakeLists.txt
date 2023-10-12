@@ -7,6 +7,8 @@ target_link_libraries(${TEST_EXE}
     PRIVATE
         GTest::GTest
         ${ASTER_LIB}
+        ${SDL2_LIBRARIES}
+        SDL2_ttf::SDL2_ttf
 )
 add_subdirectory(aster)
 add_subdirectory(sdl)
