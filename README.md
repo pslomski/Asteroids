@@ -1,7 +1,7 @@
 # Asteroids
 Remake of classic Atari's Asteroids game
 
-## 1. Introduction
+## Introduction
 
   This is a classic Atari's Asteroids arcade game remake.
 Originally it was released in 1979 by Atari Inc. To this day
@@ -14,35 +14,42 @@ The ship can catch point bonuses and two weapon powerups.
 There is also music added. So I hope You will enjoy this
 little game as I do.
 
-## 2. Controls
+## Controls
 
 Left arrow - turn left  
 Right arrow - turn right  
 Up arrow - move forward  
 Space - fire weapon  
 
-## 3. Dependencies
+## Dependencies
 
-### 3.1
-OpenGL
+### OpenGL library
+MSYS2:
+  pacman -S mingw-w64-x86_64-mesa
 Linux:
   sudo apt-get install libgl1-mesa-dev
 
-### 3.2
-SDL2
+### SDL2 library
+MSYS2:
+ pacman -S mingw-w64-x86_64-SDL2
 Linux:
   sudo apt-get install libsdl2-dev
 
-### 3.3
-SDL TTF
+### SDL2 TTF library
+MSYS2:
+  pacman -S mingw-w64-x86_64-SDL2_ttf
 Linux:
   sudo apt-get install libsdl2-ttf-dev
 
-### 3.4
-Bass
+### Free Type library
+In MSYS2
+  pacman -S mingw-w64-x86_64-freetype
 
-### 3.5
-vectorb.ttf font
+### Bass library
+
+### vectorb.ttf font
+Download from https://www.dafont.com/vector-battle.font
+Vector Battle by Freaky Fonts http://www.freakyfonts.de/
 
 ## 4. Building
 In root dir:
