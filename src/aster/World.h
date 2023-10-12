@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Types.h"
 
 class World final
