@@ -1,3 +1,5 @@
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
 #include <exception>
 #include "sdl/Exception.hpp"
 #include "aster/World.h"
