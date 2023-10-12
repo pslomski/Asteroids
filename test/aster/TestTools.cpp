@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
 #include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include "aster/Tools.h"
 
@@ -14,7 +14,7 @@ struct TestIsPointInPolygonParam
     bool expected{};
 };
 
-class TestIsPointInPolygon: public testing::TestWithParam<TestIsPointInPolygonParam>
+class TestIsPointInPolygon : public testing::TestWithParam<TestIsPointInPolygonParam>
 {
 };
 
@@ -27,10 +27,28 @@ INSTANTIATE_TEST_CASE_P(
     isPointInPolygon,
     TestIsPointInPolygon,
     Values(
-        TestIsPointInPolygonParam{.npol = 4, .points = {{1, 1}, {-1, 1}, {-1,-1}, {1,-1}}, .x = 0.0, .y = 0.0, .expected =  true},
-        TestIsPointInPolygonParam{.npol = 4, .points = {{1, 1}, {-1, 1}, {-1,-1}, {1,-1}}, .x = 0.999999, .y = 0.999999, .expected = true},
-        TestIsPointInPolygonParam{.npol = 4, .points = {{1, 1}, {-1, 1}, {-1,-1}, {1,-1}}, .x = 1.0, .y = 1.0, .expected = false},
-        TestIsPointInPolygonParam{.npol = 4, .points = {{1, 1}, {-1, 1}, {-1,-1}, {1,-1}}, .x = -1.0, .y = -1.0, .expected = true}
-    )
-);
-}
+        TestIsPointInPolygonParam{
+            .npol = 4,
+            .points = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}},
+            .x = 0.0,
+            .y = 0.0,
+            .expected = true},
+        TestIsPointInPolygonParam{
+            .npol = 4,
+            .points = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}},
+            .x = 0.999999,
+            .y = 0.999999,
+            .expected = true},
+        TestIsPointInPolygonParam{
+            .npol = 4,
+            .points = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}},
+            .x = 1.0,
+            .y = 1.0,
+            .expected = false},
+        TestIsPointInPolygonParam{
+            .npol = 4,
+            .points = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}},
+            .x = -1.0,
+            .y = -1.0,
+            .expected = true}));
+} // namespace testing

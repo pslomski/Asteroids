@@ -1,29 +1,30 @@
-#include <gtest/gtest.h>
 #include <SDL_ttf.h>
+#include <gtest/gtest.h>
 
 namespace testing
 {
-class SDL_ttfTest: public Test
-{ 
-public: 
-   void SetUp( )
-   {
+class SDL_ttfTest : public Test
+{
+public:
+    void SetUp()
+    {
         if (SDL_Init(SDL_INIT_VIDEO) != 0)
         {
             throw "SDL library initialization failed";
         }
-        if(TTF_Init() == -1)
+        if (TTF_Init() == -1)
         {
             throw "Could not initialize SDL2_ttf";
         }
-   }
+    }
 
-   void TearDown( )
-   {
-       TTF_CloseFont(font);
-       TTF_Quit();
-       SDL_Quit();
-   }
+    void TearDown()
+    {
+        TTF_CloseFont(font);
+        TTF_Quit();
+        SDL_Quit();
+    }
+
 protected:
     TTF_Font* font{nullptr};
 };
@@ -58,7 +59,7 @@ TEST_F(SDL_ttfTest, DISABLED_shouldRenderFont)
     SDL_FreeSurface(surf);
 
     // Create a rectangle to draw on
-    SDL_Rect rectangle{.x=10, .y=10, .w=400, .h=100};
+    SDL_Rect rectangle{.x = 10, .y = 10, .w = 400, .h = 100};
     rectangle.x = 10;
     rectangle.y = 10;
     rectangle.w = 400;
@@ -77,4 +78,4 @@ TEST_F(SDL_ttfTest, DISABLED_shouldRenderFont)
     SDL_DestroyTexture(textureText);
     SDL_DestroyWindow(window);
 }
-}
+} // namespace testing

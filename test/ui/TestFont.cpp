@@ -1,22 +1,17 @@
-#include <gtest/gtest.h>
 #include <SDL_ttf.h>
+#include <gtest/gtest.h>
+
 
 #include "ui/Font.hpp"
 
 namespace ui
 {
-class FontTest: public ::testing::Test
-{ 
-public: 
-   void SetUp( )
-   {
-       TTF_Init();
-   }
+class FontTest : public ::testing::Test
+{
+public:
+    void SetUp() { TTF_Init(); }
 
-   void TearDown( )
-   {
-       TTF_Quit();
-   }
+    void TearDown() { TTF_Quit(); }
 };
 
 TEST_F(FontTest, testGetTextSize)
@@ -28,4 +23,4 @@ TEST_F(FontTest, testGetTextSize)
     ASSERT_EQ(150, size.width);
     ASSERT_EQ(24, size.height);
 }
-}
+} // namespace ui

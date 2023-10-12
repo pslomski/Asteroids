@@ -4,18 +4,14 @@
 
 namespace ui
 {
-class RectangleTest: public ::testing::Test
-{ 
-public: 
-   void SetUp( )
-   { 
-   }
+class RectangleTest : public ::testing::Test
+{
+public:
+    void SetUp() {}
 
-   void TearDown( )
-   { 
-   }
+    void TearDown() {}
 
-   Rectangle rect;
+    Rectangle rect;
 };
 
 TEST_F(RectangleTest, DISABLED_exampleOfDisablingTest)
@@ -69,7 +65,7 @@ TEST_F(RectangleTest, shouldEvaluateIsValidAsTrue)
     int bottom{3};
 
     rect.set(left, top, right, bottom);
-    
+
     ASSERT_TRUE(rect.isValid());
 }
 
@@ -146,4 +142,4 @@ TEST_F(RectangleTest, shouldOffset)
     ASSERT_EQ(13, rect.right);
     ASSERT_EQ(22, rect.bottom);
 }
-}
+} // namespace ui
