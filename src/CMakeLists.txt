@@ -2,7 +2,6 @@ target_link_libraries(${ASTER_LIB}
     PRIVATE
         OpenGL::GL
         SDL2::SDL2
-        ${SDL2_LIBRARIES}
         SDL2_ttf::SDL2_ttf
         ${BASS_LIBRARIES}
 )
